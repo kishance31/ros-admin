@@ -95,11 +95,25 @@ export class HtmlClassService {
 
   getLogo() {
     const brandSkin = objectPath.get(this.config, "brand.self.theme");
-    if (brandSkin === "light") {
-      return toAbsoluteUrl("/media/logos/logo-dark.png");
-    } else {
-      return toAbsoluteUrl("/media/logos/logo-light.png");
+    // if (brandSkin === "light") {
+    //   return toAbsoluteUrl("/media/logos/logo-dark.png");
+    // } else {
+    //   return toAbsoluteUrl("/media/logos/logo-light.png");
+    // }
+    return toAbsoluteUrl("/media/logos/ros-logo.png");
+  }
+
+  getLogoTextStyle() {
+    const brandSkin = objectPath.get(this.config, "brand.self.theme");
+    let style = {
+      fontSize: 25, fontWeight: 600, color: "#fff"
     }
+    if (brandSkin === "light") {
+      style.color = "#000";
+    } else {
+      style.color = "#fff";
+    }
+    return style
   }
 
   getStickyLogo() {
