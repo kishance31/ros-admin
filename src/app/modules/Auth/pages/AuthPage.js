@@ -4,7 +4,7 @@ import {Link, Switch, Redirect} from "react-router-dom";
 import {toAbsoluteUrl} from "../../../../_metronic/_helpers";
 import {ContentRoute} from "../../../../_metronic/layout"
 import Login from "./Login";
-import Registration from "./Registration";
+// import Registration from "./Registration";
 import ForgotPassword from "./ForgotPassword";
 import "../../../../_metronic/_assets/sass/pages/login/classic/login-1.scss";
 
@@ -31,7 +31,7 @@ export function AuthPage() {
                   <img
                       alt="Logo"
                       className="max-h-70px"
-                      src={toAbsoluteUrl("/media/logos/logo-letter-1.png")}
+                      src={toAbsoluteUrl("/media/logos/ros-logo.png")}
                   />
                 </Link>
                 {/* end:: Aside header */}
@@ -39,19 +39,19 @@ export function AuthPage() {
                 {/* start:: Aside content */}
                 <div className="flex-column-fluid d-flex flex-column justify-content-center">
                   <h3 className="font-size-h1 mb-5 text-white">
-                    Welcome to Metronic!
+                    Welcome to ROS Admin!
                   </h3>
-                  <p className="font-weight-lighter text-white opacity-80">
+                  {/* <p className="font-weight-lighter text-white opacity-80">
                     The ultimate Bootstrap & React 16 admin theme framework for next
                     generation web apps.
-                  </p>
+                  </p> */}
                 </div>
                 {/* end:: Aside content */}
 
                 {/* start:: Aside footer for desktop */}
                 <div className="d-none flex-column-auto d-lg-flex justify-content-between mt-10">
                   <div className="opacity-70 font-weight-bold	text-white">
-                    &copy; 2020 Metronic
+                    &copy; 2020 ROS
                   </div>
                   <div className="d-flex">
                     <Link to="/terms" className="text-white">
@@ -74,23 +74,23 @@ export function AuthPage() {
             {/*begin::Content*/}
             <div className="flex-row-fluid d-flex flex-column position-relative p-7 overflow-hidden">
               {/*begin::Content header*/}
-              <div className="position-absolute top-0 right-0 text-right mt-5 mb-15 mb-lg-0 flex-column-auto justify-content-center py-5 px-10">
+              {/* <div className="position-absolute top-0 right-0 text-right mt-5 mb-15 mb-lg-0 flex-column-auto justify-content-center py-5 px-10">
                 <span className="font-weight-bold text-dark-50">Don't have an account yet?</span>
                 <Link to="/auth/registration" className="font-weight-bold ml-2" id="kt_login_signup">Sign Up!</Link>
-              </div>
+              </div> */}
               {/*end::Content header*/}
 
               {/* begin::Content body */}
               <div className="d-flex flex-column-fluid flex-center mt-30 mt-lg-0">
                 <Switch>
                 <ContentRoute path="/auth/login" component={Login}/>
-                <ContentRoute path="/auth/registration" component={Registration}/>
+                {/* <ContentRoute path="/auth/registration" component={Registration}/> */}
                 <ContentRoute
                     path="/auth/forgot-password"
                     component={ForgotPassword}
                 />
                 <Redirect from="/auth" exact={true} to="/auth/login"/>
-                {/* <Redirect to="/auth/login"/> */}
+                <Redirect from="/*" exact={true} to="/auth/login"/>
               </Switch>
               </div>
               {/*end::Content body*/}
@@ -99,7 +99,7 @@ export function AuthPage() {
               <div
                   className="d-flex d-lg-none flex-column-auto flex-column flex-sm-row justify-content-between align-items-center mt-5 p-5">
                 <div className="text-dark-50 font-weight-bold order-2 order-sm-1 my-2">
-                  &copy; 2020 Metronic
+                  &copy; 2020 ROS
                 </div>
                 <div className="d-flex order-1 order-sm-2 my-2">
                   <Link to="/terms" className="text-dark-75 text-hover-primary">

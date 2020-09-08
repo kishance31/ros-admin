@@ -14,5 +14,8 @@ export default function mockAxios(axios) {
   mockRemarks(mock);
   mockSpecifications(mock);
 
+  // pass any unmatched request through
+  mock.onAny().passThrough();
+
   return mock;
 }
