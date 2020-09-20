@@ -5,6 +5,7 @@ const initialState = {
         modalState: false,
         modalType: 'add',
     },
+    
 }
 
 const manageUserReducer = (state = initialState, action) => {
@@ -25,6 +26,22 @@ const manageUserReducer = (state = initialState, action) => {
                     modalState: true,
                     modalType: 'add'
                 }
+            }
+        }
+        case ManageUserMap.DISPLAY_MANAGEUSER_DATA:{
+            return{
+                ...state,
+                displaylist:action.payload
+            }
+        }
+        case ManageUserMap.EDIT_MANAGEUSER_DATA:{
+            return{
+                ...state,
+            }
+        }
+        case ManageUserMap.DELETE_MANAGEUSER_DATA:{
+            return{
+                ...state,
             }
         }
         default:

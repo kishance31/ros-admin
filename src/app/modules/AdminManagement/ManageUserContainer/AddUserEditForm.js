@@ -2,11 +2,9 @@ import React from "react";
 import { Modal, Button } from "react-bootstrap";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
-import {
-    Input,
-    Select,
-    DatePickerField,
-} from '../../../../_metronic/_partials/controls';
+import { Input, Select } from '../../../../_metronic/_partials/controls';
+import { useDispatch } from 'react-redux';
+import { addManageUserAsync } from '../../../actions/manageUser.action';
 
 const ManageUserEditSchema = Yup.object().shape({
     firstName: Yup.string()
@@ -20,29 +18,36 @@ const ManageUserEditSchema = Yup.object().shape({
     email: Yup.string()
         .email("Invalid email")
         .required("Email is required"),
-    mobile: Yup.string()
+    mobileNo: Yup.string()
         .required("Mobile is required "),
-    dateOfBbirth: Yup.mixed()
-        .nullable(false)
-        .required("Date of Birth is required"),
+    password: Yup.string()
+        .required("Password is required")
 });
 
 const AddUserEditForm = ({ actionsLoading }) => {
+
+    const dispatch = useDispatch();
+
+    const addManageUser = (values) => {
+        dispatch(addManageUserAsync({ ...values, roleName: "role1" }))
+    }
+
     return (
         <>
             <Formik
-
                 initialValues={{
                     firstName: "",
                     lastName: "",
                     email: "",
-                    mobile: ""
+                    mobileNo: "",
+                    password: ""
                 }}
 
                 validationSchema={ManageUserEditSchema}
 
                 onSubmit={(values) => {
                     console.log(values);
+                    addManageUser(values)
                 }}
             >
                 {({ handleSubmit }) => (
@@ -84,7 +89,7 @@ const AddUserEditForm = ({ actionsLoading }) => {
                                 <div className="form-group row">
                                     <div className="col-lg-4">
                                         <Field
-                                            name="mobile"
+                                            name="mobileNo"
                                             component={Input}
                                             placeholder="Mobile"
                                             label="Mobile"
@@ -92,28 +97,29 @@ const AddUserEditForm = ({ actionsLoading }) => {
                                     </div>
                                     <div className="col-lg-4">
                                         <Select name="role" label="Role">
-                                            <option value="option">option1</option>
-                                            <option value="option">option2</option>
+                                            <option value="option">role1</option>
+                                            <option value="option">role2</option>
                                         </Select>
                                     </div>
                                     <div className="col-lg-4">
-                                        <DatePickerField
-                                            name="createDate"
-                                            label="Create Date"
+                                        <Field
+                                            name="password"
+                                            component={Input}
+                                            placeholder="Password"
+                                            label="Password"
                                         />
                                     </div>
                                 </div>
-
                             </Form>
                         </Modal.Body>
                         <Modal.Footer>
-                            <Button
-                                type="button"
-                                variant="primary"
+                            <button
+                                type="submit"
                                 onClick={() => handleSubmit()}
+                                className="btn btn-primary btn-elevate"
                             >
                                 Register
-                                </Button>
+                             </button>
                         </Modal.Footer>
                     </>
                 )}
