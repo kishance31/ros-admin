@@ -1,19 +1,19 @@
 import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 import createSagaMiddleware from "redux-saga";
 import thunk from 'redux-thunk';
-import { reduxBatch } from "@manaflair/redux-batch";
-import { persistStore } from "redux-persist";
-import { rootReducer, rootSaga } from "./rootReducer";
 import logger from 'redux-logger';
+import {reduxBatch} from "@manaflair/redux-batch";
+import {persistStore} from "redux-persist";
+import {rootReducer, rootSaga} from "./rootReducer";
 
-const sagaMiddleware = createSagaMiddleware();
+// const sagaMiddleware = createSagaMiddleware();
 const middleware = [
   ...getDefaultMiddleware({
     immutableCheck: false,
     serializableCheck: false,
     thunk: true
   }),
-  sagaMiddleware,
+  // sagaMiddleware,
   thunk,
   logger
 ];
@@ -31,6 +31,6 @@ const store = configureStore({
  */
 export const persistor = persistStore(store);
 
-sagaMiddleware.run(rootSaga);
+// sagaMiddleware.run(rootSaga);
 
 export default store;
