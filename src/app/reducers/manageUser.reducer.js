@@ -5,7 +5,10 @@ const initialState = {
         modalState: false,
         modalType: 'add',
     },
-    
+    displaylist: [],
+    totalCount: 0,
+    selectedUser: null,
+    refreshManageUserData: true,
 }
 
 const manageUserReducer = (state = initialState, action) => {
@@ -28,20 +31,28 @@ const manageUserReducer = (state = initialState, action) => {
                 }
             }
         }
-        case ManageUserMap.DISPLAY_MANAGEUSER_DATA:{
-            return{
+        case ManageUserMap.DISPLAY_MANAGEUSER_DATA_SUCCESS: {
+            return {
                 ...state,
-                displaylist:action.payload
+                displaylist: action.payload.list,
+                totalCount: action.payload.total[0].count,
+                refreshManageUserData: true,
             }
         }
-        case ManageUserMap.EDIT_MANAGEUSER_DATA:{
-            return{
+        case ManageUserMap.EDIT_MANAGEUSER_DATA: {
+            return {
                 ...state,
             }
         }
-        case ManageUserMap.DELETE_MANAGEUSER_DATA:{
-            return{
+        case ManageUserMap.DELETE_MANAGEUSER_DATA: {
+            return {
                 ...state,
+            }
+        }
+        case ManageUserMap.REFRESH_MANAGEUSER_DATA: {
+            return {
+                ...state,
+                refreshManageUserData: true
             }
         }
         default:

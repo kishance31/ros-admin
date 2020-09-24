@@ -5,6 +5,7 @@ import { BuilderPage } from './pages/BuilderPage';
 import { MyPage } from './pages/MyPage';
 import { DashboardPage } from './pages/DashboardPage';
 import AdminManagement from './pages/AdminManagement';
+import LicenseManagement from './pages/LicenseManagement';
 import CorporateManagement from './pages/CorporateManagement';
 
 const GoogleMaterialPage = lazy(() =>
@@ -23,26 +24,27 @@ export default function BasePage() {
   // }, []) // [] - is required if you need only one call
   // https://reactjs.org/docs/hooks-reference.html#useeffect
 
-  return (
-    <Suspense fallback={<LayoutSplashScreen />}>
-      <Switch>
-        {
-          /* Redirect from root URL to /dashboard. */
-          <Redirect exact from='/' to='/dashboard' />
-        }
-        <ContentRoute path='/dashboard' component={DashboardPage} />
-        <ContentRoute path='/admin-management' component={AdminManagement} />
+	return (
+		<Suspense fallback={<LayoutSplashScreen />}>	
+			<Switch>
+				{
+					/* Redirect from root URL to /dashboard. */
+					<Redirect exact from="/" to="/dashboard" />
+				}
+				<ContentRoute path="/dashboard" component={DashboardPage} />
+				<ContentRoute path="/admin-management" component={AdminManagement} />
+				<ContentRoute path="/license-management" component={LicenseManagement} />
         <ContentRoute
           path='/corporate-management'
           component={CorporateManagement}
         />
-        <ContentRoute path='/builder' component={BuilderPage} />
-        <ContentRoute path='/my-page' component={MyPage} />
-        <Route path='/google-material' component={GoogleMaterialPage} />
-        <Route path='/react-bootstrap' component={ReactBootstrapPage} />
-        <Route path='/e-commerce' component={ECommercePage} />
-        <Redirect to='error/error-v1' />
-      </Switch>
-    </Suspense>
-  );
+				<ContentRoute path="/builder" component={BuilderPage} />
+				<ContentRoute path="/my-page" component={MyPage} />
+				<Route path="/google-material" component={GoogleMaterialPage} />
+				<Route path="/react-bootstrap" component={ReactBootstrapPage} />
+				<Route path="/e-commerce" component={ECommercePage} />
+				<Redirect to="error/error-v1" />
+			</Switch>
+		</Suspense>
+	);
 }
