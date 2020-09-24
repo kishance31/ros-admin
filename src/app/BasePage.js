@@ -5,6 +5,7 @@ import { BuilderPage } from "./pages/BuilderPage";
 import { MyPage } from "./pages/MyPage";
 import { DashboardPage } from "./pages/DashboardPage";
 import AdminManagement from './pages/AdminManagement';
+import CorporateManagementPage from './pages/corporatemanagement';
 
 const GoogleMaterialPage = lazy(() =>
 	import("./modules/GoogleMaterialExamples/GoogleMaterialPage")
@@ -31,6 +32,7 @@ export default function BasePage() {
 				}
 				<ContentRoute path="/dashboard" component={DashboardPage} />
 				<ContentRoute path="/admin-management" component={AdminManagement} />
+				<ContentRoute path="/corporate-management" component={CorporateManagementPage} />
 				<ContentRoute path="/builder" component={BuilderPage} />
 				<ContentRoute path="/my-page" component={MyPage} />
 				<Route path="/google-material" component={GoogleMaterialPage} />
