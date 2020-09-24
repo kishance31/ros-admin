@@ -1,4 +1,4 @@
-import {configureStore, getDefaultMiddleware} from "@reduxjs/toolkit";
+import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 import createSagaMiddleware from "redux-saga";
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
@@ -8,11 +8,11 @@ import {rootReducer, rootSaga} from "./rootReducer";
 
 // const sagaMiddleware = createSagaMiddleware();
 const middleware = [
-  // ...getDefaultMiddleware({
-  //   immutableCheck: false,
-  //   serializableCheck: false,
-  //   thunk: true
-  // }),
+  ...getDefaultMiddleware({
+    immutableCheck: false,
+    serializableCheck: false,
+    thunk: true
+  }),
   // sagaMiddleware,
   thunk,
   logger

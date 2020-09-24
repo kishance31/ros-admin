@@ -105,6 +105,7 @@ const AddUserEditForm = ({ actionsLoading }) => {
                                         <Field
                                             name="password"
                                             component={Input}
+                                            type="password"
                                             placeholder="Password"
                                             label="Password"
                                         />
