@@ -2,7 +2,7 @@ import React from 'react';
 import BootstrapTable from "react-bootstrap-table-next";
 import { Button, ButtonGroup } from "react-bootstrap";
 
-export const RoleAndPermisionFormatter = () => {
+export const RoleAndPermisionFormatter = ({ show, handleClose, row, rowIndex }) => {
     return (
         <>
             <ButtonGroup>
@@ -12,6 +12,7 @@ export const RoleAndPermisionFormatter = () => {
         </>
     );
 }
+export const data = []
 
 const RolesAndPermissionTable = () => {
 
@@ -24,7 +25,6 @@ const RolesAndPermissionTable = () => {
         {
             dataField: 'listOfrole',
             text: 'List of Role',
-            editorClasses: 'editing-name'
         },
         {
             dataField: 'button',
@@ -43,7 +43,7 @@ const RolesAndPermissionTable = () => {
                 remote
                 bordered={false}
                 keyField='date'
-                //data={data}
+                data={data}
                 columns={columns}
             />
         </div>
@@ -51,5 +51,3 @@ const RolesAndPermissionTable = () => {
 }
 
 export default RolesAndPermissionTable;
-
-

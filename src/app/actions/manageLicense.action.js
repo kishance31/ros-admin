@@ -18,7 +18,7 @@ export const ManageUserAction = {
     },
 }
 
-export const addLicenseAsync = (data) => {
+export const addLicenseAsync = (data, tokens) => {
 
     return async (dispatch) => {
         try {
@@ -29,7 +29,7 @@ export const addLicenseAsync = (data) => {
                 url: `http://127.0.0.1:4000/api/license/addLicense`,
                 method: 'POST',
                 headers: {
-                    tokens: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZjMyNTBiZDcxYzA0OTQxODI3ZTIzZWIiLCJlbWFpbCI6ImFkbWluQHJvcy5vcmciLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE2MDAxNzUzNjEsImV4cCI6MTYwNDQwODk2MX0.3KanH2yrWLNaDmi-wlAB_N8szAE1uxEikH93DrPrhf0",
+                    tokens,
                     'Content-Type': 'application/json'
                 },
                 data

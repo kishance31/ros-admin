@@ -2,11 +2,10 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory from 'react-bootstrap-table2-paginator';
-import { ActionManageUserFormatter } from './TableContainer/ActionManageUserFormatter';
+import { ActionManageUserFormatter } from '../ManageUserContainer/ActionManageUserFormatter';
 import { displayManageUserDataAsync } from '../../../actions/manageUser.action';
-//import ManageUserEditDialog from './TableContainer/ManageUserEditDialog';
 
-const ManageUserTable = () => {
+const ManageUserTable = ({ onOpenModal, setSelectedUser, onOpenDialog, onOpenActiveDialog, onOpenDeactiveDialog }) => {
 
   const dispatch = useDispatch();
 
@@ -48,9 +47,13 @@ const ManageUserTable = () => {
       text: 'Actions',
       headerAlign: 'center',
       formatter: ActionManageUserFormatter,
-      // formatExtraData: {
-      //   ManageUserEditDialog: ManageUserEditDialog,
-      // },
+      formatExtraData: {
+        onOpenModal: onOpenModal,
+        setSelectedUser: setSelectedUser,
+        onOpenDialog: onOpenDialog,
+        onOpenActiveDialog: onOpenActiveDialog,
+        onOpenDeactiveDialog: onOpenDeactiveDialog
+      },
     }
   ]
   return (
@@ -73,4 +76,5 @@ const ManageUserTable = () => {
 }
 
 export default ManageUserTable;
+
 

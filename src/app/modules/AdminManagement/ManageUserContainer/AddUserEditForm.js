@@ -1,10 +1,10 @@
 import React from "react";
-import { Modal, Button } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import { Input, Select } from '../../../../_metronic/_partials/controls';
 import { useDispatch } from 'react-redux';
-import { addManageUserAsync } from '../../../actions/manageUser.action';
+import { addManageUserAsync, editManageUserAsync } from '../../../actions/manageUser.action';
 
 const ManageUserEditSchema = Yup.object().shape({
     firstName: Yup.string()
@@ -24,23 +24,36 @@ const ManageUserEditSchema = Yup.object().shape({
         .required("Password is required")
 });
 
-const AddUserEditForm = ({ actionsLoading }) => {
+const AddUserEditForm = ({ actionsLoading, selectedUser }) => {
 
     const dispatch = useDispatch();
 
-    const addManageUser = (values) => {
-        dispatch(addManageUserAsync({ ...values, roleName: "role1" }))
+    const addManageUser = (values,id) => {
+        if (!selectedUser) {
+            return dispatch(addManageUserAsync({ ...values, roleName: "role1" }))
+        }
+        if (selectedUser) {
+            return dispatch(editManageUserAsync({...values,id}))
+        }
     }
+
+    const initValues = {
+        firstName: "",
+        lastName: "",
+        email: "",
+        mobileNo: "",
+        password: ""
+    }
+
+    const getInitFormValues = () => (
+        selectedUser ? selectedUser : initValues
+    );
 
     return (
         <>
             <Formik
                 initialValues={{
-                    firstName: "",
-                    lastName: "",
-                    email: "",
-                    mobileNo: "",
-                    password: ""
+                    ...getInitFormValues()
                 }}
 
                 validationSchema={ManageUserEditSchema}
@@ -48,6 +61,7 @@ const AddUserEditForm = ({ actionsLoading }) => {
                 onSubmit={(values) => {
                     console.log(values);
                     addManageUser(values)
+                    editManageUserAsync(values)
                 }}
             >
                 {({ handleSubmit }) => (
@@ -119,8 +133,8 @@ const AddUserEditForm = ({ actionsLoading }) => {
                                 onClick={() => handleSubmit()}
                                 className="btn btn-primary btn-elevate"
                             >
-                                Register
-                             </button>
+                                {selectedUser ? "Update" : "Register"}
+                            </button>
                         </Modal.Footer>
                     </>
                 )}
