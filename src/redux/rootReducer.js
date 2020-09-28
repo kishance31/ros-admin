@@ -8,6 +8,7 @@ import { specificationsSlice } from '../app/modules/ECommerce/_redux/specificati
 import manageUserReducer from '../app/reducers/manageUser.reducer';
 import rolesAndPermissionReducer from '../app/reducers/rolesAndPermission.reducer';
 import manageCorporateReducer from '../app/reducers/manageCorporate.reducer';
+import manageLicenceReducer from '../app/reducers/manageLicence.reducer';
 import manageLicenseReducer from '../app/reducers/manageLicense.reducer';
 import { AuthReducer } from '../app/reducers/auth.reducer';
 
@@ -20,6 +21,7 @@ export const rootReducer = combineReducers({
   manageUser: manageUserReducer,
   rolesAndPermission: rolesAndPermissionReducer,
   manageCorporate: manageCorporateReducer,
+  manageLicence: manageLicenceReducer,
   manageLicense: manageLicenseReducer,
 });
 
