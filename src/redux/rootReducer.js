@@ -1,4 +1,4 @@
-import { all } from 'redux-saga/effects';
+// import { all } from 'redux-saga/effects';
 import { combineReducers } from 'redux';
 // import * as auth from '../app/modules/Auth/_redux/authRedux';
 import { customersSlice } from '../app/modules/ECommerce/_redux/customers/customersSlice';
