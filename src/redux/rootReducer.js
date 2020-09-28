@@ -1,6 +1,6 @@
 import { all } from 'redux-saga/effects';
 import { combineReducers } from 'redux';
-import * as auth from '../app/modules/Auth/_redux/authRedux';
+// import * as auth from '../app/modules/Auth/_redux/authRedux';
 import { customersSlice } from '../app/modules/ECommerce/_redux/customers/customersSlice';
 import { productsSlice } from '../app/modules/ECommerce/_redux/products/productsSlice';
 import { remarksSlice } from '../app/modules/ECommerce/_redux/remarks/remarksSlice';
@@ -8,9 +8,10 @@ import { specificationsSlice } from '../app/modules/ECommerce/_redux/specificati
 import manageUserReducer from '../app/reducers/manageUser.reducer';
 import rolesAndPermissionReducer from '../app/reducers/rolesAndPermission.reducer';
 import manageCorporateReducer from '../app/reducers/manageCorporate.reducer';
+import manageLicenseReducer from '../app/reducers/manageLicense.reducer';
 
 export const rootReducer = combineReducers({
-  auth: auth.reducer,
+  auth: AuthReducer,
   customers: customersSlice.reducer,
   products: productsSlice.reducer,
   remarks: remarksSlice.reducer,
@@ -18,8 +19,9 @@ export const rootReducer = combineReducers({
   manageUser: manageUserReducer,
   rolesAndPermission: rolesAndPermissionReducer,
   manageCorporate: manageCorporateReducer,
+  manageLicense: manageLicenseReducer,
 });
 
-export function* rootSaga() {
-  yield all([auth.saga()]);
-}
+// export function* rootSaga() {
+//   yield all([auth.saga()]);
+// }

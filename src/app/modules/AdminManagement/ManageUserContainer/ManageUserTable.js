@@ -1,79 +1,60 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import { ActionManageUserFormatter } from './TableContainer/ActionManageUserFormatter';
-import { ManageUserAction ,displayManageUserAsync } from '../../../actions/manageUser.action';
-//import ManageUserEditDialog from './TableContainer/ManageUserEditDialog'
-//import AddUserEditForm from './AddUserEditForm';
-
-export const data = [
-  {
-    firstName: 'Username 1',
-    lastName: 'xyz@example.com',
-    emailId: 1001,
-    mobile: 'Device name',
-    role: 'Device name',
-    createDate: 'Device name',
-    action: 'Button'
-  }, {
-    firstName: 'Username 1',
-    lastName: 'xyz@example.com',
-    emailId: 1001,
-    mobile: 'Device name',
-    role: 'Device name',
-    createDate: 'Device name',
-    action: 'Button'
-  }]
-  
-const columns = [
-  {
-    dataField: 'firstName',
-    text: 'Firstname',
-  },
-  {
-    dataField: 'lastName',
-    text: 'Lastname',
-  },
-  {
-    dataField: 'emailId',
-    text: 'Email ID',
-  },
-  {
-    dataField: 'mobile',
-    text: 'Mobile',
-  },
-  {
-    dataField: 'role',
-    text: 'Role',
-  },
-  {
-    dataField: 'createDate',
-    text: 'Create Date',
-  },
-  {
-    dataField: 'button',
-    text: 'Actions',
-    headerAlign: 'center',
-    formatter: ActionManageUserFormatter,
-    // formatExtraData: {
-    //   ManageUserEditDialog: ManageUserEditDialog,
-    // },
-  }
-]
+import { displayManageUserDataAsync } from '../../../actions/manageUser.action';
+//import ManageUserEditDialog from './TableContainer/ManageUserEditDialog';
 
 const ManageUserTable = () => {
- 
-  // const dispatch = useDispatch();
-  
-  // const [manageUserData, setManageUserData] = useState([])
 
-  // useEffect(() => {
-  //   setManageUserData()
-  //   dispatch(displayManageUserAsync())
-  // }, [])
+  const dispatch = useDispatch();
 
+  const { displaylist, refreshManageUserData } = useSelector(state => state.manageUser)
+
+  useEffect(() => {
+    if (refreshManageUserData) {
+      dispatch(displayManageUserDataAsync())
+    }
+  }, [refreshManageUserData])
+
+  const columns = [
+    {
+      dataField: 'firstName',
+      text: 'Firstname',
+    },
+    {
+      dataField: 'lastName',
+      text: 'Lastname',
+    },
+    {
+      dataField: 'email',
+      text: 'Email ID',
+    },
+    {
+      dataField: 'mobileNo',
+      text: 'Mobile',
+    },
+    {
+      dataField: 'role',
+      text: 'Role',
+    },
+    {
+      dataField: 'createdAt',
+      text: 'Create Date',
+    },
+    {
+      dataField: 'button',
+      text: 'Actions',
+      headerAlign: 'center',
+      formatter: ActionManageUserFormatter,
+      // formatExtraData: {
+      //   ManageUserEditDialog: ManageUserEditDialog,
+      // },
+    }
+  ]
   return (
+
     <div className="container" style={{ marginTop: 50 }}>
       <BootstrapTable
         wrapperClasses="table-responsive"
@@ -82,9 +63,8 @@ const ManageUserTable = () => {
         bootstrap4
         remote
         bordered={false}
-        keyField='id'
-        data={data}
-        //data={manageUserData}
+        keyField='email'
+        data={displaylist}
         columns={columns}
         pagination={paginationFactory()}
       />
