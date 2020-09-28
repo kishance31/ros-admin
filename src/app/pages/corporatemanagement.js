@@ -1,11 +1,22 @@
 import React from 'react';
 
-const CorporateManagementPage = () => {
-    return (
-        <div>
-            Corporate Management
-        </div>
-    )
-}
+import { Card, CardHeader, CardBody } from '../../_metronic/_partials/controls';
+import CorporateManagementLink from '../modules/CorporateManagement/CorporateManagementLink';
+import CorporateManagementRoutes from '../modules/CorporateManagement/CorporateManagementRoutes';
 
-export default CorporateManagementPage;
+const CorporateManagement = () => {
+  return (
+    <Card>
+      <CardHeader
+        title='Corporate Management'
+        style={{ width: '100rem' }}
+      ></CardHeader>
+      <CardBody>
+        <CorporateManagementLink />
+        <CorporateManagementRoutes />
+      </CardBody>
+    </Card>
+  );
+};
+
+export default CorporateManagement;
