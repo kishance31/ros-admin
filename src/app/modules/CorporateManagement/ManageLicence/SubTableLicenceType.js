@@ -1,7 +1,6 @@
 import React from 'react';
 
 const SubTableLicenceType = ({ row }) => {
-  console.log(row.licenceType);
   return (
     <>
       {row.licenceType.map((licence, index) => (
