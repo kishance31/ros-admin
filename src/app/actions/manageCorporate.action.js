@@ -1,4 +1,4 @@
-import axios from 'axios';
+// import axios from 'axios';
 
 export const manageCorporateMap = {
   UPDATE_MANAGE_CORPORATE_STATUS: 'UPDATE_MANAGE_CORPORATE_STATUS',

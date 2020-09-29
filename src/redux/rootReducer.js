@@ -1,4 +1,4 @@
-import { all } from 'redux-saga/effects';
+// import { all } from 'redux-saga/effects';
 import { combineReducers } from 'redux';
 // import * as auth from '../app/modules/Auth/_redux/authRedux';
 import { customersSlice } from '../app/modules/ECommerce/_redux/customers/customersSlice';
@@ -8,6 +8,7 @@ import { specificationsSlice } from '../app/modules/ECommerce/_redux/specificati
 import manageUserReducer from '../app/reducers/manageUser.reducer';
 import rolesAndPermissionReducer from '../app/reducers/rolesAndPermission.reducer';
 import manageCorporateReducer from '../app/reducers/manageCorporate.reducer';
+import manageLicenceReducer from '../app/reducers/manageLicence.reducer';
 import manageLicenseReducer from '../app/reducers/manageLicense.reducer';
 import licenceOrderReducer from '../app/reducers/licenceOrder.reducer';
 import { AuthReducer } from '../app/reducers/auth.reducer';
@@ -22,6 +23,7 @@ export const rootReducer = combineReducers({
   rolesAndPermission: rolesAndPermissionReducer,
   manageCorporate: manageCorporateReducer,
   licenceOrder: licenceOrderReducer,
+  manageLicence: manageLicenceReducer,
   manageLicense: manageLicenseReducer,
 });
 
