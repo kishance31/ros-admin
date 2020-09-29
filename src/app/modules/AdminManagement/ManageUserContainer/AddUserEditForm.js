@@ -4,7 +4,7 @@ import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { Input, Select } from '../../../../_metronic/_partials/controls';
 import { useDispatch } from 'react-redux';
-import { addManageUserAsync } from '../../../actions/manageUser.action';
+import { addManageUserAsync, editManageUserAsync } from '../../../actions/manageUser.action';
 
 const ManageUserEditSchema = Yup.object().shape({
   firstName: Yup.string()
@@ -22,87 +22,103 @@ const ManageUserEditSchema = Yup.object().shape({
   password: Yup.string().required('Password is required'),
 });
 
-const AddUserEditForm = ({ actionsLoading }) => {
-  const dispatch = useDispatch();
+const AddUserEditForm = ({ actionsLoading, selectedUser }) => {
 
-  const addManageUser = (values) => {
-    dispatch(addManageUserAsync({ ...values, roleName: 'role1' }));
-  };
+  const dispatch = useDispatch();
+  const addManageUser = (values, id) => {
+    if (!selectedUser) {
+      return dispatch(addManageUserAsync({ ...values, roleName: "role1" }))
+    }
+    if (selectedUser) {
+      return dispatch(editManageUserAsync({ ...values, id }))
+    }
+  }
+
+  const initValues = {
+    firstName: "",
+    lastName: "",
+    email: "",
+    mobileNo: "",
+    password: ""
+  }
+
+  const getInitFormValues = () => (
+    selectedUser ? selectedUser : initValues
+  );
 
   return (
     <>
       <Formik
         initialValues={{
-          firstName: '',
-          lastName: '',
-          email: '',
-          mobileNo: '',
-          password: '',
+          ...getInitFormValues()
         }}
+
         validationSchema={ManageUserEditSchema}
+
         onSubmit={(values) => {
           console.log(values);
-          addManageUser(values);
+          addManageUser(values)
+          editManageUserAsync(values)
         }}
       >
         {({ handleSubmit }) => (
           <>
-            <Modal.Body className='overlay overlay-block'>
+            <Modal.Body className="overlay overlay-block">
               {actionsLoading && (
-                <div className='overlay-layer bg-transparent'>
-                  <div className='spinner spinner-lg spinner-success' />
+                <div className="overlay-layer bg-transparent">
+                  <div className="spinner spinner-lg spinner-success" />
                 </div>
               )}
-              <Form className='form form-label-right'>
-                <div className='form-group row'>
-                  <div className='col-lg-4'>
+              <Form className="form form-label-right">
+                <div className="form-group row">
+                  <div className="col-lg-4">
                     <Field
-                      name='firstName'
+                      name="firstName"
                       component={Input}
-                      placeholder='First Name'
-                      label='First Name'
+                      placeholder="First Name"
+                      label="First Name"
                     />
                   </div>
-                  <div className='col-lg-4'>
+                  <div className="col-lg-4">
                     <Field
-                      name='lastName'
+                      name="lastName"
                       component={Input}
-                      placeholder='Last Name'
-                      label='Last Name'
+                      placeholder="Last Name"
+                      label="Last Name"
                     />
                   </div>
-                  <div className='col-lg-4'>
+                  <div className="col-lg-4">
                     <Field
-                      type='email'
-                      name='email'
+                      type="email"
+                      name="email"
                       component={Input}
-                      placeholder='Email ID'
-                      label='Email ID'
+                      placeholder="Email ID"
+                      label="Email ID"
                     />
                   </div>
                 </div>
-                <div className='form-group row'>
-                  <div className='col-lg-4'>
+                <div className="form-group row">
+                  <div className="col-lg-4">
                     <Field
-                      name='mobileNo'
+                      name="mobileNo"
                       component={Input}
-                      placeholder='Mobile'
-                      label='Mobile'
+                      placeholder="Mobile"
+                      label="Mobile"
                     />
                   </div>
-                  <div className='col-lg-4'>
-                    <Select name='role' label='Role'>
-                      <option value='option'>role1</option>
-                      <option value='option'>role2</option>
+                  <div className="col-lg-4">
+                    <Select name="role" label="Role">
+                      <option value="option">role1</option>
+                      <option value="option">role2</option>
                     </Select>
                   </div>
-                  <div className='col-lg-4'>
+                  <div className="col-lg-4">
                     <Field
-                      name='password'
+                      name="password"
                       component={Input}
-                      type='password'
-                      placeholder='Password'
-                      label='Password'
+                      type="password"
+                      placeholder="Password"
+                      label="Password"
                     />
                   </div>
                 </div>
@@ -110,11 +126,11 @@ const AddUserEditForm = ({ actionsLoading }) => {
             </Modal.Body>
             <Modal.Footer>
               <button
-                type='submit'
+                type="submit"
                 onClick={() => handleSubmit()}
-                className='btn btn-primary btn-elevate'
+                className="btn btn-primary btn-elevate"
               >
-                Register
+                {selectedUser ? "Update" : "Register"}
               </button>
             </Modal.Footer>
           </>
@@ -122,6 +138,6 @@ const AddUserEditForm = ({ actionsLoading }) => {
       </Formik>
     </>
   );
-};
+}
 
 export default AddUserEditForm;
