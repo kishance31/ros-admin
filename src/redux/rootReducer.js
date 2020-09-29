@@ -6,6 +6,7 @@ import {productsSlice} from "../app/modules/ECommerce/_redux/products/productsSl
 import {remarksSlice} from "../app/modules/ECommerce/_redux/remarks/remarksSlice";
 import {specificationsSlice} from "../app/modules/ECommerce/_redux/specifications/specificationsSlice";
 import manageUserReducer from '../app/reducers/manageUser.reducer';
+import categoryModalreducer from '../app/reducers/categoryManagementModal.reducer'
 
 export const rootReducer = combineReducers({
   auth: auth.reducer,
@@ -13,7 +14,8 @@ export const rootReducer = combineReducers({
   products: productsSlice.reducer,
   remarks: remarksSlice.reducer,
   specifications: specificationsSlice.reducer,
-  manageUser:manageUserReducer
+  manageUser:manageUserReducer,
+  categoryModal:categoryModalreducer
 });
 
 export function* rootSaga() {
