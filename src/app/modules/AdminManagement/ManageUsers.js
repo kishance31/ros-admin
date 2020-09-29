@@ -10,7 +10,6 @@ import ActiveModalContainer from "./ManageUserContainer/ActiveModalContainer";
 import DeactiveModalContainer from "./ManageUserContainer/DeactiveModalContainer";
 
 const ManageUsers = () => {
-
   const dispatch = useDispatch();
 
   const { modalState } = useSelector(state => state.manageUser.manageUserModal);
@@ -20,12 +19,12 @@ const ManageUsers = () => {
   const modalDeactiveDialog = useSelector(state => state.manageUser.modalDeactiveDialog)
 
   const onOpenModal = () => {
-    dispatch(ManageUserAction.openModal())
-  }
+    dispatch(ManageUserAction.openModal());
+  };
 
   const onCloseModal = () => {
-    dispatch(ManageUserAction.closeModal())
-  }
+    dispatch(ManageUserAction.closeModal());
+  };
 
   const setSelectedUser = (user) => {
     dispatch(ManageUserAction.setSelectedUser(user));
@@ -60,18 +59,22 @@ const ManageUsers = () => {
       <Card>
         <CardHeader title='User Details'>
           <CardHeaderToolbar>
-            <Button className="btn btn-primary" onClick={onOpenModal}>
+            <Button className='btn btn-primary' onClick={onOpenModal}>
               Add User
             </Button>
           </CardHeaderToolbar>
         </CardHeader>
         <CardBody>
           <Modal show={modalState} onHide={onCloseModal}>
-            <Modal.Header closeButton >
+            <Modal.Header closeButton>
               <Modal.Title>
                 <>
-                  <h5 className="float-left">User Details</h5>
-                  <Button variant="secondary" className="float-left" onClick={onCloseModal}>
+                  <h5 className='float-left'>User Details</h5>
+                  <Button
+                    variant='secondary'
+                    className='float-left'
+                    onClick={onCloseModal}
+                  >
                     Close
                   </Button>
                 </>
@@ -95,5 +98,5 @@ const ManageUsers = () => {
       </Card>
     </>
   );
-}
+};
 export default ManageUsers;

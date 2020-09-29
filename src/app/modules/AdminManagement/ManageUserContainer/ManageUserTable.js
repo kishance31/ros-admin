@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import BootstrapTable from "react-bootstrap-table-next";
+import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import { ActionManageUserFormatter } from '../ManageUserContainer/ActionManageUserFormatter';
 import { displayManageUserDataAsync } from '../../../actions/manageUser.action';
@@ -9,13 +9,15 @@ const ManageUserTable = ({ onOpenModal, setSelectedUser, onOpenDialog, onOpenAct
 
   const dispatch = useDispatch();
 
-  const { displaylist, refreshManageUserData } = useSelector(state => state.manageUser)
+  const { displaylist, refreshManageUserData } = useSelector(
+    (state) => state.manageUser
+  );
 
   useEffect(() => {
     if (refreshManageUserData) {
-      dispatch(displayManageUserDataAsync())
+      dispatch(displayManageUserDataAsync());
     }
-  }, [refreshManageUserData])
+  }, [refreshManageUserData, dispatch]);
 
   const columns = [
     {
@@ -57,12 +59,11 @@ const ManageUserTable = ({ onOpenModal, setSelectedUser, onOpenDialog, onOpenAct
     }
   ]
   return (
-
-    <div className="container" style={{ marginTop: 50 }}>
+    <div className='container' style={{ marginTop: 50 }}>
       <BootstrapTable
-        wrapperClasses="table-responsive"
+        wrapperClasses='table-responsive'
         hover
-        classes="table table-head-custom table-vertical-center"
+        classes='table table-head-custom table-vertical-center'
         bootstrap4
         remote
         bordered={false}
@@ -72,9 +73,7 @@ const ManageUserTable = ({ onOpenModal, setSelectedUser, onOpenDialog, onOpenAct
         pagination={paginationFactory()}
       />
     </div>
-  )
-}
+  );
+};
 
 export default ManageUserTable;
-
-
