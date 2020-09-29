@@ -7,6 +7,7 @@ import { DashboardPage } from './pages/DashboardPage';
 import AdminManagement from './pages/AdminManagement';
 import LicenseManagement from './pages/LicenseManagement';
 import CorporateManagement from './pages/CorporateManagement';
+import CategoryManagement from './pages/CategoryManagement';
 
 const GoogleMaterialPage = lazy(() =>
   import('./modules/GoogleMaterialExamples/GoogleMaterialPage')
@@ -34,6 +35,7 @@ export default function BasePage() {
 				<ContentRoute path="/dashboard" component={DashboardPage} />
 				<ContentRoute path="/admin-management" component={AdminManagement} />
 				<ContentRoute path="/license-management" component={LicenseManagement} />
+				<ContentRoute path="/category-management" component={CategoryManagement} />
         <ContentRoute
           path='/corporate-management'
           component={CorporateManagement}
