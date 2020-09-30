@@ -1,7 +1,7 @@
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 // import createSagaMiddleware from "redux-saga";
 import thunk from 'redux-thunk';
-import logger from 'redux-logger';
+import {createLogger} from 'redux-logger';
 import { reduxBatch } from '@manaflair/redux-batch';
 import { persistStore } from 'redux-persist';
 // import {rootReducer, rootSaga} from "./rootReducer";
@@ -16,8 +16,14 @@ const middleware = [
   }),
   // sagaMiddleware,
   thunk,
-  logger,
 ];
+
+if(process.env.NODE_ENV != "production") {
+  let logger = createLogger({
+    collapsed: true,
+  });
+  middleware.push(logger);
+}
 
 const store = configureStore({
   reducer: rootReducer,
