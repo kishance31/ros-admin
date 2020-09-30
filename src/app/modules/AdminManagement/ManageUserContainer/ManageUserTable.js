@@ -1,23 +1,15 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import { ActionManageUserFormatter } from '../ManageUserContainer/ActionManageUserFormatter';
-import { displayManageUserDataAsync } from '../../../actions/manageUser.action';
 
 const ManageUserTable = ({ onOpenModal, setSelectedUser, onOpenDialog, onOpenActiveDialog, onOpenDeactiveDialog }) => {
 
-  const dispatch = useDispatch();
 
-  const { displaylist, refreshManageUserData } = useSelector(
+  const { displaylist } = useSelector(
     (state) => state.manageUser
   );
-
-  useEffect(() => {
-    if (refreshManageUserData) {
-      dispatch(displayManageUserDataAsync());
-    }
-  }, [refreshManageUserData, dispatch]);
 
   const columns = [
     {
@@ -37,12 +29,13 @@ const ManageUserTable = ({ onOpenModal, setSelectedUser, onOpenDialog, onOpenAct
       text: 'Mobile',
     },
     {
-      dataField: 'role',
+      dataField: 'roleName',
       text: 'Role',
     },
     {
       dataField: 'createdAt',
       text: 'Create Date',
+      formatter: (cellContent) => new Date(cellContent).toLocaleDateString(),
     },
     {
       dataField: 'button',

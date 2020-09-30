@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Modal, Button } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import ManageUserTable from './ManageUserContainer/ManageUserTable';
 import AddUserEditForm from './ManageUserContainer/AddUserEditForm';
-import { ManageUserAction } from '../../actions/manageUser.action';
+import { ManageUserAction, displayManageUserDataAsync } from '../../actions/manageUser.action';
+import { getAllRolesAsync } from '../../actions/rolesAndPermission.action';
 import { Card, CardBody, CardHeader, CardHeaderToolbar } from '../../../_metronic/_partials/controls';
 import DeleteModalContainer from "./ManageUserContainer/DeleteModalContainer";
 import ActiveModalContainer from "./ManageUserContainer/ActiveModalContainer";
@@ -13,10 +14,26 @@ const ManageUsers = () => {
   const dispatch = useDispatch();
 
   const { modalState } = useSelector(state => state.manageUser.manageUserModal);
-  const selectedUser = useSelector(state => state.manageUser.selectedUser)
-  const modalDialog = useSelector(state => state.manageUser.modalDialog);
-  const modalActiveDialog = useSelector(state => state.manageUser.modalActiveDialog);
-  const modalDeactiveDialog = useSelector(state => state.manageUser.modalDeactiveDialog)
+  const {
+    selectedUser,
+    modalDialog,
+    modalActiveDialog,
+    modalDeactiveDialog,
+    refreshManageUserData
+  } = useSelector(state => state.manageUser, shallowEqual)
+  const { roles, refreshRoles } = useSelector(state => state.rolesAndPermission, shallowEqual);
+
+  useEffect(() => {
+    if (refreshManageUserData) {
+      dispatch(displayManageUserDataAsync());
+    }
+  }, [refreshManageUserData]);
+
+  useEffect(() => {
+    if (refreshRoles) {
+      dispatch(getAllRolesAsync());
+    }
+  }, [refreshRoles]);
 
   const onOpenModal = () => {
     dispatch(ManageUserAction.openModal());
@@ -54,6 +71,10 @@ const ManageUsers = () => {
     dispatch(ManageUserAction.closeDeactiveDialog())
   }
 
+  const onDeleteUser = () => {
+
+  }
+
   return (
     <>
       <Card>
@@ -65,28 +86,32 @@ const ManageUsers = () => {
           </CardHeaderToolbar>
         </CardHeader>
         <CardBody>
-          <Modal show={modalState} onHide={onCloseModal}>
+          <Modal size="lg" show={modalState} onHide={onCloseModal}>
             <Modal.Header closeButton>
               <Modal.Title>
-                <>
-                  <h5 className='float-left'>User Details</h5>
-                  <Button
-                    variant='secondary'
-                    className='float-left'
-                    onClick={onCloseModal}
-                  >
-                    Close
-                  </Button>
-                </>
+                <h5 className='float-left'>User Details</h5>
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <AddUserEditForm selectedUser={selectedUser} />
+              <AddUserEditForm onCloseModal={onCloseModal} selectedUser={selectedUser} roles={roles} />
             </Modal.Body>
           </Modal>
-          <DeleteModalContainer modalDialog={modalDialog} onOpenDialog={onOpenDialog} onCloseDialog={onCloseDialog} />
-          <ActiveModalContainer modalActiveDialog={modalActiveDialog} onOpenActiveDialog={onOpenActiveDialog} onCloseActiveDialog={onCloseActiveDialog} />
-          <DeactiveModalContainer modalDeactiveDialog={modalDeactiveDialog} onOpenDeactiveDialog={onOpenDeactiveDialog} onCloseDeactiveDialog={onCloseDeactiveDialog} />
+          <DeleteModalContainer
+            modalDialog={modalDialog}
+            onOpenDialog={onOpenDialog}
+            onCloseDialog={onCloseDialog}
+            onDeleteUser={onDeleteUser}
+          />
+          <ActiveModalContainer
+            modalActiveDialog={modalActiveDialog}
+            onOpenActiveDialog={onOpenActiveDialog}
+            onCloseActiveDialog={onCloseActiveDialog}
+          />
+          <DeactiveModalContainer
+            modalDeactiveDialog={modalDeactiveDialog}
+            onOpenDeactiveDialog={onOpenDeactiveDialog}
+            onCloseDeactiveDialog={onCloseDeactiveDialog}
+          />
           <ManageUserTable
             modalDialog={modalDialog}
             onOpenDialog={onOpenDialog}

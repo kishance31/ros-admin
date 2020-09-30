@@ -1,7 +1,9 @@
 import { RolesAndPermissionMap } from '../actions/rolesAndPermission.action';
 
 const initialState = {
-    role: []
+    roles: [],
+    isLoading: false,
+    refreshRoles: true,
 };
 
 const rolesAndPermissionReducer = (state = initialState, action) => {
@@ -11,6 +13,26 @@ const rolesAndPermissionReducer = (state = initialState, action) => {
             return {
                 ...state,
                 role: action.payload
+            }
+        }
+        case RolesAndPermissionMap.GET_ALL_ROLES: {
+            return {
+                ...state,
+                isLoading: true,
+            }
+        }
+        case RolesAndPermissionMap.GET_ALL_ROLES_SUCCESS: {
+            return {
+                ...state,
+                isLoading: false,
+                refreshRoles: false,
+                roles: action.payload
+            }
+        }
+        case RolesAndPermissionMap.GET_ALL_ROLES_ERROR: {
+            return {
+                ...state,
+                isLoading: false,
             }
         }
         default:

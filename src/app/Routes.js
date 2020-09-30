@@ -16,7 +16,7 @@ import ErrorsPage from "./modules/ErrorsExamples/ErrorsPage";
 export function Routes() {
     const {isAuthorized} = useSelector(
         ({auth}) => ({
-            isAuthorized: auth.user.tokens &&  auth.user.email && auth.user.isActive,
+            isAuthorized: auth.tokens &&  auth.user.email && auth.user.isActive,
         }),
         shallowEqual
     );
