@@ -29,6 +29,7 @@ const ViewModal = ({
     } else if (moment(dispatchDate).isAfter(deliveryDate)) {
       setErrorMsg('Not valid dispatch Date');
     } else {
+      setErrorMsg('');
       manageOrderDispatchUpdate(
         orderId,
         row.newOrderId,
