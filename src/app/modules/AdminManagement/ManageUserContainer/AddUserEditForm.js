@@ -1,12 +1,12 @@
 import React from 'react';
-import { Modal } from 'react-bootstrap';
+import { Modal, Button } from 'react-bootstrap';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { Input, Select } from '../../../../_metronic/_partials/controls';
 import { useDispatch } from 'react-redux';
 import { addManageUserAsync, editManageUserAsync } from '../../../actions/manageUser.action';
 
-const ManageUserEditSchema = Yup.object().shape({
+const ManageUserEditSchema = (user) => (Yup.object().shape({
   firstName: Yup.string()
     .min(3, 'Minimum 3 symbols')
     .max(50, 'Maximum 50 symbols')
@@ -18,19 +18,26 @@ const ManageUserEditSchema = Yup.object().shape({
   email: Yup.string()
     .email('Invalid email')
     .required('Email is required'),
-  mobileNo: Yup.string().required('Mobile is required '),
-  password: Yup.string().required('Password is required'),
-});
+  mobileNo: Yup.number()
+    // .min(10, "Mobile Number must be of 10 digits ff")
+    // .max(10, "Mobile Number must be of 10 digits")
+    .required('Mobile is required '),
+  password: user ?
+    Yup.string().optional() :
+    Yup.string().required('Password is required'),
+  // roleName: Yup.string().required('Select a role'),
+}));
 
-const AddUserEditForm = ({ actionsLoading, selectedUser }) => {
+const AddUserEditForm = ({ actionsLoading, selectedUser, roles, onCloseModal }) => {
 
   const dispatch = useDispatch();
-  const addManageUser = (values, id) => {
+  const addManageUser = (values) => {
     if (!selectedUser) {
-      return dispatch(addManageUserAsync({ ...values, roleName: "role1" }))
+      return dispatch(addManageUserAsync({ ...values }));
     }
     if (selectedUser) {
-      return dispatch(editManageUserAsync({ ...values, id }))
+      console.log(values);
+      return dispatch(editManageUserAsync({ ...values }));
     }
   }
 
@@ -39,7 +46,8 @@ const AddUserEditForm = ({ actionsLoading, selectedUser }) => {
     lastName: "",
     email: "",
     mobileNo: "",
-    password: ""
+    password: "",
+    roleName: roles.length ? roles[0].roleName : "",
   }
 
   const getInitFormValues = () => (
@@ -53,12 +61,11 @@ const AddUserEditForm = ({ actionsLoading, selectedUser }) => {
           ...getInitFormValues()
         }}
 
-        validationSchema={ManageUserEditSchema}
+        validationSchema={ManageUserEditSchema(selectedUser)}
 
         onSubmit={(values) => {
           console.log(values);
           addManageUser(values)
-          editManageUserAsync(values)
         }}
       >
         {({ handleSubmit }) => (
@@ -107,31 +114,47 @@ const AddUserEditForm = ({ actionsLoading, selectedUser }) => {
                     />
                   </div>
                   <div className="col-lg-4">
-                    <Select name="role" label="Role">
-                      <option value="option">role1</option>
-                      <option value="option">role2</option>
+                    <Select name="roleName" label="Role Name">
+                      {
+                        roles.map(role => (
+                          <option key={role.roleName} value={role.roleName}>{role.roleName}</option>
+                        ))
+                      }
                     </Select>
                   </div>
-                  <div className="col-lg-4">
-                    <Field
-                      name="password"
-                      component={Input}
-                      type="password"
-                      placeholder="Password"
-                      label="Password"
-                    />
-                  </div>
+                  {
+                    !selectedUser ? (
+                      <div className="col-lg-4">
+                        <Field
+                          name="password"
+                          component={Input}
+                          type="password"
+                          placeholder="Password"
+                          label="Password"
+                        />
+                      </div>
+                    ) : null
+                  }
                 </div>
               </Form>
             </Modal.Body>
             <Modal.Footer>
-              <button
-                type="submit"
-                onClick={() => handleSubmit()}
-                className="btn btn-primary btn-elevate"
-              >
-                {selectedUser ? "Update" : "Register"}
-              </button>
+                <Button
+                  variant='outline-secondary'
+                  className='float-left mr-10'
+                  onClick={onCloseModal}
+                >
+                  Cancel
+              </Button>
+                <Button
+                  type="submit"
+                  onClick={() => handleSubmit()}
+                  className="float-right"
+                  variant="primary"
+                >
+                  {selectedUser ? "Update" : "Register"}
+                </Button>
+
             </Modal.Footer>
           </>
         )}

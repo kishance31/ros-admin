@@ -17,8 +17,11 @@ const ModalContainer = ({modalDialog,onCloseDialog}) => {
                    <h5> Are you sure to permanently delete this user?</h5>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" className="float-left" onClick={onCloseDialog}>
+                    <Button variant="secondary" onClick={onCloseDialog}>
                         Close
+                    </Button>
+                    <Button variant="danger" onClick={onCloseDialog}>
+                        Delete
                     </Button>
                 </Modal.Footer>
             </Modal>
