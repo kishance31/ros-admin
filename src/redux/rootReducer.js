@@ -11,6 +11,7 @@ import manageCorporateReducer from '../app/reducers/manageCorporate.reducer';
 import manageLicenceReducer from '../app/reducers/manageLicence.reducer';
 import licenceOrderReducer from '../app/reducers/licenceOrder.reducer';
 import manageOrderReducer from '../app/reducers/manageOrder.reducer';
+import orderInvoiceReducer from '../app/reducers/orderInvoice.reducer';
 import { AuthReducer } from '../app/reducers/auth.reducer';
 import categoryModalreducer from '../app/reducers/categoryManagementModal.reducer';
 
@@ -26,6 +27,7 @@ export const rootReducer = combineReducers({
   licenceOrder: licenceOrderReducer,
   manageLicence: manageLicenceReducer,
   manageOrder: manageOrderReducer,
+  orderInvoice: orderInvoiceReducer,
   categoryModal: categoryModalreducer,
 });
 
