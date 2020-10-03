@@ -6,6 +6,7 @@ import { MyPage } from './pages/MyPage';
 import { DashboardPage } from './pages/DashboardPage';
 import AdminManagement from './pages/AdminManagement';
 import LicenseManagement from './pages/LicenseManagement';
+import GeneralSettings from './pages/GeneralSettings'
 import CorporateManagement from './pages/CorporateManagement';
 import CategoryManagement from './pages/CategoryManagement';
 
@@ -40,6 +41,11 @@ export default function BasePage() {
           path='/corporate-management'
           component={CorporateManagement}
         />
+		<ContentRoute
+          path='/general-settings'
+          component={GeneralSettings}
+        />
+
 				<ContentRoute path="/builder" component={BuilderPage} />
 				<ContentRoute path="/my-page" component={MyPage} />
 				<Route path="/google-material" component={GoogleMaterialPage} />

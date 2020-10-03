@@ -9,6 +9,7 @@ import manageUserReducer from '../app/reducers/manageUser.reducer';
 import rolesAndPermissionReducer from '../app/reducers/rolesAndPermission.reducer';
 import manageCorporateReducer from '../app/reducers/manageCorporate.reducer';
 import manageLicenceReducer from '../app/reducers/manageLicence.reducer';
+import manageEmailTemplateReducer from '../app/reducers/manageEmailTemplate.reducer'
 import licenceOrderReducer from '../app/reducers/licenceOrder.reducer';
 import manageOrderReducer from '../app/reducers/manageOrder.reducer';
 import { AuthReducer } from '../app/reducers/auth.reducer';
@@ -27,6 +28,7 @@ export const rootReducer = combineReducers({
   manageLicence: manageLicenceReducer,
   manageOrder: manageOrderReducer,
   categoryModal: categoryModalreducer,
+  emailTemplate: manageEmailTemplateReducer
 });
 
 // export function* rootSaga() {
