@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import { useSelector, useDispatch } from 'react-redux';
+import moment from 'moment';
 
 import ActionButtons from './ManageCorporate/ActionButtons';
-import { manageCorporateAction } from '../../actions/manageCorporate.action';
+import {
+  manageCorporateAction,
+  displayManageCorporateDataAsync,
+} from '../../actions/manageCorporate.action';
 
 const ManageCorporate = () => {
   const dispatch = useDispatch();
@@ -12,15 +16,17 @@ const ManageCorporate = () => {
     (state) => state.manageCorporate.manageCorporateData
   );
 
-  const approveRejectAction = (companyId, status) => {
-    dispatch(
-      manageCorporateAction.updateManageCorporateStatus(companyId, status)
-    );
+  useEffect(() => {
+    dispatch(displayManageCorporateDataAsync());
+  }, [dispatch]);
+
+  const approveRejectAction = (_id, status) => {
+    dispatch(manageCorporateAction.updateManageCorporateStatus(_id, status));
   };
 
-  const activeDeactiveAction = (companyId, isActive) => {
+  const activeDeactiveAction = (_id, isActive) => {
     dispatch(
-      manageCorporateAction.updateManageCorporateIsActive(companyId, isActive)
+      manageCorporateAction.updateManageCorporateIsActive(_id, isActive)
     );
   };
 
@@ -78,16 +84,19 @@ const ManageCorporate = () => {
       text: 'Lastname',
     },
     {
-      dataField: 'emailId',
+      dataField: 'email',
       text: 'Email ID',
     },
     {
-      dataField: 'mobile',
+      dataField: 'mobileNo',
       text: 'Mobile',
     },
     {
-      dataField: 'registrationDate',
+      dataField: 'createdAt',
       text: 'Registration Date',
+      formatter: (cell, row) => {
+        return moment(cell).format('DD/MM/YYYY');
+      },
     },
     {
       dataField: 'status',
@@ -106,7 +115,7 @@ const ManageCorporate = () => {
 
   return (
     <BootstrapTable
-      keyField='companyId'
+      keyField='_id'
       data={manageCorporateData === null ? [] : manageCorporateData}
       columns={columns}
       bordered={false}
