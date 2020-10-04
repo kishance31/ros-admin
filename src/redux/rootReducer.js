@@ -13,6 +13,7 @@ import licenceOrderReducer from '../app/reducers/licenceOrder.reducer';
 import manageOrderReducer from '../app/reducers/manageOrder.reducer';
 import orderInvoiceReducer from '../app/reducers/orderInvoice.reducer';
 import { AuthReducer } from '../app/reducers/auth.reducer';
+import snackBarReducer from '../app/reducers/snackbar.reducer'
 import categoryModalreducer from '../app/reducers/categoryManagementModal.reducer';
 
 export const rootReducer = combineReducers({
@@ -29,6 +30,7 @@ export const rootReducer = combineReducers({
   manageOrder: manageOrderReducer,
   orderInvoice: orderInvoiceReducer,
   categoryModal: categoryModalreducer,
+  snackBar:snackBarReducer
 });
 
 // export function* rootSaga() {

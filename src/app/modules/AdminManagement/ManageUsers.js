@@ -5,6 +5,7 @@ import ManageUserTable from './ManageUserContainer/ManageUserTable';
 import AddUserEditForm from './ManageUserContainer/AddUserEditForm';
 import { ManageUserAction, displayManageUserDataAsync } from '../../actions/manageUser.action';
 import { getAllRolesAsync } from '../../actions/rolesAndPermission.action';
+import {showSuccessSnackbar} from '../../actions/snackbar.action'
 import { Card, CardBody, CardHeader, CardHeaderToolbar } from '../../../_metronic/_partials/controls';
 import DeleteModalContainer from "./ManageUserContainer/DeleteModalContainer";
 import ActiveModalContainer from "./ManageUserContainer/ActiveModalContainer";
@@ -26,6 +27,7 @@ const ManageUsers = () => {
   useEffect(() => {
     if (refreshManageUserData) {
       dispatch(displayManageUserDataAsync());
+      dispatch(showSuccessSnackbar('error',"Hello!"));
     }
   }, [refreshManageUserData]);
 
