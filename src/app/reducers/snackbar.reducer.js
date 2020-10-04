@@ -4,6 +4,7 @@ const initialSnackBarState = {
     successSnackbarOpen: false,
     successSnackbarMessage:'',
     successSnackbarVariant:'',
+    successSnackbarDuration:'',
     errorSnackbarOpen:false
 };
 
@@ -15,7 +16,8 @@ const snackBarReducer = (state = initialSnackBarState, action) => {
           ...state,
           successSnackbarOpen: true,
           successSnackbarVariant:action.payload.variant,
-          successSnackbarMessage: action.payload.message
+          successSnackbarMessage: action.payload.message,
+          successSnackbarDuration:action.payload.duration
         };
       case "SNACKBAR_CLEAR":
         return {

@@ -20,7 +20,7 @@ import { makeStyles } from '@material-ui/core/styles';
 export default function SuccessSnackbar() {
   const dispatch = useDispatch();
 
-  const { successSnackbarMessage, successSnackbarOpen,successSnackbarVariant } = useSelector(
+  const { successSnackbarMessage, successSnackbarOpen,successSnackbarVariant,successSnackbarDuration } = useSelector(
     state => state.snackBar
   );
 
@@ -101,7 +101,7 @@ export default function SuccessSnackbar() {
           horizontal: 'center',
         }}
         open={successSnackbarOpen}
-        autoHideDuration={4000}
+        autoHideDuration={successSnackbarDuration}
         onClose={handleClose}
       >
         <MySnackbarContentWrapper

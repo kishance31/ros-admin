@@ -2,7 +2,7 @@
 
 
 
-export const showSuccessSnackbar = (variant,message) => {
+export const showSuccessSnackbar = (variant,message,duration) => {
   console.log(variant,'varianttt')
   console.log(message,'message')
     return {
@@ -10,6 +10,7 @@ export const showSuccessSnackbar = (variant,message) => {
       payload: {
         variant: variant,
         message: message,
+        duration:duration
       },
     };
   };
