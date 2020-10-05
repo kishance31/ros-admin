@@ -8,7 +8,6 @@ const initialState = {
     modalActiveDialog: false,
     modalDeactiveDialog: false,
     displaylist: [],
-    addManageUser: [],
     totalCount: 0,
     selectedUser: null,
     refreshManageUserData: true,
@@ -44,6 +43,7 @@ const manageUserReducer = (state = initialState, action) => {
             return {
                 ...state,
                 modalDialog: false,
+                selectedUser: null,
             }
         }
         case ManageUserMap.OPEN_ACTIVE_DIALOG: {
@@ -56,6 +56,7 @@ const manageUserReducer = (state = initialState, action) => {
             return {
                 ...state,
                 modalActiveDialog: false,
+                selectedUser: null,
             }
         }
         case ManageUserMap.OPEN_DEACTIVE_DIALOG: {
@@ -68,6 +69,7 @@ const manageUserReducer = (state = initialState, action) => {
             return {
                 ...state,
                 modalDeactiveDialog: false,
+                selectedUser: null,
             }
         }
         case ManageUserMap.DISPLAY_MANAGEUSER_DATA_SUCCESS: {
@@ -75,23 +77,24 @@ const manageUserReducer = (state = initialState, action) => {
                 ...state,
                 displaylist: action.payload.list,
                 totalCount: action.payload.total[0].count,
-                refreshManageUserData: true,
+                refreshManageUserData: false,
             }
         }
+        case ManageUserMap.DISPLAY_MANAGEUSER_DATA_ERROR: {
+            return {
+                ...state,
+                refreshManageUserData: false
+            }
+        }
+        case ManageUserMap.EDIT_MANAGEUSER_DATA_SUCCESS:
         case ManageUserMap.ADD_MANAGEUSER_DATA_SUCCESS: {
             return {
                 ...state,
-                addManageUser: action.payload,
                 selectedUser: null,
                 manageUserModal: {
                     modalState: false
                 },
-            }
-        }
-        case ManageUserMap.EDIT_MANAGEUSER_DATA_SUCCESS: {
-            return {
-                ...state,
-
+                refreshManageUserData: true,
             }
         }
         case ManageUserMap.DELETE_MANAGEUSER_DATA_SUCCESS: {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
-const ModalContainer = ({modalDialog,onCloseDialog}) => {
+const ModalContainer = ({modalDialog,onCloseDialog,onDeleteUser}) => {
 
     return (
         <>
@@ -20,7 +20,7 @@ const ModalContainer = ({modalDialog,onCloseDialog}) => {
                     <Button variant="secondary" onClick={onCloseDialog}>
                         Close
                     </Button>
-                    <Button variant="danger" onClick={onCloseDialog}>
+                    <Button variant="danger" onClick={onDeleteUser}>
                         Delete
                     </Button>
                 </Modal.Footer>

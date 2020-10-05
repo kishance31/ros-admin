@@ -126,11 +126,9 @@ export const addManageUserAsync = (data, tokens) => {
                 },
                 data
             });
-            console.log(addUserDataResponse);
-            if (addUserDataResponse.data.response.responseCode === 200) {
+            if (addUserDataResponse.data.response && addUserDataResponse.data.response.responseCode === 200) {
                 dispatch({
-                    type: ManageUserMap.DISPLAY_MANAGEUSER_DATA_SUCCESS,
-                    payload: addUserDataResponse.data.response.data
+                    type: ManageUserMap.ADD_MANAGEUSER_DATA_SUCCESS,
                 })
             }
         } catch (error) {
@@ -141,18 +139,20 @@ export const addManageUserAsync = (data, tokens) => {
     }
 }
 
-export const editManageUserAsync = (tokens, id) => {
-    return async (dispatch) => {
+export const editManageUserAsync = (userObj) => {
+    return async (dispatch, getState) => {
         try {
             dispatch({
                 type: ManageUserMap.EDIT_MANAGEUSER_DATA_START
             });
+            const { tokens } = getState().auth;
             let editManageUserData = await axios({
-                url: `http://127.0.0.1:4000/api/admin/editAdmin/${id}`,
+                url: `http://127.0.0.1:4000/api/admin/editAdmin/${userObj._id}`,
                 method: 'PUT',
                 headers: {
                     tokens
-                }
+                },
+                data: userObj,
             });
             console.log(editManageUserData);
             if (editManageUserData.data.response.responseCode === 200) {

@@ -18,7 +18,6 @@ export const UserActions = {
 
 export const loginAsync = (data) => {
     return async (dispatch) => {
-        console.log(data)
         try {
             const { data: { response } } = await axios({
                 method: "POST",

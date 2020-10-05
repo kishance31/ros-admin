@@ -75,7 +75,6 @@ function Login(props) {
       setTimeout(() => {
         try {
           disableLoading();
-          console.log(values);
           setSubmitting(false);
           dispatch(
             loginAsync({ email: values.email, password: values.password })

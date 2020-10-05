@@ -11,6 +11,7 @@ export function ActionManageUserFormatter(cellContent, row, rowIndex,
     }
 
     const onDeleteUser = () => {
+        setSelectedUser(row);
         onOpenDialog();
     }
 
