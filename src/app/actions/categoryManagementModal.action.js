@@ -104,7 +104,7 @@ export const addCategoryDataAsync = (categoryName) => {
                     'Content-type': 'application/json',
                 }
             });
-            if (data.response && data.response.responseCode == 200) {
+            if (data.response && data.response.responseCode === 200) {
                 return dispatch({
                     type: CategoryManagementMap.ADD_CATEGORY_SUCCESSFULLY,
                 })
@@ -127,7 +127,7 @@ export const DisplayCategoryListAsync = () => {
                     'tokens': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZjMyNTBiZDcxYzA0OTQxODI3ZTIzZWIiLCJlbWFpbCI6ImFkbWluQHJvcy5vcmciLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE2MDA0MzI2ODEsImV4cCI6MTYwNDY2NjI4MX0.WYcVMzj2g8rfGR_LJuw6lBp_rdZBOoqJmfjLLF3-F0g"
                 },
             })
-            if (categoryList.data.response.responseCode == 200) {
+            if (categoryList.data.response.responseCode === 200) {
                 dispatch({
                     type: CategoryManagementMap.DISPLAY_CATEGORY_DATA,
                     payload: categoryList.data.response.data
@@ -189,7 +189,7 @@ export const ClickDeleteCategoryAsync = (id) => {
                 },
                 // tokens:
             })
-            if (categoryList.data.response.responseCode == 200) {
+            if (categoryList.data.response.responseCode === 200) {
                 dispatch({
                     type: CategoryManagementMap.DELETE_CATEGORY_SUCCESSFULLY
                 })
@@ -242,7 +242,7 @@ export const EditCategoryAsync = (category_name) => {
                     'Content-type': 'application/json',
                 }
             })
-            if (data.response && data.response.responseCode == 200) {
+            if (data.response && data.response.responseCode === 200) {
                 dispatch({ type: CategoryManagementMap.EDIT_CATEGORY_SUCCESSFULLY })
             } else {
                 dispatch({ type: CategoryManagementMap.EDIT_CATEGORY_FAIL })
@@ -266,7 +266,7 @@ export const addSubCategoryDataAsync = (subcategory_name) => {
                     'Content-type': 'application/json',
                 }
             })
-            if (data.response && data.response.responseCode == 200) {
+            if (data.response && data.response.responseCode === 200) {
                 return dispatch({
                     type: CategoryManagementMap.ADD_CATEGORY_SUCCESSFULLY,
                 })
@@ -290,7 +290,7 @@ export const EditSubCategoryDataAsync = (subcategory_name) => {
                     'Content-type': 'application/json',
                 }
             });
-            if (data.response && data.response.responseCode == 200) {
+            if (data.response && data.response.responseCode === 200) {
                 return dispatch({
                     type: CategoryManagementMap.EDIT_CATEGORY_SUCCESSFULLY,
                 })
@@ -317,7 +317,7 @@ export const EditProductAsync = (data) => {
                     'tokens': token
                 }
             })
-            if(editProductRes.data.response.responseCode == 200){
+            if(editProductRes.data.response.responseCode === 200){
                 dispatch({type: CategoryManagementMap.EDIT_PRODUCT_SUCCESSFULLY})
             }
         } catch (error) {
@@ -345,7 +345,7 @@ export const DisplayVendorItemAsync = (value) => {
                         'tokens': token
                     }
                 })
-                if(vendorItemList.data.response.responseCode == 200){
+                if(vendorItemList.data.response.responseCode === 200){
                 dispatch({type: CategoryManagementMap.IMPORT_VENDOR_ITEM_SUCCESSFULLY, payload: vendorItemList.data.response.data})
                 }
             }catch(error){
@@ -387,7 +387,7 @@ export const addVendorItemAsync = (data) => {
                     'tokens': token
                 }
             })
-            if(addItemToVendor.data.response.responseCode == 200){
+            if(addItemToVendor.data.response.responseCode === 200){
                 dispatch({type: CategoryManagementMap.IMPORT_VENDOR_ITEM_SUCCESSFULLY, payload: addItemToVendor.data.response.data })
             }
             else{
@@ -451,7 +451,7 @@ export const displaySubCategoryList = (value) => {
                     'tokens': token
                 }
             })
-            if(subCategoryListResponse.data.response.responseCode == 200) {
+            if(subCategoryListResponse.data.response.responseCode === 200) {
                 dispatch({ type: CategoryManagementMap.STORE_SUB_CATEGORY, payload: subCategoryListResponse.data.response.data })
             }
         } catch (error) {
@@ -474,7 +474,7 @@ export const deleteProductAsync = () => {
                     'tokens': token
                 }
             })
-            if(deleteProductResponse.data.response.responseCode == 200) {
+            if(deleteProductResponse.data.response.responseCode === 200) {
                 dispatch({ type: CategoryManagementMap.ITEM_DELETE_SUCCESSFULLY })
             }
         } catch (error) {

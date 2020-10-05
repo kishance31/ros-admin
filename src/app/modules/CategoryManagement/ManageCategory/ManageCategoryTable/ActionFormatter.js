@@ -1,6 +1,4 @@
 import React from 'react';
-import { useDispatch } from 'react-redux'
-import { ClickDeleteCategoryAsync } from '../../../../actions/categoryManagementModal.action'
 const ActionFormatter = (cellContent,
     row,
     rowIndex,

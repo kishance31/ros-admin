@@ -1,6 +1,5 @@
 /* eslint-disable no-script-url,jsx-a11y/anchor-is-valid */
 import React from "react";
-import { useDispatch } from 'react-redux';
 import { useLocation } from "react-router";
 import { NavLink } from "react-router-dom";
 import SVG from "react-inlinesvg";
@@ -12,7 +11,6 @@ export function AsideMenuList({ layoutProps }) {
 			? ` ${!hasSubmenu && "menu-item-active"} menu-item-open `
 			: "";
 	};
-	const dispatch = useDispatch();
 	const setVendorFlag = () => {
 		// dispatch
 	}

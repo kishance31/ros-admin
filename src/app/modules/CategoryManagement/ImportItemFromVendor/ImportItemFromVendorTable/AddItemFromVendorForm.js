@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import {useDispatch} from 'react-redux'
 import { Modal } from "react-bootstrap";
 import { Formik, Form, Field } from "formik";
@@ -10,7 +10,6 @@ import {
 import { addVendorItemAsync, displaySubCategoryList, EditProductAsync } from '../../../../actions/categoryManagementModal.action';
 import { displayLicenseListAsync } from '../../../../actions/licenseManagement.action';
 import { useSelector } from 'react-redux';
-import * as Yup from "yup";
 
 const AddItemFromVendorForm = (props) => {
     const { onHideVendorModal, onClickVendorItemAddButton, deleteData } = props;
