@@ -57,8 +57,6 @@ const ManageCategoryTable = ({OnAddCategory,onDisplaySubCategory,setSelectedCate
                 setSelectedCategory: setSelectedCategory,
                 onDisplaySubCategory: onDisplaySubCategory,
                 EditCategory: EditCategory
-                
-                
             }
         },
     ];

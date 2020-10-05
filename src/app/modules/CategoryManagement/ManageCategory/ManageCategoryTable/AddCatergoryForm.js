@@ -38,8 +38,8 @@ const AddCatergoryForm =  ({ actionsLoading, selectedCategory }) => {
         
             <Formik
                 initialValues={
-                    modalName == 'category' ? (categorySel ? selectedCategory : initValuesofCategory): (categorySel ? initValuesofSubCategory : selectedCategory)
-
+                    modalName == 'category' ? 
+                    (categorySel ? selectedCategory : initValuesofCategory): (categorySel ? initValuesofSubCategory : selectedCategory)
                 }
                 validate={(values) => {
                     const errors = {};
@@ -64,14 +64,18 @@ const AddCatergoryForm =  ({ actionsLoading, selectedCategory }) => {
                     }
 
                     if(modalName == "category" && !selectedCategory.category_name){
-                        alert('111111111')
+                        alert('Add Category')
+                        console.log('1111111');
                         dispatch(addCategoryDataAsync(categoryEdit));
                     }else if(modalName == "category" && selectedCategory){
-                        // dispatch(EditCategoryAsync(categoryEdit));
+                        alert("Inside of Edit Category")
+                        dispatch(EditCategoryAsync(categoryEdit));
                     }else if(modalName == "subcategory" && selectedCategory.subcategory_name){
-                        // dispatch(addSubCategoryDataAsync(subCategoryEdit))
+                        alert("Inside of Edit SubCategory")
+                        dispatch(addSubCategoryDataAsync(subCategoryEdit))
                     }else {
-                        // dispatch(addSubCategoryDataAsync(subCategoryEdit))
+                        alert('Add Sub category')
+                        dispatch(addSubCategoryDataAsync(subCategoryEdit))
                     }
                     
                 }}

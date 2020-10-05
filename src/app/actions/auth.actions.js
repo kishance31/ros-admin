@@ -10,7 +10,7 @@ export const actionTypes = {
 };
 
 export const UserActions = {
-    loginSuccess: user => ({ type: actionTypes.Login, payload: { user } }),
+    loginSuccess: (user, tokens) => ({ type: actionTypes.Login, payload: { user, tokens } }),
     loginError: () => ({ type: actionTypes.LoginError }),
     logout: () => ({ type: actionTypes.Logout }),
     // logout: () => ({ type: actionTypes.Logout }),
@@ -30,7 +30,7 @@ export const loginAsync = (data) => {
             });
 
             if (response.responseCode === 200) {
-                return dispatch(UserActions.loginSuccess(response.user))
+                return dispatch(UserActions.loginSuccess(response.user, response.tokens));
             }
 
             return dispatch(UserActions.loginError());
