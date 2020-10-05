@@ -1,11 +1,28 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import BootstrapTable from 'react-bootstrap-table-next';
-import paginationFactory from 'react-bootstrap-table2-paginator';
+import paginationFactory, {
+    PaginationProvider,
+} from "react-bootstrap-table2-paginator";
+import { Pagination } from "../../../../_metronic/_partials/controls";
+import {
+  NoRecordsFoundMessage,
+  PleaseWaitMessage,
+} from "../../../../_metronic/_helpers";
 import { ActionManageUserFormatter } from '../ManageUserContainer/ActionManageUserFormatter';
+import { ManageUserAction } from '../../../actions/manageUser.action'
 
-const ManageUserTable = ({ onOpenModal, setSelectedUser, onOpenDialog, onOpenActiveDialog, onOpenDeactiveDialog }) => {
+const ManageUserTable = (props) => {
 
+  const {
+    onOpenModal, setSelectedUser, onOpenDialog, onOpenActiveDialog, onOpenDeactiveDialog,
+    isLoading,
+    totalCount,
+    pageNumber,
+    pageSize
+  } = props;
+
+  const dispatch = useDispatch();
 
   const { displaylist } = useSelector(
     (state) => state.manageUser
@@ -29,7 +46,7 @@ const ManageUserTable = ({ onOpenModal, setSelectedUser, onOpenDialog, onOpenAct
       text: 'Mobile',
     },
     {
-      dataField: 'roleName',
+      dataField: 'roleName.roleName',
       text: 'Role',
     },
     {
@@ -51,20 +68,73 @@ const ManageUserTable = ({ onOpenModal, setSelectedUser, onOpenDialog, onOpenAct
       },
     }
   ]
+
+  // Table pagination properties
+  const paginationOptions = {
+    custom: true,
+    totalSize: totalCount,
+    sizePerPageList: [
+      { text: "3", value: 3 },
+      { text: "5", value: 5 },
+      { text: "10", value: 10 }
+    ],
+    sizePerPage: pageSize,
+    page: pageNumber,
+  };
+
+  const noDataIndication = () => {
+    return (
+      <>
+        {
+          isLoading ? (
+            <PleaseWaitMessage entities={null} />
+          ) : (
+              <NoRecordsFoundMessage entities={displaylist} />
+            )
+        }
+      </>
+    )
+  }
+
+  const onTableChange = (type, newState) => {
+    if (type === "pagination") {
+      if (newState.page && newState.page !== pageNumber) {
+        dispatch(ManageUserAction.setPage(newState.page));
+      }
+      if (newState.sizePerPage !== pageSize) {
+        dispatch(ManageUserAction.setPageSize(newState.sizePerPage));
+      }
+    }
+  }
+
   return (
     <div className='container' style={{ marginTop: 50 }}>
-      <BootstrapTable
-        wrapperClasses='table-responsive'
-        hover
-        classes='table table-head-custom table-vertical-center'
-        bootstrap4
-        remote
-        bordered={false}
-        keyField='email'
-        data={displaylist}
-        columns={columns}
-        pagination={paginationFactory()}
-      />
+      <PaginationProvider pagination={paginationFactory(paginationOptions)}>
+        {({ paginationProps, paginationTableProps }) => {
+          return (
+            <Pagination
+              isLoading={isLoading}
+              paginationProps={paginationProps}
+            >
+              <BootstrapTable
+                wrapperClasses="table-responsive"
+                hover={false}
+                bordered={false}
+                classes="table table-head-custom table-vertical-center overflow-hidden"
+                bootstrap4
+                remote
+                keyField='email'
+                data={displaylist}
+                columns={columns}
+                {...paginationTableProps}
+                noDataIndication={noDataIndication}
+                onTableChange={onTableChange}
+              >
+              </BootstrapTable>
+            </Pagination>
+          );
+        }}
+      </PaginationProvider>
     </div>
   );
 };

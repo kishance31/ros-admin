@@ -6,7 +6,9 @@ import { Button, ButtonGroup, Card } from "react-bootstrap";
 import { Pagination } from "../../../../../_metronic/_partials/controls";
 import { sortCaret } from '../../../../../_metronic/_helpers';
 import ActionFormatter from './ActionFormatter';
-const ManageCategoryTable = ({OnAddCategory,onDisplaySubCategory,setSelectedCategory, EditCategory}) => {
+const ManageCategoryTable = ({
+    OnAddCategory, onDisplaySubCategory, setSelectedCategory, EditCategory, setSelectedSubCategory
+}) => {
 
     const entities = useSelector(state => state.categoryModal.categoryList);
     const categorySelected = useSelector(state => state.categoryModal.categorySelected);
@@ -21,7 +23,7 @@ const ManageCategoryTable = ({OnAddCategory,onDisplaySubCategory,setSelectedCate
             hidden: true
         },
         {
-            dataField: categorySelected == "subcategory" ? "subcategory_name" : "category_name" ,
+            dataField: categorySelected == "subcategory" ? "subcategory_name" : "category_name",
             text: "Category Name",
             sort: true,
             sortCaret: sortCaret,
@@ -40,7 +42,7 @@ const ManageCategoryTable = ({OnAddCategory,onDisplaySubCategory,setSelectedCate
             dataField: "createdAt",
             text: "Create Date",
             formatter: (value) => new Date(value).toLocaleString(),
-            sort: true, 
+            sort: true,
             sortCaret: sortCaret,
             align: 'center',
             headerAlign: 'center'
@@ -56,7 +58,9 @@ const ManageCategoryTable = ({OnAddCategory,onDisplaySubCategory,setSelectedCate
                 OnAddCategory: OnAddCategory,
                 setSelectedCategory: setSelectedCategory,
                 onDisplaySubCategory: onDisplaySubCategory,
-                EditCategory: EditCategory
+                EditCategory: EditCategory,
+                categorySelected: categorySelected,
+                setSelectedSubCategory: setSelectedSubCategory
             }
         },
     ];
@@ -71,7 +75,7 @@ const ManageCategoryTable = ({OnAddCategory,onDisplaySubCategory,setSelectedCate
                 hover
                 keyField="_id"
                 // data={entities === null ? [] : entities}
-                data={categorySelected === "category" ? entities : categorySelected === "subcategory" ? subcategoryData : [] }
+                data={categorySelected === "category" ? entities : categorySelected === "subcategory" ? subcategoryData : []}
                 // data={categorySelected === "subcategory" ? subcategoryData : entities}
                 columns={columns}
                 pagination={paginationFactory()}

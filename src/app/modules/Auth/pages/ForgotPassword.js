@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { useFormik } from "formik";
 import { connect } from "react-redux";
 import { Link, Redirect } from "react-router-dom";
 import * as Yup from "yup";
 import { injectIntl } from "react-intl";
-import * as auth from "../_redux/authRedux";
-import { requestPassword } from "../_redux/authCrud";
+import { forgotPasswordApi } from '../../../actions/auth.actions';
 
 const initialValues = {
   email: "",
@@ -13,7 +13,12 @@ const initialValues = {
 
 function ForgotPassword(props) {
   const { intl } = props;
-  const [isRequested, setIsRequested] = useState(false);
+
+  const dispatch = useDispatch();
+  const authState = useSelector(state => state.auth, shallowEqual);
+
+  const [statusColor, setStatusColor] = useState("danger");
+
   const ForgotPasswordSchema = Yup.object().shape({
     email: Yup.string()
       .email("Wrong email format")
@@ -42,25 +47,34 @@ function ForgotPassword(props) {
     initialValues,
     validationSchema: ForgotPasswordSchema,
     onSubmit: (values, { setStatus, setSubmitting }) => {
-      requestPassword(values.email)
-        .then(() => setIsRequested(true))
-        .catch(() => {
-          setIsRequested(false);
-          setSubmitting(false);
-          setStatus(
-            intl.formatMessage(
-              { id: "AUTH.VALIDATION.NOT_FOUND" },
-              { name: values.email }
-            )
-          );
-        });
+      try {
+        dispatch(forgotPasswordApi(values.email));
+      } catch (error) {
+        setStatus(
+          intl.formatMessage(
+            { id: "AUTH.VALIDATION.NOT_FOUND" },
+            { name: values.email }
+          )
+        );
+      }
     },
   });
 
+  useEffect(() => {
+    if (authState.errors || authState.message) {
+      setStatusColor(
+        authState.message ? "primary" : "danger"
+      )
+      formik.setStatus(authState.errors || authState.message)
+    } else {
+      formik.setStatus("");
+    }
+  }, [authState.errors, authState.message])
+
   return (
     <>
-      {isRequested && <Redirect to="/auth" />}
-      {!isRequested && (
+      {authState.redirectLogin && <Redirect to="/auth" />}
+      {!authState.redirectLogin && (
         <div className="login-form login-forgot" style={{ display: "block" }}>
           <div className="text-center mb-10 mb-lg-20">
             <h3 className="font-size-h1">Forgotten Password ?</h3>
@@ -73,7 +87,7 @@ function ForgotPassword(props) {
             className="form fv-plugins-bootstrap fv-plugins-framework animated animate__animated animate__backInUp"
           >
             {formik.status && (
-              <div className="mb-10 alert alert-custom alert-light-danger alert-dismissible">
+              <div className={`mb-10 alert alert-custom alert-light-${statusColor} alert-dismissible`}>
                 <div className="alert-text font-weight-bold">
                   {formik.status}
                 </div>
@@ -92,16 +106,17 @@ function ForgotPassword(props) {
                 <div className="fv-plugins-message-container">
                   <div className="fv-help-block">{formik.errors.email}</div>
                 </div>
-              ) : null} 
+              ) : null}
             </div>
             <div className="form-group d-flex flex-wrap flex-center">
               <button
                 id="kt_login_forgot_submit"
                 type="submit"
                 className="btn btn-primary font-weight-bold px-9 py-4 my-3 mx-4"
-                disabled={formik.isSubmitting}
+                disabled={authState.isLoading}
               >
-                Submit
+                <span>Submit</span>
+                {authState.isLoading && <span className="ml-3 spinner spinner-white"></span>}
               </button>
               <Link to="/auth">
                 <button
@@ -115,9 +130,10 @@ function ForgotPassword(props) {
             </div>
           </form>
         </div>
-      )}
+  )
+}
     </>
   );
 }
 
-export default injectIntl(connect(null, auth.actions)(ForgotPassword));
+export default injectIntl(ForgotPassword);

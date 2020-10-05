@@ -1,17 +1,19 @@
 import React from 'react';
-import { useDispatch } from 'react-redux'
-import { ClickDeleteCategoryAsync } from '../../../../actions/categoryManagementModal.action'
 const ActionFormatter = (cellContent,
     row,
     rowIndex,
-    { OnAddCategory, setSelectedCategory,
-        onDisplaySubCategory, EditCategory
+    { OnAddCategory, setSelectedCategory, setSelectedSubCategory,
+        onDisplaySubCategory, EditCategory, categorySelected
     }
 ) => {
-    
+
     const OnEditButtonClick = (row) => {
         OnAddCategory();
-        setSelectedCategory(row)
+        if(categorySelected === "category") {
+            setSelectedCategory(row)
+        } else {
+            setSelectedSubCategory(row);
+        }
     }
 
     const onClickSubCategory = (row) => {
@@ -20,18 +22,26 @@ const ActionFormatter = (cellContent,
     }
 
     const ClickDeleteCategoryAsync = (row) => {
-        setSelectedCategory(row)
+        if(categorySelected === "category") {
+            setSelectedCategory(row)
+        } else {
+            setSelectedSubCategory(row);
+        }
         EditCategory()
     }
     return (
         <>
-            <a
-                className="btn btn-info font-weight-bolder font-size-sm mr-3"
-                disabled="disabled"
-                onClick={() => onClickSubCategory(row)}
-            >
-                VIEW SUBCATEGORY
-                </a>
+            {
+                categorySelected === "category" ? (
+                    <a
+                        className="btn btn-info font-weight-bolder font-size-sm mr-3"
+                        disabled="disabled"
+                        onClick={() => onClickSubCategory(row)}
+                    >
+                        VIEW SUBCATEGORY
+                    </a>
+                ) : null
+            }
             <a
                 className="btn btn-success font-weight-bolder font-size-sm mr-3"
                 onClick={() => OnEditButtonClick(row)}
@@ -39,12 +49,12 @@ const ActionFormatter = (cellContent,
                 EDIT
                 </a>
             <a
-                className={row.status ? "btn btn-primary font-weight-bolder font-size-sm mr-3" : "btn btn-danger font-weight-bolder font-size-sm mr-3"}
+                className={`btn btn-${row.status ? 'danger' : 'primary'} font-weight-bolder font-size-sm mr-3`}
                 onClick={() => ClickDeleteCategoryAsync(row)}
             >
-                {row.status ? "ACTIVE": "DEACTIVE"}
-              
-                </a>
+                {row.status ? "DEACTIVE" : "ACTIVE"}
+
+            </a>
 
         </>
     )

@@ -17,12 +17,14 @@ export const CategoryManagementMap = {
     DISPLAY_CATEGORY_DATA: 'DISPLAY_CATEGORY_DATA',
     DELETE_CATEGORY_SUCCESSFULLY: 'DELETE_CATEGORY_SUCCESSFULLY',
     SELECTED_USER: 'SELECTED_USER',
+    SELECTED_SUB_CATEGORY: "SELECTED_SUB_CATEGORY",
     STORE_SUB_CATEGORY: 'STORE_SUB_CATEGORY',
     STATUS_UPDATED: 'STATUS_UPDATED',
     STATUS_UPDATED_FAIL: 'STATUS_UPDATED_FAIL',
     EDIT_CATEGORY_START: 'EDIT_CATEGORY_START',
     EDIT_CATEGORY_SUCCESSFULLY: 'EDIT_CATEGORY_SUCCESSFULLY',
     EDIT_CATEGORY_FAIL: 'EDIT_CATEGORY_FAIL',
+    BACK_TO_CATEGORY: "BACK_TO_CATEGORY",
     IMPORT_VENDOR_ITEM_SUCCESSFULLY: 'IMPORT_VENDOR_ITEM_SUCCESSFULLY',
     IMPORT_VENDOR_ITEM_FAIL: 'IMPORT_VENDOR_ITEM_FAIL',
     TOGGLE_FILTER_STATE: 'TOGGLE_FILTER_STATE',
@@ -80,38 +82,34 @@ export const CategoryManagementAction = {
             type: CategoryManagementMap.SELECTED_USER,
             payload: category
         }
-    }
-
+    },
+    setSelectedSubCategory: (subCategory) => {
+        return {
+            type: CategoryManagementMap.SELECTED_SUB_CATEGORY,
+            payload: subCategory
+        }
+    },
+    backToCategory: () => ({ type: CategoryManagementMap.BACK_TO_CATEGORY }),
 }
 
-export const addCategoryDataAsync = (data) => {
-    return async (dispatch,getState) => {
-        const {auth} = getState()
-        const token = auth.tokens
-        const newData = new FormData()
-        newData.set("category_name", data.category_name);
-        newData.set("status", data.status)
+export const addCategoryDataAsync = (categoryName) => {
+    return async (dispatch) => {
         try {
             dispatch({ type: CategoryManagementMap.ADD_CATEGORY_START })
-            let addCategoryResponse = await axios({
-                url:`http://localhost:4000/api/corporate-admin/category/saveCategory`,
+            let { data } = await axios({
+                url: `http://127.0.0.1:4000/api/corporate-admin/category/saveCategory`,
                 method: "POST",
-                data: newData,
+                data: { category_name: categoryName },
                 headers: {
-                    'Content-type': 'multipart/form-data',
-                    'tokens': token
+                    'Content-type': 'application/json',
                 }
             });
-            if (addCategoryResponse.data.response.responseCode == 200) {
-                dispatch({
+            if (data.response && data.response.responseCode === 200) {
+                return dispatch({
                     type: CategoryManagementMap.ADD_CATEGORY_SUCCESSFULLY,
-                    payload: addCategoryResponse.data.response.data
                 })
-                dispatch(CategoryManagementAction.toggleAddCategoryModal(CategoryManagementMap.CLOSE_CATEGORY_MODAL))
             }
-            else {
-                dispatch({ type: CategoryManagementMap.ERROR_IN_ADD_CATEGORY })
-            }
+            dispatch({ type: CategoryManagementMap.ERROR_IN_ADD_CATEGORY })
         } catch (err) {
             dispatch({ type: CategoryManagementMap.ERROR_IN_ADD_CATEGORY })
         }
@@ -129,7 +127,7 @@ export const DisplayCategoryListAsync = () => {
                     'tokens': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZjMyNTBiZDcxYzA0OTQxODI3ZTIzZWIiLCJlbWFpbCI6ImFkbWluQHJvcy5vcmciLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE2MDA0MzI2ODEsImV4cCI6MTYwNDY2NjI4MX0.WYcVMzj2g8rfGR_LJuw6lBp_rdZBOoqJmfjLLF3-F0g"
                 },
             })
-            if (categoryList.data.response.responseCode == 200) {
+            if (categoryList.data.response.responseCode === 200) {
                 dispatch({
                     type: CategoryManagementMap.DISPLAY_CATEGORY_DATA,
                     payload: categoryList.data.response.data
@@ -191,7 +189,7 @@ export const ClickDeleteCategoryAsync = (id) => {
                 },
                 // tokens:
             })
-            if (categoryList.data.response.responseCode == 200) {
+            if (categoryList.data.response.responseCode === 200) {
                 dispatch({
                     type: CategoryManagementMap.DELETE_CATEGORY_SUCCESSFULLY
                 })
@@ -205,19 +203,16 @@ export const ClickDeleteCategoryAsync = (id) => {
 export const DeactiveCategoryAsync = (id) => {
     return async (dispatch, getState) => {
         const { categoryModal } = getState()
-        let formData = new FormData();
-        formData.set("status", !categoryModal.selectedCategory.status);
         try {
-            let responseOfDeactive = await axios({
+            let { data } = await axios({
                 url: `http://127.0.0.1:4000/api/corporate-admin/category/updateCategoryStatus/${id}`,
                 method: "PUT",
-                data: formData,
+                data: { status: !categoryModal.selectedCategory.status },
                 headers: {
-                    'Content-type': 'appplication/json',
-                    'tokens': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZjMyNTBiZDcxYzA0OTQxODI3ZTIzZWIiLCJlbWFpbCI6ImFkbWluQHJvcy5vcmciLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE2MDA0MzI2ODEsImV4cCI6MTYwNDY2NjI4MX0.WYcVMzj2g8rfGR_LJuw6lBp_rdZBOoqJmfjLLF3-F0g"
+                    'Content-type': 'application/json',
                 }
             })
-            if (responseOfDeactive.data.response.responseCode === 200) {
+            if (data.response && data.response.responseCode === 200) {
                 dispatch({ type: CategoryManagementMap.STATUS_UPDATED })
             } else {
                 dispatch({
@@ -232,26 +227,25 @@ export const DeactiveCategoryAsync = (id) => {
     }
 }
 
-export const EditCategoryAsync = (data) => {
+export const EditCategoryAsync = (category_name) => {
 
     return async (dispatch, getState) => {
         const { categoryModal } = getState()
-        const id = categoryModal.selectedCategory._id             
+        const id = categoryModal.selectedCategory._id
         try {
-            dispatch({type: CategoryManagementMap.EDIT_CATEGORY_START })
-            let responseOfEditCategory = await axios({
+            dispatch({ type: CategoryManagementMap.EDIT_CATEGORY_START })
+            let { data } = await axios({
                 url: `http://127.0.0.1:4000/api/corporate-admin/category/updateCategory/${id}`,
                 method: 'PUT',
-                data: data,
+                data: { category_name },
                 headers: {
                     'Content-type': 'application/json',
-                    'tokens': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZjMyNTBiZDcxYzA0OTQxODI3ZTIzZWIiLCJlbWFpbCI6ImFkbWluQHJvcy5vcmciLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE2MDA0MzI2ODEsImV4cCI6MTYwNDY2NjI4MX0.WYcVMzj2g8rfGR_LJuw6lBp_rdZBOoqJmfjLLF3-F0g"
                 }
             })
-            if (responseOfEditCategory.status == 200){
-                dispatch({type: CategoryManagementMap.EDIT_CATEGORY_SUCCESSFULLY })
-            }else {
-                dispatch({type: CategoryManagementMap.EDIT_CATEGORY_FAIL })
+            if (data.response && data.response.responseCode === 200) {
+                dispatch({ type: CategoryManagementMap.EDIT_CATEGORY_SUCCESSFULLY })
+            } else {
+                dispatch({ type: CategoryManagementMap.EDIT_CATEGORY_FAIL })
             }
         } catch (error) {
             dispatch({type: CategoryManagementMap.EDIT_CATEGORY_FAIL })
@@ -259,38 +253,51 @@ export const EditCategoryAsync = (data) => {
     }
 }
 
-export const addSubCategoryDataAsync = (data) => {
+export const addSubCategoryDataAsync = (subcategory_name) => {
     return async (dispatch, getState) => {
         try {
-            let addSubCategoryRes = await axios({
+            dispatch({ type: CategoryManagementMap.ADD_CATEGORY_START })
+            const { selectedCategory } = getState().categoryModal;
+            let { data } = await axios({
                 url: `http://127.0.0.1:4000/api/corporate-admin/sub-category/saveSubCategory`,
                 method: 'POST',
-                data: data,
+                data: { subcategory_name, category_id: selectedCategory._id },
                 headers: {
                     'Content-type': 'application/json',
-                    'tokens': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZjMyNTBiZDcxYzA0OTQxODI3ZTIzZWIiLCJlbWFpbCI6ImFkbWluQHJvcy5vcmciLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE2MDA0MzI2ODEsImV4cCI6MTYwNDY2NjI4MX0.WYcVMzj2g8rfGR_LJuw6lBp_rdZBOoqJmfjLLF3-F0g"
                 }
             })
-            console.log('addSubCategoryRes', addSubCategoryRes);
-        } catch (error) {  
+            if (data.response && data.response.responseCode === 200) {
+                return dispatch({
+                    type: CategoryManagementMap.ADD_CATEGORY_SUCCESSFULLY,
+                })
+            }
+            dispatch({ type: CategoryManagementMap.ERROR_IN_ADD_CATEGORY })
+        } catch (error) {
+            dispatch({ type: CategoryManagementMap.ERROR_IN_ADD_CATEGORY })
         }
     }
 }
 
-export const EditSubCategoryDataAsync = (id, data) => {
-    return async (dispatch) => {
+export const EditSubCategoryDataAsync = (subcategory_name) => {
+    return async (dispatch, getState) => {
         try {
-            let editSubCategoryRes = await axios({
-                url: `http://127.0.0.1:4000/api/corporate-admin/sub-category/updateSubCategory/${id}`,
-                method: 'POST',
-                data: data,
+            const { selectedSubCategory } = getState().categoryModal;
+            let { data } = await axios({
+                url: `http://127.0.0.1:4000/api/corporate-admin/sub-category/updateSubCategory/${selectedSubCategory._id}`,
+                method: 'PUT',
+                data: { subcategory_name, category_id: selectedSubCategory.category_id },
                 headers: {
                     'Content-type': 'application/json',
-                    'tokens': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZjMyNTBiZDcxYzA0OTQxODI3ZTIzZWIiLCJlbWFpbCI6ImFkbWluQHJvcy5vcmciLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE2MDA0MzI2ODEsImV4cCI6MTYwNDY2NjI4MX0.WYcVMzj2g8rfGR_LJuw6lBp_rdZBOoqJmfjLLF3-F0g"
                 }
-            })
+            });
+            if (data.response && data.response.responseCode === 200) {
+                return dispatch({
+                    type: CategoryManagementMap.EDIT_CATEGORY_SUCCESSFULLY,
+                })
+            }
+            dispatch({ type: CategoryManagementMap.EDIT_CATEGORY_FAIL })
         } catch (error) {
-            
+            dispatch({ type: CategoryManagementMap.EDIT_CATEGORY_FAIL })
         }
     }
 }
@@ -310,7 +317,7 @@ export const EditProductAsync = (data) => {
                     'tokens': token
                 }
             })
-            if(editProductRes.data.response.responseCode == 200){
+            if(editProductRes.data.response.responseCode === 200){
                 dispatch({type: CategoryManagementMap.EDIT_PRODUCT_SUCCESSFULLY})
             }
         } catch (error) {
@@ -338,7 +345,7 @@ export const DisplayVendorItemAsync = (value) => {
                         'tokens': token
                     }
                 })
-                if(vendorItemList.data.response.responseCode == 200){
+                if(vendorItemList.data.response.responseCode === 200){
                 dispatch({type: CategoryManagementMap.IMPORT_VENDOR_ITEM_SUCCESSFULLY, payload: vendorItemList.data.response.data})
                 }
             }catch(error){
@@ -380,7 +387,7 @@ export const addVendorItemAsync = (data) => {
                     'tokens': token
                 }
             })
-            if(addItemToVendor.data.response.responseCode == 200){
+            if(addItemToVendor.data.response.responseCode === 200){
                 dispatch({type: CategoryManagementMap.IMPORT_VENDOR_ITEM_SUCCESSFULLY, payload: addItemToVendor.data.response.data })
             }
             else{
@@ -444,7 +451,7 @@ export const displaySubCategoryList = (value) => {
                     'tokens': token
                 }
             })
-            if(subCategoryListResponse.data.response.responseCode == 200) {
+            if(subCategoryListResponse.data.response.responseCode === 200) {
                 dispatch({ type: CategoryManagementMap.STORE_SUB_CATEGORY, payload: subCategoryListResponse.data.response.data })
             }
         } catch (error) {
@@ -467,7 +474,7 @@ export const deleteProductAsync = () => {
                     'tokens': token
                 }
             })
-            if(deleteProductResponse.data.response.responseCode == 200) {
+            if(deleteProductResponse.data.response.responseCode === 200) {
                 dispatch({ type: CategoryManagementMap.ITEM_DELETE_SUCCESSFULLY })
             }
         } catch (error) {

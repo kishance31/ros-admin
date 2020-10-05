@@ -37,7 +37,8 @@ const AddUserEditForm = ({ actionsLoading, selectedUser, roles, onCloseModal }) 
     }
     if (selectedUser) {
       console.log(values);
-      return dispatch(editManageUserAsync({ ...values }));
+      let role = roles.find(role => role.roleName === values.roleName);
+      return dispatch(editManageUserAsync({ ...values, roleName: role._id }));
     }
   }
 
@@ -51,7 +52,7 @@ const AddUserEditForm = ({ actionsLoading, selectedUser, roles, onCloseModal }) 
   }
 
   const getInitFormValues = () => (
-    selectedUser ? selectedUser : initValues
+    selectedUser ? {...initValues, ...selectedUser, roleName: selectedUser.roleName.roleName} : {...initValues}
   );
 
   return (

@@ -11,6 +11,10 @@ const initialState = {
     totalCount: 0,
     selectedUser: null,
     refreshManageUserData: true,
+    isLoading: true,
+    errors: "",
+    pageNumber: 1,
+    pageSize: 5,
 }
 
 const manageUserReducer = (state = initialState, action) => {
@@ -76,17 +80,21 @@ const manageUserReducer = (state = initialState, action) => {
             return {
                 ...state,
                 displaylist: action.payload.list,
-                totalCount: action.payload.total[0].count,
+                totalCount: action.payload.total.length ? action.payload.total[0].count : 0,
                 refreshManageUserData: false,
+                isLoading: false,
             }
         }
         case ManageUserMap.DISPLAY_MANAGEUSER_DATA_ERROR: {
             return {
                 ...state,
-                refreshManageUserData: false
+                refreshManageUserData: false,
+                isLoading: false,
             }
         }
         case ManageUserMap.EDIT_MANAGEUSER_DATA_SUCCESS:
+        case ManageUserMap.DELETE_MANAGEUSER_DATA_SUCCESS:
+        case ManageUserMap.UPDATE_ADMIN_STATUS_SUCCESS:
         case ManageUserMap.ADD_MANAGEUSER_DATA_SUCCESS: {
             return {
                 ...state,
@@ -95,12 +103,6 @@ const manageUserReducer = (state = initialState, action) => {
                     modalState: false
                 },
                 refreshManageUserData: true,
-            }
-        }
-        case ManageUserMap.DELETE_MANAGEUSER_DATA_SUCCESS: {
-            return {
-                ...state,
-                refreshManageUserData: true
             }
         }
         case ManageUserMap.REFRESH_MANAGEUSER_DATA: {
@@ -113,6 +115,21 @@ const manageUserReducer = (state = initialState, action) => {
             return {
                 ...state,
                 selectedUser: action.payload,
+            }
+        }
+        case ManageUserMap.SET_PAGE: {
+            return {
+                ...state,
+                pageNumber: action.payload,
+                refreshManageUserData: true,
+            }
+        }
+        case ManageUserMap.SET_PAGE_SIZE: {
+            return {
+                ...state,
+                pageSize: action.payload,
+                refreshManageUserData: true,
+                pageNumber: 1
             }
         }
         default:

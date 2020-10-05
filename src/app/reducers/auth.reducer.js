@@ -13,6 +13,10 @@ const initialAuthState = {
         fullname: "",
     },
     tokens: null,
+    isLoading: false,
+    errors: "",
+    message: "",
+    redirectLogin: false,
 };
 
 // const fetchUser = (tokens) => {
@@ -57,7 +61,7 @@ const initialAuthState = {
 const persistConfig = {
     storage,
     key: "auth",
-    // blacklist: ["user"],
+    whitelist: ["user", "tokens"],
     // transforms: [TransformCredentials], 
 };
 
@@ -73,6 +77,46 @@ const authReducer = (state = initialAuthState, action) => {
                 },
                 tokens,
             };
+        }
+        case actionTypes.FORGOT_PASSWORD:
+        case actionTypes.RESET_PASSWORD:
+        case actionTypes.Login_Start: {
+            return {
+                ...state,
+                isLoading: true,
+                errors: "",
+                message: "",
+            };
+        }
+        case actionTypes.RESET_PASSWORD_SUCCESS:
+        case actionTypes.FORGOT_PASSWORD_SUCCESS: {
+            return {
+                ...state,
+                message: action.payload,
+                errors: "",
+                isLoading: false,
+                redirectLogin: true,
+            }
+        }
+        case actionTypes.RESET_PASSWORD_ERROR:
+        case actionTypes.FORGOT_PASSWORD_ERROR:
+        case actionTypes.LoginError: {
+            return {
+                ...state,
+                message: "",
+                errors: action.payload,
+                isLoading: false,
+                redirectLogin: false
+            }
+        }
+        case actionTypes.REDIRECT_FORGOT_PSWD: {
+            return {
+                ...state,
+                message: "",
+                errors: "",
+                redirectLogin: false,
+                isLoading: false,
+            }
         }
         case actionTypes.Logout: {
             return {
