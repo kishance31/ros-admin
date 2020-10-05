@@ -31,7 +31,6 @@ export const manageCorporateAction = {
             tokens,
           },
         });
-        console.log(updateManageCorporateStatus);
         if (updateManageCorporateStatus.data.response.responseCode === 200) {
           return dispatch({
             type: manageCorporateMap.UPDATE_MANAGE_CORPORATE_STATUS_SUCCESS,
