@@ -1,74 +1,41 @@
 import React from 'react';
+import { useSelector } from 'react-redux'
 import BootstrapTable from "react-bootstrap-table-next";
 import { VendorTableActionButtons } from './VendorTableActionButton';
-import paginationFactory, { PaginationProvider } from "react-bootstrap-table2-paginator";
+import paginationFactory from "react-bootstrap-table2-paginator";
 
-const ImportItemFromVendorTable = ({onClickVendorItemEdit, onClickVendorItemAddButton}) => {
+const ImportItemFromVendorTable = ({onClickVendorItemEdit, onClickVendorItemAddButton, setSelectedCategory, deleteData}) => {
 
-    const entities = [
-        {
-            srno:1,
-            productImg: 'Keyboard Image',
-            itemName: 'Keyboard',
-            itemCode: 'KB001',
-            itemCodeUSD: 'USDKB001',
-            rosCode: '12KB',
-            rosCodeUSD: 'USDRS01',
-            licenseType: 'GOLD'
-        },
-        {
-            srno:2,
-            productImg: 'CPU Image',
-            itemName: 'CPU',
-            itemCode: 'KB001',
-            itemCodeUSD: 'USDKB001',
-            rosCode: '98KB',
-            rosCodeUSD: 'USDRS01',
-            licenseType: 'SILVER'
-        },
-        {
-            srno:3,
-            productImg: 'MOUSE Image',
-            itemName: 'MOUSE',
-            itemCode: 'KB001',
-            itemCodeUSD: 'USDKB001',
-            rosCode: '4KB',
-            rosCodeUSD: 'USDRS01',
-            licenseType: 'SILVER'
-        }
-    ]
-
+    const itemListData = useSelector(state => state.categoryModal.vendorItemList);
+  
    const coloumn = [
         {
-            dataField: 'srno',
-            text: 'Sr. no'
+            dataField: '_id',
+            text: 'Sr. no',
+            hidden:true
         },
         {
-            dataField: 'productImg',
+            dataField: 'product_image',
             text: 'Product Image'
         },
         {
-            dataField: 'itemName',
+            dataField: 'product_name',
             text: 'Item Name'
         },
         {
-            dataField: 'itemCode',
+            dataField: 'product_code',
             text: 'Item Code'
         },
         {
-            dataField: 'itemCodeUSD',
-            text: 'item Code (USD)'
+            dataField: 'product_cost',
+            text: 'Item Cost(USD)'
         },
         {
-            dataField: 'rosCode',
+            dataField: 'ros_code',
             text: 'ROS Code'
         },
         {
-            dataField: 'rosCodeUSD',
-            text: ' ROS Code (USD)'
-        },
-        {
-            dataField: 'licenseType',
+            dataField:  'license_id',
             text: 'License Type'
         },
         {
@@ -77,12 +44,13 @@ const ImportItemFromVendorTable = ({onClickVendorItemEdit, onClickVendorItemAddB
             headerAlign: 'center',
             formatter: VendorTableActionButtons,
             formatExtraData: {
+                setSelectedCategory: setSelectedCategory,
                 onClickVendorItemEdit: onClickVendorItemEdit,
-                onClickVendorItemAddButton: onClickVendorItemAddButton
+                onClickVendorItemAddButton: onClickVendorItemAddButton,
+                deleteData: deleteData
             }
         }
     ]
-
     return (
         <BootstrapTable
             wrapperClasses="table-responsive"
@@ -91,7 +59,7 @@ const ImportItemFromVendorTable = ({onClickVendorItemEdit, onClickVendorItemAddB
             bordered={false}
             remote
             keyField="srno"
-            data={entities === null ? [] : entities}
+            data={itemListData === null ? [] : itemListData}
             columns={coloumn}
             pagination={paginationFactory()}
             noDataIndication="Table is Empty"

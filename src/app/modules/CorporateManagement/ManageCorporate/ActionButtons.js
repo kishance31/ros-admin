@@ -33,7 +33,7 @@ const ActionButtons = ({ row, approveRejectAction, activeDeactiveAction }) => {
         className={row.isActive ? 'd-none' : 'mx-3'}
         size='sm'
         variant='outline-success'
-        onClick={() => activeDeactiveAction(row.companyId, true)}
+        onClick={() => activeDeactiveAction(row._id, true)}
       >
         Active
       </Button>
@@ -41,7 +41,7 @@ const ActionButtons = ({ row, approveRejectAction, activeDeactiveAction }) => {
         className={!row.isActive ? 'd-none' : 'mx-3'}
         size='sm'
         variant='outline-danger'
-        onClick={() => activeDeactiveAction(row.companyId, false)}
+        onClick={() => activeDeactiveAction(row._id, false)}
       >
         Deactive
       </Button>
