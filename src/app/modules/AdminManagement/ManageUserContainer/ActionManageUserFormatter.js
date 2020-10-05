@@ -5,7 +5,6 @@ export function ActionManageUserFormatter(cellContent, row, rowIndex,
     { onOpenModal, setSelectedUser, onOpenDialog, onOpenActiveDialog, onOpenDeactiveDialog }) {
 
     const onEditUser = (row) => {
-        console.log(row);
         setSelectedUser(row);
         onOpenModal();
     }
@@ -16,10 +15,12 @@ export function ActionManageUserFormatter(cellContent, row, rowIndex,
     }
 
     const activeUser = () => {
+        setSelectedUser(row);
         onOpenActiveDialog();
     }
 
     const deactiveUser = () => {
+        setSelectedUser(row);
         onOpenDeactiveDialog();
     }
 
@@ -28,8 +29,13 @@ export function ActionManageUserFormatter(cellContent, row, rowIndex,
             <ButtonGroup>
                 <Button onClick={() => onEditUser(row)} variant="secondary">Edit</Button>&nbsp;&nbsp;
                 <Button variant="secondary" onClick={() => onDeleteUser()}>Delete</Button>&nbsp;&nbsp;
-                <Button variant="secondary" onClick={() => activeUser()}>Active</Button>&nbsp;&nbsp;
-                <Button variant="secondary" onClick={() => deactiveUser()}>Deactive</Button>
+                {
+                    row.isActive ? (
+                        <Button variant="secondary" onClick={() => deactiveUser()}>Deactive</Button>
+                    ) : (
+                        <Button variant="secondary" onClick={() => activeUser()}>Active</Button>
+                    )
+                }
             </ButtonGroup>
         </>
     );

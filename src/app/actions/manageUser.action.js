@@ -26,6 +26,8 @@ export const ManageUserMap = {
     UPDATE_ADMIN_STATUS_ERROR: 'UPDATE_ADMIN_STATUS_ERROR',
     REFRESH_MANAGEUSER_DATA: 'REFRESH_MANAGEUSER_DATA',
     SET_SELECTED_USER: 'SET_SELECTED_USER',
+    SET_PAGE: "SET_PAGE",
+    SET_PAGE_SIZE: "SET_PAGE_SIZE",
 }
 
 export const ManageUserAction = {
@@ -66,7 +68,7 @@ export const ManageUserAction = {
     },
     closeDeactiveDialog: () => {
         return {
-            type: ManageUserMap.OPEN_DEACTIVE_DIALOG
+            type: ManageUserMap.CLOSE_DEACTIVE_DIALOG
         }
     },
     refreshManageUserData: () => {
@@ -79,30 +81,39 @@ export const ManageUserAction = {
             type: ManageUserMap.SET_SELECTED_USER,
             payload: user
         }
-    }
+    },
+    setPage: (num) => ({ type: ManageUserMap.SET_PAGE, payload: num }),
+    setPageSize: (num) => ({ type: ManageUserMap.SET_PAGE_SIZE, payload: num }),
+    deleteUser: () => ({ type: ManageUserMap.DELETE_MANAGEUSER_DATA_START }),
+    deleteUserSuccess: () => ({ type: ManageUserMap.DELETE_MANAGEUSER_DATA_SUCCESS }),
+    deleteUserError: () => ({ type: ManageUserMap.DELETE_MANAGEUSER_DATA_ERROR }),
+    updateUser: () => ({ type: ManageUserMap.UPDATE_ADMIN_STATUS_START }),
+    updateUserSuccess: () => ({ type: ManageUserMap.UPDATE_ADMIN_STATUS_SUCCESS }),
+    updateUserError: () => ({ type: ManageUserMap.UPDATE_ADMIN_STATUS_ERROR }),
 }
 
-export const displayManageUserDataAsync = (tokens) => {
-    return async (dispatch) => {
+export const displayManageUserDataAsync = () => {
+    return async (dispatch, getState) => {
         try {
             dispatch({
                 type: ManageUserMap.DISPLAY_MANAGEUSER_DATA_START
             });
-            let addLicenseListResponse = await axios({
-                url: `http://127.0.0.1:4000/api/admin/getAdmins`,
+            const { pageNumber, pageSize } = getState().manageUser
+            let {data} = await axios({
+                url: `http://127.0.0.1:4000/api/admin/getAdmins/${pageNumber - 1}/${pageSize}`,
                 method: 'GET',
                 headers: {
-                    tokens,
                     'Content-Type': 'application/json'
                 },
             });
-            if (addLicenseListResponse.data.response.responseCode === 200) {
+            if (data.response && data.response.responseCode === 200) {
                 dispatch({
                     type: ManageUserMap.DISPLAY_MANAGEUSER_DATA_SUCCESS,
-                    payload: addLicenseListResponse.data.response.data[0]
+                    payload: data.response.data[0]
                 })
             }
         } catch (error) {
+            console.log(error)
             dispatch({
                 type: ManageUserMap.DISPLAY_MANAGEUSER_DATA_ERROR
             })
@@ -168,57 +179,44 @@ export const editManageUserAsync = (userObj) => {
     }
 }
 
-export const deleteManageUserAsync = (tokens, id) => {
+export const deleteManageUserAsync = (id) => {
     return async (dispatch) => {
         try {
-            dispatch({
-                type: ManageUserMap.DISPLAY_MANAGEUSER_DATA_START
-            });
-            let deleteManageUserData = await axios({
-                url: `http://127.0.0.1:4000/api/admin/deleteAdmin/${id}`,
+            dispatch(ManageUserAction.deleteUser());
+            let { data } = await axios({
+                url: `http://localhost:4000/api/admin/deleteAdmin/${id}`,
                 method: 'PUT',
-                headers: {
-                    tokens
-                }
             });
-            console.log(deleteManageUserData);
-            if (deleteManageUserData.data.response.responseCode === 200) {
-                return dispatch({
-                    type: ManageUserMap.DELETE_MANAGEUSER_DATA_SUCCESS
-                });
+            console.log(data);
+            if (data.response && data.response.responseCode === 200) {
+                return dispatch(ManageUserAction.deleteUserSuccess());
             }
+            dispatch(ManageUserAction.deleteUserError());
         } catch (error) {
-            dispatch({
-                type: ManageUserMap.DELETE_MANAGEUSER_DATA_ERROR
-            })
+            dispatch(ManageUserAction.deleteUserError());
         }
     }
 }
 
-export const updateAdminStatusAsync = (tokens, id, data) => {
+export const updateAdminStatusAsync = (id, isActive) => {
     return async (dispatch) => {
         try {
-            dispatch({
-                type: ManageUserMap.UPDATE_ADMIN_STATUS_START
-            });
-            let updateAdminStatus = await axios({
+            dispatch(ManageUserAction.updateUser());
+            let { data } = await axios({
                 url: `http://127.0.0.1:4000/api/admin/updateAdminStatus/${id}`,
                 method: 'PUT',
                 headers: {
-                    tokens,
+                    "Content-Type": "application/json"
                 },
-                data
+                data: { isActive }
             });
-            console.log(updateAdminStatus);
-            if (updateAdminStatus.data.response.responseCode === 200) {
-                return dispatch({
-                    type: ManageUserMap.UPDATE_ADMIN_STATUS_SUCCESS
-                });
+            if (data.response && data.response.responseCode === 200) {
+                return dispatch(ManageUserAction.updateUserSuccess());
             }
+            dispatch(ManageUserAction.updateUserError());
         } catch (error) {
-            dispatch({
-                type: ManageUserMap.UPDATE_ADMIN_STATUS_ERROR
-            })
+            dispatch(ManageUserAction.updateUserError());
         }
     }
 }
+

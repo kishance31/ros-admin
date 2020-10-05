@@ -3,7 +3,7 @@ import { Modal, Button } from 'react-bootstrap';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import ManageUserTable from './ManageUserContainer/ManageUserTable';
 import AddUserEditForm from './ManageUserContainer/AddUserEditForm';
-import { ManageUserAction, displayManageUserDataAsync } from '../../actions/manageUser.action';
+import { ManageUserAction, displayManageUserDataAsync, deleteManageUserAsync, updateAdminStatusAsync } from '../../actions/manageUser.action';
 import { getAllRolesAsync } from '../../actions/rolesAndPermission.action';
 import { Card, CardBody, CardHeader, CardHeaderToolbar } from '../../../_metronic/_partials/controls';
 import DeleteModalContainer from "./ManageUserContainer/DeleteModalContainer";
@@ -19,7 +19,11 @@ const ManageUsers = () => {
     modalDialog,
     modalActiveDialog,
     modalDeactiveDialog,
-    refreshManageUserData
+    refreshManageUserData,
+    isLoading,
+    totalCount,
+    pageNumber,
+    pageSize
   } = useSelector(state => state.manageUser, shallowEqual)
   const { roles, refreshRoles } = useSelector(state => state.rolesAndPermission, shallowEqual);
 
@@ -72,7 +76,17 @@ const ManageUsers = () => {
   }
 
   const onDeleteUser = () => {
+    dispatch(deleteManageUserAsync(selectedUser._id));
+    onCloseDialog();
+  }
 
+  const onActivateUser = () => {
+    dispatch(updateAdminStatusAsync(selectedUser._id, true));
+    onCloseActiveDialog();
+  }
+  const onDeactivateUser = () => {
+    dispatch(updateAdminStatusAsync(selectedUser._id, false));
+    onCloseDeactiveDialog();
   }
 
   return (
@@ -106,11 +120,13 @@ const ManageUsers = () => {
             modalActiveDialog={modalActiveDialog}
             onOpenActiveDialog={onOpenActiveDialog}
             onCloseActiveDialog={onCloseActiveDialog}
+            onActivateUser={onActivateUser}
           />
           <DeactiveModalContainer
             modalDeactiveDialog={modalDeactiveDialog}
             onOpenDeactiveDialog={onOpenDeactiveDialog}
             onCloseDeactiveDialog={onCloseDeactiveDialog}
+            onDeactivateUser={onDeactivateUser}
           />
           <ManageUserTable
             modalDialog={modalDialog}
@@ -118,6 +134,12 @@ const ManageUsers = () => {
             onCloseDialog={onCloseDialog}
             onOpenModal={onOpenModal}
             setSelectedUser={setSelectedUser}
+            isLoading={isLoading}
+            totalCount={totalCount}
+            pageNumber={pageNumber}
+            pageSize={pageSize}
+            onOpenDeactiveDialog={onOpenDeactiveDialog}
+            onOpenActiveDialog={onOpenActiveDialog}
           />
         </CardBody>
       </Card>

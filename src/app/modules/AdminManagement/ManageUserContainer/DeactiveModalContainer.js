@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
-const DeactiveModalContainer = ({ modalDeactiveDialog, onCloseDeactiveDialog }) => {
+const DeactiveModalContainer = ({ modalDeactiveDialog, onCloseDeactiveDialog, onDeactivateUser }) => {
 
     return (
         <>
@@ -14,11 +14,14 @@ const DeactiveModalContainer = ({ modalDeactiveDialog, onCloseDeactiveDialog }) 
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <h5> Are you sure to permanently Deactive this user?</h5>
+                    <h5> Are you sure to deactive this user?</h5>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" className="float-left" onClick={onCloseDeactiveDialog}>
                         Close
+                    </Button>
+                    <Button variant="warning" onClick={onDeactivateUser}>
+                        Deactivate
                     </Button>
                 </Modal.Footer>
             </Modal>

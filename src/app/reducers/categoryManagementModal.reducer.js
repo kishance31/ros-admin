@@ -1,4 +1,4 @@
-import {CategoryManagementMap} from '../actions/categoryManagementModal.action';
+import { CategoryManagementMap } from '../actions/categoryManagementModal.action';
 
 const initialState = {
     categoryManagementModal: {
@@ -6,26 +6,26 @@ const initialState = {
         importItemModal: false,
         ItemUpdateModal: false
     },
-    categorySelected:'category',
+    categorySelected: 'category',
     category: {
-        category_name:"",
-        status:""
+        category_name: "",
+        status: ""
     },
-    categoryList:[],
-    subCategoryList:[],
+    categoryList: [],
+    subCategoryList: [],
     selectedCategory: {},
-    selectedSubCategory:{},
+    selectedSubCategory: {},
     refereshCategoryList: true
 }
 
 const categoryModalreducer = (state = initialState, action) => {
     switch (action.type) {
 
-        case CategoryManagementMap.OPEN_CATEGORY_MODAL : {
+        case CategoryManagementMap.OPEN_CATEGORY_MODAL: {
             return {
                 ...state,
                 categoryManagementModal: {
-                    ...state,
+                    ...state.categoryManagementModal,
                     categoryModal: true
                 },
             }
@@ -35,57 +35,62 @@ const categoryModalreducer = (state = initialState, action) => {
             return {
                 ...state,
                 categoryManagementModal: {
-                    ...state,
+                    ...state.categoryManagementModal,
                     categoryModal: false
                 },
-                selectedCategory:null,
+                selectedCategory: state.selectedCategory === "category" ? {} : state.selectedCategory,
+                selectedSubCategory: {},
                 actionName: "",
             }
         }
 
-        case CategoryManagementMap.OPEN_VENDOR_ITEM_MODAL : {
+        case CategoryManagementMap.OPEN_VENDOR_ITEM_MODAL: {
             return {
                 ...state,
                 categoryManagementModal: {
+                    ...state.categoryManagementModal,
                     categoryModal: false,
-                    importItemModal:true
+                    importItemModal: true
                 },
-                selectedCategory:null
+                selectedCategory: {}
             }
         }
 
-        case CategoryManagementMap.CLOSE_VENDOR_ITEM_MODAL : {
+        case CategoryManagementMap.CLOSE_VENDOR_ITEM_MODAL: {
             return {
                 ...state,
                 categoryManagementModal: {
+                    ...state.categoryManagementModal,
                     categoryModal: false,
-                    importItemModal:false
+                    importItemModal: false
                 },
-                selectedCategory:null
+                selectedCategory: {}
             }
         }
 
-        case CategoryManagementMap.ACTIVE_CATEGORY : {
+        case CategoryManagementMap.ACTIVE_CATEGORY: {
             return {
                 ...state,
                 categoryManagementModal: {
+                    ...state.categoryManagementModal,
                     categoryModal: false,
-                    importItemModal:false,
-                    ItemUpdateModal: true   
+                    importItemModal: false,
+                    ItemUpdateModal: true
                 },
                 // selectedCategory:null
             }
         }
 
-        case CategoryManagementMap.DEACTIVE_CATEGRY : {
+        case CategoryManagementMap.DEACTIVE_CATEGRY: {
             return {
                 ...state,
                 categoryManagementModal: {
+                    ...state.categoryManagementModal,
                     categoryModal: false,
-                    importItemModal:false,
+                    importItemModal: false,
                     ItemUpdateModal: false
                 },
-                selectedCategory:{}
+                selectedCategory: {}
             }
         }
 
@@ -96,37 +101,38 @@ const categoryModalreducer = (state = initialState, action) => {
                     ...state.category
                 },
                 refereshCategoryList: true,
-                selectedCategory:{}
+                selectedCategory: {}
 
             }
         }
-
+        case CategoryManagementMap.STATUS_UPDATED:
+        case CategoryManagementMap.EDIT_CATEGORY_SUCCESSFULLY:
         case CategoryManagementMap.ADD_CATEGORY_SUCCESSFULLY: {
             return {
                 ...state,
-                category:{
-                    ...action.payload
-                },
+                // category: {
+                //     ...action.payload
+                // },
                 categoryManagementModal: {
+                    ...state.categoryManagementModal,
                     categoryModal: false,
                     importItemModal: false,
                     ItemUpdateModal: false
                 },
+                selectedCategory: state.selectedCategory === "category" ? {} : state.selectedCategory,
+                selectedSubCategory: {},
                 refereshCategoryList: true
             }
         }
 
         case CategoryManagementMap.ERROR_IN_ADD_CATEGORY: {
-            return{
+            return {
                 ...state,
-                category:{
-                    ...state.category
-                }
             }
         }
 
         case CategoryManagementMap.REFRESH_CATEGORY_LIST: {
-            return{
+            return {
                 ...state,
                 refereshCategoryList: true,
                 categoryList: action.payload.categoryList
@@ -134,14 +140,20 @@ const categoryModalreducer = (state = initialState, action) => {
         }
 
         case CategoryManagementMap.SELECTED_USER: {
-            return{
+            return {
                 ...state,
                 selectedCategory: action.payload
             }
         }
+        case CategoryManagementMap.SELECTED_SUB_CATEGORY: {
+            return {
+                ...state,
+                selectedSubCategory: action.payload
+            }
+        }
 
         case CategoryManagementMap.DISPLAY_CATEGORY_DATA: {
-            return{
+            return {
                 ...state,
                 refereshCategoryList: false,
                 categoryList: action.payload
@@ -152,29 +164,28 @@ const categoryModalreducer = (state = initialState, action) => {
             return {
                 ...state,
                 subCategoryList: action.payload,
-                categorySelected:'subcategory',
+                categorySelected: 'subcategory',
+                refereshCategoryList: false
             }
         }
-        
-        case CategoryManagementMap.STATUS_UPDATED: {
-            return{
-                ...state,
-                categoryManagementModal: {
-                    categoryModal: false,
-                    importItemModal:false,
-                    ItemUpdateModal: false   
-                },
-                refereshCategoryList: true
-            }
-        }
+
         case CategoryManagementMap.STATUS_UPDATED_FAIL: {
             return {
                 ...state,
                 refereshCategoryList: false
             }
         }
+        case CategoryManagementMap.BACK_TO_CATEGORY: {
+            return {
+                ...state,
+                categorySelected: 'category',
+                refereshCategoryList: true,
+                selectedCategory: {},
+                selectedSubCategory: {},
+            }
+        }
         default:
-            return {...state}
+            return { ...state }
     }
 }
 
