@@ -4,7 +4,6 @@ import { useLocation } from "react-router";
 import { NavLink } from "react-router-dom";
 import SVG from "react-inlinesvg";
 import { toAbsoluteUrl, checkIsActive } from "../../../../_helpers";
-
 export function AsideMenuList({ layoutProps }) {
 	const location = useLocation();
 	const getMenuItemActive = (url, hasSubmenu = false) => {
@@ -12,7 +11,9 @@ export function AsideMenuList({ layoutProps }) {
 			? ` ${!hasSubmenu && "menu-item-active"} menu-item-open `
 			: "";
 	};
-
+	const setVendorFlag = () => {
+		// dispatch
+	}
 	return (
 		<>
 			{/* begin::Menu Nav */}
@@ -152,7 +153,7 @@ export function AsideMenuList({ layoutProps }) {
 									<i className="menu-bullet menu-bullet-dot">
 										<span />
 									</i>
-									<span className="menu-text">Import Item from Vendor</span>
+									<span className="menu-text" onClick={setVendorFlag}>Import Item from Vendor</span>
 								</NavLink>
 							</li>
 						</ul>

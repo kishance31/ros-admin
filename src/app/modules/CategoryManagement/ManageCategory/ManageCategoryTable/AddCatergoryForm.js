@@ -2,12 +2,16 @@ import React from "react";
 import { Modal, Button } from "react-bootstrap";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
-import {useDispatch, useSelector} from 'react-redux'
-import {addCategoryDataAsync, EditCategoryAsync, addSubCategoryDataAsync, EditSubCategoryDataAsync} from '../../../../actions/categoryManagementModal.action'
+import { useDispatch, useSelector } from 'react-redux'
+import {
+    addCategoryDataAsync,
+    EditCategoryAsync,
+    addSubCategoryDataAsync,
+    EditSubCategoryDataAsync
+} from '../../../../actions/categoryManagementModal.action'
 import {
     Input
 } from '../../../../../_metronic/_partials/controls';
-import { values } from "lodash";
 
 const EditCategorySchema = Yup.object().shape({
     category_name: Yup.string()
@@ -16,74 +20,47 @@ const EditCategorySchema = Yup.object().shape({
         .required("Category Name is required")
 });
 
-const AddCatergoryForm =  ({ actionsLoading, selectedCategory }) => {
-    const modalName = useSelector(state => state.categoryModal.categorySelected );
-    const categorySel = useSelector(state => state.categoryModal.selectedCategory )
-    const dispatch = useDispatch()
-    const initValuesofCategory={
-        category_name: "",
-        status: 'true'
-    }
-    const initValuesofSubCategory={
-        subcategory_name: "",
-        status: 'true'
-    }
+const AddCatergoryForm = ({ onHideModal }) => {
+    const modalName = useSelector(state => state.categoryModal.categorySelected);
+    const categorySel = useSelector(state => state.categoryModal.selectedCategory);
+    const subCategorySel = useSelector(state => state.categoryModal.selectedSubCategory);
+    const dispatch = useDispatch();
 
-    // const getInitDataValue = () => (
-    //    modalName == 'category' ? (categorySel ? selectedCategory : initValuesofCategory): (categorySel ? initValuesofSubCategory : selectedCategory)
-    // )
+    const getInitValue = () => {
+        return modalName === "category" ? (
+            categorySel.category_name ? categorySel.category_name : ""
+        ) : (
+                subCategorySel.subcategory_name ? subCategorySel.subcategory_name : ""
+            );
+    }
     return (
-        
-        <>
-        
-            <Formik
-                initialValues={
-                    modalName == 'category' ? (categorySel ? selectedCategory : initValuesofCategory): (categorySel ? initValuesofSubCategory : selectedCategory)
 
-                }
-                validate={(values) => {
-                    const errors = {};
-                    for (let key in values) {
-                        if(key !== "_id") {
-                            if (!values[key]) {
-                                errors[key] = `${key} is required.`
-                            }
-                        }
-                    }}}
+        <>
+
+            <Formik
+                initialValues={{
+                    category_name: getInitValue(),
+                }}
+
                 validationSchema={EditCategorySchema}
-                    
+
                 onSubmit={(values) => {
                     console.log('VALUSES', values);
-                    const subCategoryEdit = {
-                        'subcategory_name' : values.category_name,
-                        'category_id': selectedCategory._id
+                    if (modalName == "category" && !categorySel.category_name) {
+                        return dispatch(addCategoryDataAsync(values.category_name));
+                    } else if (modalName == "category" && categorySel) {
+                        return dispatch(EditCategoryAsync(values.category_name));
                     }
-                    const categoryEdit = {
-                        'category_name': values.category_name,
-                        'status': true
+                    if (modalName == "subcategory" && subCategorySel.subcategory_name) {
+                        dispatch(EditSubCategoryDataAsync(values.category_name))
+                    } else {
+                        dispatch(addSubCategoryDataAsync(values.category_name))
                     }
-
-                    if(modalName == "category" && !selectedCategory.category_name){
-                        alert('111111111')
-                        dispatch(addCategoryDataAsync(categoryEdit));
-                    }else if(modalName == "category" && selectedCategory){
-                        // dispatch(EditCategoryAsync(categoryEdit));
-                    }else if(modalName == "subcategory" && selectedCategory.subcategory_name){
-                        // dispatch(addSubCategoryDataAsync(subCategoryEdit))
-                    }else {
-                        // dispatch(addSubCategoryDataAsync(subCategoryEdit))
-                    }
-                    
                 }}
             >
                 {({ handleSubmit }) => (
                     <>
                         <Modal.Body className="overlay overlay-block">
-                            {actionsLoading && (
-                                <div className="overlay-layer bg-transparent">
-                                    <div className="spinner spinner-lg spinner-success" />
-                                </div>
-                            )}
                             <Form className="form form-label-right">
                                 <div className="form-group row">
                                     <div className="col-lg-12">
@@ -92,26 +69,26 @@ const AddCatergoryForm =  ({ actionsLoading, selectedCategory }) => {
                                             component={Input}
                                             placeholder="Category Name"
                                             label="Category Name"
-                                            value={modalName == "category"? values.category_name : values.subcategory_name}
                                         />
-                                    </div>  
+                                    </div>
                                 </div>
                             </Form>
                         </Modal.Body>
                         <Modal.Footer>
+                            <Button
+                                type="button"
+                                variant="secondary"
+                                onClick={onHideModal}
+                                className="mr-5"
+                            >
+                                Cancel
+                                </Button>
                             <Button
                                 type="submit"
                                 variant="primary"
                                 onClick={() => handleSubmit()}
                             >
                                 CREATE
-                                </Button>
-                                <Button
-                                type="button"
-                                variant="danger"
-                                // onClick={() => handleSubmit()}
-                            >
-                                Cancel
                                 </Button>
                         </Modal.Footer>
                     </>

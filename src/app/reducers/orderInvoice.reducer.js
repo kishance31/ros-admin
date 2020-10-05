@@ -1,5 +1,3 @@
-import { orderInvoiceMap } from '../actions/orderInvoice.action';
-
 const initialState = {
   orderInvoiceData: {
     firstInvoice: [

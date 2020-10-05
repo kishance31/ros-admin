@@ -1,32 +1,32 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
-const ActiveModalContainer = ({modalActiveDialog,onCloseActiveDialog, onActivateUser}) => {
+const DeleteModalContainer = ({ isOpen, onCloseDialog, onDeleteRole }) => {
 
     return (
         <>
-            <Modal show={modalActiveDialog} onHide={onCloseActiveDialog}>
+            <Modal show={isOpen} onHide={onCloseDialog}>
                 <Modal.Header closeButton >
                     <Modal.Title>
                         <>
-                            <h5 className="float-left">User Active</h5>
+                            <h5 className="float-left">Role Delete</h5>
                         </>
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                   <h5> Are you sure to activate this user?</h5>
+                    <h5> Are you sure to permanently delete this role?</h5>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" className="float-left" onClick={onCloseActiveDialog}>
+                    <Button variant="secondary" onClick={onCloseDialog}>
                         Close
                     </Button>
-                    <Button variant="success" onClick={onActivateUser}>
-                        Activate
+                    <Button variant="danger" onClick={onDeleteRole}>
+                        Delete
                     </Button>
                 </Modal.Footer>
             </Modal>
         </>
     );
 }
-export default ActiveModalContainer;
+export default DeleteModalContainer;
 

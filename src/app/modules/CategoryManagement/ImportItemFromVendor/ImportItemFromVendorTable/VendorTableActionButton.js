@@ -4,36 +4,36 @@ export const VendorTableActionButtons = (cellContent,
     row,
     rowIndex,
     {
-        // OnAddCategory,setSelectedCategory,
-        onClickVendorItemAddButton
+        OnAddCategory,setSelectedCategory,
+        onClickVendorItemAddButton,
+        deleteData
     }
     ) => {
     const onClickVendorItemEdit = (row) => {
-        onClickVendorItemAddButton()
+       setSelectedCategory(row) 
+       onClickVendorItemAddButton()
+    }
+
+    const onClickDeleteData = (row) => {
+        setSelectedCategory(row) 
+        deleteData()
     }
 
     return (
         
         <>
         <a
-            className="btn btn-info font-weight-bolder font-size-sm mr-3"
+            className="btn btn-success font-weight-bolder font-size-sm mr-3"
             onClick={() => onClickVendorItemEdit(row)}
         >
             EDIT
         </a>
         
         <a
-            className="btn btn-success font-weight-bolder font-size-sm mr-3"
-            // onClick={() => OnEditButtonClick(row)}
-        >
-             ACTIVE
-        </a>
-
-        <a
             className="btn btn-danger font-weight-bolder font-size-sm mr-3"
-            // onClick={() => ClickDeleteCategoryAsync(row)}
+            onClick={() => onClickDeleteData(row)}
         >
-            DEACTIVE
+             DELETE
         </a>
     </> 
     )

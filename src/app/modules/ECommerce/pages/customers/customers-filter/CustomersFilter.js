@@ -70,6 +70,7 @@ export function CustomersFilter({ listLoading }) {
                   placeholder="Filter by Status"
                   // TODO: Change this code
                   onChange={(e) => {
+                    console.log('dddddddddddddddddddddddddddddddddddddd', e.target.value);
                     setFieldValue("status", e.target.value);
                     handleSubmit();
                   }}

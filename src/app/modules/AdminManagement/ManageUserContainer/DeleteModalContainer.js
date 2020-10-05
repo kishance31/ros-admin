@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
-const ModalContainer = ({modalDialog,onCloseDialog}) => {
+const ModalContainer = ({ modalDialog, onCloseDialog, onDeleteUser }) => {
 
     return (
         <>
@@ -14,13 +14,13 @@ const ModalContainer = ({modalDialog,onCloseDialog}) => {
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                   <h5> Are you sure to permanently delete this user?</h5>
+                    <h5> Are you sure to permanently delete this user?</h5>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={onCloseDialog}>
                         Close
                     </Button>
-                    <Button variant="danger" onClick={onCloseDialog}>
+                    <Button variant="danger" onClick={onDeleteUser}>
                         Delete
                     </Button>
                 </Modal.Footer>

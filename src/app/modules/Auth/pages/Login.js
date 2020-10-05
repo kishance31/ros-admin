@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { FormattedMessage, injectIntl } from 'react-intl';
-import { loginAsync } from '../../../actions/auth.actions';
+import { loginAsync, UserActions } from '../../../actions/auth.actions';
 // import { login } from "../_redux/authCrud";
 
 /*
@@ -18,13 +18,14 @@ import { loginAsync } from '../../../actions/auth.actions';
 */
 
 const initialValues = {
-  email: 'admin@demo.com',
-  password: 'demo',
+  email: '',
+  password: '',
 };
 
 function Login(props) {
   const { intl } = props;
-  const [loading, setLoading] = useState(false);
+  const history = useHistory();
+
   const LoginSchema = Yup.object().shape({
     email: Yup.string()
       .email('Wrong email format')
@@ -46,14 +47,8 @@ function Login(props) {
   });
 
   const dispatch = useDispatch();
-
-  const enableLoading = () => {
-    setLoading(true);
-  };
-
-  const disableLoading = () => {
-    setLoading(false);
-  };
+  const authState = useSelector(state => state.auth, shallowEqual);
+  const [statusColor, setStatusColor] = useState("danger");
 
   const getInputClasses = (fieldname) => {
     if (formik.touched[fieldname] && formik.errors[fieldname]) {
@@ -71,27 +66,35 @@ function Login(props) {
     initialValues,
     validationSchema: LoginSchema,
     onSubmit: (values, { setStatus, setSubmitting }) => {
-      enableLoading();
-      setTimeout(() => {
-        try {
-          disableLoading();
-          setSubmitting(false);
-          dispatch(
-            loginAsync({ email: values.email, password: values.password })
-          );
-        } catch (error) {
-          console.log(error);
-          disableLoading();
-          setSubmitting(false);
-          setStatus(
-            intl.formatMessage({
-              id: 'AUTH.VALIDATION.INVALID_LOGIN',
-            })
-          );
-        }
-      }, 1000);
-    },
+      try {
+        dispatch(
+          loginAsync({ email: values.email, password: values.password })
+        );
+      } catch (error) {
+        setStatus(
+          intl.formatMessage({
+            id: 'AUTH.VALIDATION.INVALID_LOGIN',
+          })
+        );
+      }
+    }
   });
+
+  useEffect(() => {
+    if (authState.errors || authState.message) {
+      setStatusColor(
+        authState.message ? "primary" : "danger"
+      )
+      formik.setStatus(authState.errors || authState.message)
+    } else {
+      formik.setStatus("");
+    }
+  }, [authState.errors, authState.message]);
+
+  const onForgotPswdClick = () => {
+    dispatch(UserActions.redirectForgotPswd());
+    history.push("/auth/forgot-password");
+  }
 
   return (
     <div className='login-form login-signin' id='kt_login_signin_form'>
@@ -111,18 +114,13 @@ function Login(props) {
         onSubmit={formik.handleSubmit}
         className='form fv-plugins-bootstrap fv-plugins-framework'
       >
-        {formik.status ? (
-          <div className='mb-10 alert alert-custom alert-light-danger alert-dismissible'>
-            <div className='alert-text font-weight-bold'>{formik.status}</div>
-          </div>
-        ) : (
-          <div className='mb-10 alert alert-custom alert-light-info alert-dismissible'>
-            <div className='alert-text '>
-              Use account <strong>admin@demo.com</strong> and password{' '}
-              <strong>demo</strong> to continue.
-            </div>
-          </div>
-        )}
+        {formik.status && (
+					<div className={`mb-10 alert alert-custom alert-light-${statusColor} alert-dismissible`}>
+						<div className="alert-text font-weight-bold">
+							{formik.status}
+						</div>
+					</div>
+				)}
 
         <div className='form-group fv-plugins-icon-container'>
           <input
@@ -157,22 +155,22 @@ function Login(props) {
           ) : null}
         </div>
         <div className='form-group d-flex flex-wrap justify-content-between align-items-center'>
-          <Link
-            to='/auth/forgot-password'
-            className='text-dark-50 text-hover-primary my-3 mr-2'
-            id='kt_login_forgot'
-          >
-            <FormattedMessage id='AUTH.GENERAL.FORGOT_BUTTON' />
-          </Link>
           <button
-            id='kt_login_signin_submit'
-            type='submit'
-            disabled={formik.isSubmitting}
-            className={`btn btn-primary font-weight-bold px-9 py-4 my-3`}
+            onClick={onForgotPswdClick}
+            className="btn btn-light-secondary text-dark-50 text-hover-primary my-3 mr-2"
+            id="kt_login_forgot"
           >
-            <span>Sign In</span>
-            {loading && <span className='ml-3 spinner spinner-white'></span>}
+            <FormattedMessage id="AUTH.GENERAL.FORGOT_BUTTON" />
           </button>
+          <button
+						id="kt_login_signin_submit"
+						type="submit"
+						disabled={authState.isLoading}
+						className={`btn btn-primary font-weight-bold px-9 py-4 my-3`}
+					>
+						<span>Sign In</span>
+						{authState.isLoading && <span className="ml-3 spinner spinner-white"></span>}
+					</button>
         </div>
       </form>
       {/*end::Form*/}
