@@ -1,51 +1,47 @@
 import React, { useEffect } from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
-import { Button, ButtonGroup } from 'react-bootstrap';
-import { useSelector, useDispatch } from 'react-redux';
-import { addLicenseListAsync } from '../../actions/manageLicense.action';
+import {EditButtons} from './EditButtons';
+import { useSelector } from 'react-redux';
 
-export const ManageLicenseFormatter = () => {
-  return (
-    <>
-      <ButtonGroup>
-        <Button variant='secondary'>Active</Button>&nbsp;&nbsp;
-        <Button variant='secondary'>Deactive</Button>
-      </ButtonGroup>
-    </>
-  );
-};
 
-const ManageLicenseTable = () => {
-  const dispatch = useDispatch();
-
-  const { licenseList, refreshManageLicenseData } = useSelector(
-    (state) => state.manageLicense
-  );
-
-  useEffect(() => {
-    if (refreshManageLicenseData) {
-      dispatch(addLicenseListAsync());
-    }
-  }, [refreshManageLicenseData, dispatch]);
-
+const ManageLicenseTable = ({openModal, setSelectedLicense, ToggleButton}) => {
+  const licenseList = useSelector(state => state.licenceManagement.licenseList);
+  
   const columns = [
     {
       dataField: 'type',
       text: 'License Type',
+      align: 'center',
+      headerAlign: 'center'
     },
     {
       dataField: 'price',
       text: 'License Cost(USD)',
+      align: 'center',
+      headerAlign: 'center'
+    },
+    {
+      dataField: 'active',
+      text: 'Status',
+      align: 'center',
+      headerAlign: 'center',
+      hidden: true
     },
     {
       dataField: 'button',
       text: 'Actions',
+      align: 'center',
       headerAlign: 'center',
-      formatter: ManageLicenseFormatter,
-    },
+      formatter: EditButtons,
+      formatExtraData: {
+        openModal: openModal,
+        setSelectedLicense: setSelectedLicense,
+        ToggleButton: ToggleButton
+    }},
   ];
 
   return (
+    <>
     <div>
       <div className='container' style={{ marginTop: 50 }}>
         <BootstrapTable
@@ -61,6 +57,7 @@ const ManageLicenseTable = () => {
         />
       </div>
     </div>
+    </>
   );
 };
 

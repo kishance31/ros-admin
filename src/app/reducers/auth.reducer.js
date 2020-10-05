@@ -88,4 +88,4 @@ const authReducer = (state = initialAuthState, action) => {
             return state;
     }
 }
-export const AuthReducer = persistReducer(persistConfig, authReducer);
+export const AuthReducer = persistReducer(persistConfig, authReducer);  

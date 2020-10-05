@@ -1,27 +1,32 @@
-import {CategoryManagementMap} from '../actions/categoryManagementModal.action';
+import { CategoryManagementMap } from '../actions/categoryManagementModal.action';
 
 const initialState = {
     categoryManagementModal: {
         categoryModal: false,
         importItemModal: false,
-        ItemUpdateModal: false
+        ItemUpdateModal: false,
+        openConfirmModal: false
     },
-    categorySelected:'category',
+    categorySelected: 'category',
     category: {
-        category_name:"",
-        status:""
+        category_name: "",
+        status: ""
     },
-    categoryList:[],
-    subCategoryList:[],
+    categoryList: [],
+    subCategoryList: [],
+    vendorItemList: [],
     selectedCategory: {},
-    selectedSubCategory:{},
-    refereshCategoryList: true
+    selectedSubCategory: {},
+    refereshCategoryList: true,
+    refereshVendorList: true,
+    filter: false,
+    AllProduct: true
 }
 
 const categoryModalreducer = (state = initialState, action) => {
     switch (action.type) {
 
-        case CategoryManagementMap.OPEN_CATEGORY_MODAL : {
+        case CategoryManagementMap.OPEN_CATEGORY_MODAL: {
             return {
                 ...state,
                 categoryManagementModal: {
@@ -38,54 +43,83 @@ const categoryModalreducer = (state = initialState, action) => {
                     ...state,
                     categoryModal: false
                 },
-                selectedCategory:null,
-                actionName: "",
+                selectedCategory: null,
             }
         }
 
-        case CategoryManagementMap.OPEN_VENDOR_ITEM_MODAL : {
+        case CategoryManagementMap.OPEN_VENDOR_ITEM_MODAL: {
+
             return {
                 ...state,
                 categoryManagementModal: {
+                    ...state,
                     categoryModal: false,
-                    importItemModal:true
+                    importItemModal: true
                 },
-                selectedCategory:null
+                refereshCategoryList: false,
+                refereshVendorList: false,
             }
         }
 
-        case CategoryManagementMap.CLOSE_VENDOR_ITEM_MODAL : {
+        case CategoryManagementMap.CLOSE_VENDOR_ITEM_MODAL: {
             return {
                 ...state,
                 categoryManagementModal: {
+                    ...state,
                     categoryModal: false,
-                    importItemModal:false
+                    importItemModal: false
                 },
-                selectedCategory:null
+                selectedCategory: null
             }
         }
 
-        case CategoryManagementMap.ACTIVE_CATEGORY : {
+        case CategoryManagementMap.OPEN_CONFIRM_MODAL: {
             return {
                 ...state,
                 categoryManagementModal: {
                     categoryModal: false,
-                    importItemModal:false,
-                    ItemUpdateModal: true   
+                    importItemModal: false,
+                    ItemUpdateModal: false,
+                    openConfirmModal: true
+                },
+                refereshVendorList: false
+            }
+        }
+
+        case CategoryManagementMap.CLOSE_CONFIRM_MODAL: {
+            return {
+                ...state,
+                categoryManagementModal: {
+                    categoryModal: false,
+                    importItemModal: false,
+                    ItemUpdateModal: false,
+                    openConfirmModal: false
+                },
+                refereshVendorList: true
+            }
+        }
+
+        case CategoryManagementMap.ACTIVE_CATEGORY: {
+            return {
+                ...state,
+                categoryManagementModal: {
+                    categoryModal: false,
+                    importItemModal: false,
+                    ItemUpdateModal: true
                 },
                 // selectedCategory:null
             }
         }
 
-        case CategoryManagementMap.DEACTIVE_CATEGRY : {
+        case CategoryManagementMap.DEACTIVE_CATEGRY: {
             return {
                 ...state,
                 categoryManagementModal: {
                     categoryModal: false,
-                    importItemModal:false,
+                    importItemModal: false,
                     ItemUpdateModal: false
                 },
-                selectedCategory:{}
+                selectedCategory: {}
             }
         }
 
@@ -96,7 +130,7 @@ const categoryModalreducer = (state = initialState, action) => {
                     ...state.category
                 },
                 refereshCategoryList: true,
-                selectedCategory:{}
+                selectedCategory: {}
 
             }
         }
@@ -104,7 +138,7 @@ const categoryModalreducer = (state = initialState, action) => {
         case CategoryManagementMap.ADD_CATEGORY_SUCCESSFULLY: {
             return {
                 ...state,
-                category:{
+                category: {
                     ...action.payload
                 },
                 categoryManagementModal: {
@@ -112,21 +146,21 @@ const categoryModalreducer = (state = initialState, action) => {
                     importItemModal: false,
                     ItemUpdateModal: false
                 },
-                refereshCategoryList: true
+                refereshCategoryList: true,
             }
         }
 
         case CategoryManagementMap.ERROR_IN_ADD_CATEGORY: {
-            return{
+            return {
                 ...state,
-                category:{
+                category: {
                     ...state.category
                 }
             }
         }
 
         case CategoryManagementMap.REFRESH_CATEGORY_LIST: {
-            return{
+            return {
                 ...state,
                 refereshCategoryList: true,
                 categoryList: action.payload.categoryList
@@ -134,17 +168,19 @@ const categoryModalreducer = (state = initialState, action) => {
         }
 
         case CategoryManagementMap.SELECTED_USER: {
-            return{
+            return {
                 ...state,
                 selectedCategory: action.payload
             }
         }
-
         case CategoryManagementMap.DISPLAY_CATEGORY_DATA: {
-            return{
+            return {
                 ...state,
                 refereshCategoryList: false,
-                categoryList: action.payload
+                categoryList: action.payload,
+                filter: false,
+                refereshVendorList: false,
+                selectedCategory: ""
             }
         }
 
@@ -152,17 +188,17 @@ const categoryModalreducer = (state = initialState, action) => {
             return {
                 ...state,
                 subCategoryList: action.payload,
-                categorySelected:'subcategory',
+                categorySelected: 'subcategory',
             }
         }
-        
+
         case CategoryManagementMap.STATUS_UPDATED: {
-            return{
+            return {
                 ...state,
                 categoryManagementModal: {
                     categoryModal: false,
-                    importItemModal:false,
-                    ItemUpdateModal: false   
+                    importItemModal: false,
+                    ItemUpdateModal: false
                 },
                 refereshCategoryList: true
             }
@@ -173,8 +209,80 @@ const categoryModalreducer = (state = initialState, action) => {
                 refereshCategoryList: false
             }
         }
+        case CategoryManagementMap.IMPORT_VENDOR_ITEM_SUCCESSFULLY: {
+            return {
+                ...state,
+                vendorItemList: [...action.payload],
+                refereshVendorList: true,
+                refereshCategoryList: false,
+                AllProduct: true,
+            }
+        }
+
+        case CategoryManagementMap.TOGGLE_FILTER_STATE: {
+            return {
+                ...state,
+                filter: false,
+                AllProduct: true
+            }
+        }
+
+        case CategoryManagementMap.ITEM_DELETE_SUCCESSFULLY: {
+            return {
+                ...state,
+                refereshVendorList: true,
+                categoryManagementModal: {
+                    categoryModal: false,
+                    importItemModal: false,
+                    ItemUpdateModal: false,
+                    openConfirmModal: false
+                }
+
+            }
+        }
+
+        case CategoryManagementMap.ITEM_DELETE_FAIL: {
+            return {
+                ...state,
+                refereshVendorList: false,
+                selectedCategory: "",
+                categoryManagementModal: {
+                    categoryModal: false,
+                    importItemModal: false,
+                    ItemUpdateModal: false,
+                    openConfirmModal: false
+                }
+            }
+        }
+
+        case CategoryManagementMap.EDIT_PRODUCT_SUCCESSFULLY: {
+            return {
+                ...state,
+                refereshCategoryList: true,
+                refereshVendorList: true,
+                categoryManagementModal: {
+                    categoryModal: false,
+                    importItemModal: false,
+                    ItemUpdateModal: false,
+                    openConfirmModal: false
+                }
+            }
+        }
+
+        case CategoryManagementMap.EDIT_PRODUCT_FAIL: {
+            return {
+                ...state,
+                refereshVendorList: false,
+                categoryManagementModal: {
+                    categoryModal: false,
+                    importItemModal: false,
+                    ItemUpdateModal: false,
+                    openConfirmModal: false
+                }
+            }
+        }
         default:
-            return {...state}
+            return { ...state }
     }
 }
 
