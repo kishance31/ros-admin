@@ -21,7 +21,9 @@ const ManageCorporate = () => {
   }, [dispatch]);
 
   const approveRejectAction = (_id, status) => {
-    dispatch(manageCorporateAction.updateManageCorporateStatus(_id, status));
+    dispatch(
+      manageCorporateAction.updateManageCorporateStatusAsync(_id, status)
+    );
   };
 
   const activeDeactiveAction = (_id, isActive) => {
