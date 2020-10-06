@@ -7,8 +7,8 @@ const CorporateManagementLink = () => {
       <NavLink to='/corporate-management'>
         <span>Manage Corporate</span>
       </NavLink>
-      <NavLink to='/corporate-management/manage-licence'>
-        <span>Manage Licence</span>
+      <NavLink to='/corporate-management/corporate-manage-license'>
+        <span>Manage License</span>
       </NavLink>
       <NavLink to='/corporate-management/manage-order'>
         <span>Manage Order</span>

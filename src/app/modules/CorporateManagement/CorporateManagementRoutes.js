@@ -3,7 +3,7 @@ import { Switch } from 'react-router-dom';
 
 import { ContentRoute } from '../../../_metronic/layout';
 import ManageCorporate from './ManageCorporate';
-import ManageLicence from './ManageLicence';
+import CorporateManageLicense from './CorporateManageLicense';
 import ManageOrder from './ManageOrder';
 import LicenceOrder from './LicenceOrder';
 import OrderInvoice from './OrderInvoice';
@@ -18,8 +18,8 @@ const CorporateManagementRoutes = () => {
         component={ManageCorporate}
       />
       <ContentRoute
-        path='/corporate-management/manage-licence'
-        component={ManageLicence}
+        path='/corporate-management/corporate-manage-license'
+        component={CorporateManageLicense}
       />
       <ContentRoute
         path='/corporate-management/manage-order'
