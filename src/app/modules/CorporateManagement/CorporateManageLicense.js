@@ -3,19 +3,24 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import { useSelector, useDispatch } from 'react-redux';
 
-import SubTableLicenceType from './ManageLicence/SubTableLicenceType';
-import SubTableLicenceNo from './ManageLicence/SubTableLicenceNo';
-import ActionButtons from './ManageLicence/ActionButtons';
-import { manageLicenceAction } from '../../actions/manageLicence.action';
+import SubTableLicenseType from './CorporateManageLicense/SubTableLicenseType';
+import SubTableLicenseNo from './CorporateManageLicense/SubTableLicenseNo';
+import ActionButtons from './CorporateManageLicense/ActionButtons';
+import { corporateManageLicenseAction } from '../../actions/corporateManageLicense.action';
 
-const ManageLicence = () => {
+const CorporateManageLicense = () => {
   const dispatch = useDispatch();
-  const manageLicenceData = useSelector(
-    (state) => state.manageLicence.manageLicenceData
+  const corporateManageLicenseData = useSelector(
+    (state) => state.corporateManageLicense.corporateManageLicenseData
   );
-
+  console.log(corporateManageLicenseData);
   const activeDeactiveAction = (id, isActive) => {
-    dispatch(manageLicenceAction.updateManageLicenceIsActive(id, isActive));
+    dispatch(
+      corporateManageLicenseAction.updateCorporateManageLicenseIsActive(
+        id,
+        isActive
+      )
+    );
   };
 
   const customTotal = (from, to, size) => (
@@ -53,7 +58,7 @@ const ManageLicence = () => {
       },
       {
         text: 'All',
-        value: manageLicenceData.length,
+        value: corporateManageLicenseData.length,
       },
     ],
   };
@@ -72,18 +77,18 @@ const ManageLicence = () => {
       text: 'Order Date',
     },
     {
-      dataField: 'licenceType',
-      text: 'Licence Type',
-      formatter: SubTableLicenceType,
+      dataField: 'licenseType',
+      text: 'License Type',
+      formatter: SubTableLicenseType,
     },
     {
       dataField: 'liceneType',
-      text: 'No of Licene',
-      formatter: SubTableLicenceNo,
+      text: 'No of License',
+      formatter: SubTableLicenseNo,
     },
     {
-      dataField: 'licenceCost',
-      text: 'Licence Cost (USD)',
+      dataField: 'licenseCost',
+      text: 'License Cost (USD)',
     },
     {
       dataField: 'status',
@@ -102,7 +107,9 @@ const ManageLicence = () => {
   return (
     <BootstrapTable
       keyField='id'
-      data={manageLicenceData === null ? [] : manageLicenceData}
+      data={
+        corporateManageLicenseData === null ? [] : corporateManageLicenseData
+      }
       columns={columns}
       bordered={false}
       noDataIndication='No records found!'
@@ -111,4 +118,4 @@ const ManageLicence = () => {
   );
 };
 
-export default ManageLicence;
+export default CorporateManageLicense;
