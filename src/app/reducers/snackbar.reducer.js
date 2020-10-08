@@ -4,7 +4,7 @@ const initialSnackBarState = {
     successSnackbarOpen: false,
     successSnackbarMessage:'',
     successSnackbarVariant:'',
-    successSnackbarDuration:'',
+    successSnackbarDuration:null,
     errorSnackbarOpen:false
 };
 
