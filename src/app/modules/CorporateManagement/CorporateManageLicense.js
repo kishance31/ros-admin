@@ -1,99 +1,107 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
-import paginationFactory from 'react-bootstrap-table2-paginator';
-import { useSelector, useDispatch } from 'react-redux';
+import paginationFactory, {
+  PaginationProvider,
+} from 'react-bootstrap-table2-paginator';
+import { Pagination } from '../../../_metronic/_partials/controls';
+import { shallowEqual, useSelector, useDispatch } from 'react-redux';
+import moment from 'moment';
 
 import SubTableLicenseType from './CorporateManageLicense/SubTableLicenseType';
 import SubTableLicenseNo from './CorporateManageLicense/SubTableLicenseNo';
 import ActionButtons from './CorporateManageLicense/ActionButtons';
-import { corporateManageLicenseAction } from '../../actions/corporateManageLicense.action';
+import {
+  corporateManageLicenseAction,
+  displayCorporateManageLicenseDataAsync,
+} from '../../actions/corporateManageLicense.action';
 
 const CorporateManageLicense = () => {
   const dispatch = useDispatch();
-  const corporateManageLicenseData = useSelector(
-    (state) => state.corporateManageLicense.corporateManageLicenseData
-  );
-  console.log(corporateManageLicenseData);
-  const activeDeactiveAction = (id, isActive) => {
+  const {
+    corporateManageLicenseData,
+    totalCount,
+    pageSize,
+    pageNo,
+  } = useSelector((state) => state.corporateManageLicense, shallowEqual);
+
+  const activeDeactiveAction = (orderId, isActive) => {
     dispatch(
       corporateManageLicenseAction.updateCorporateManageLicenseIsActive(
-        id,
+        orderId,
         isActive
       )
     );
   };
 
-  const customTotal = (from, to, size) => (
-    <span className='react-bootstrap-table-pagination-total ml-4'>
-      Showing {from} to {to} of {size} Results
-    </span>
-  );
+  useEffect(() => {
+    dispatch(displayCorporateManageLicenseDataAsync());
+  }, [dispatch]);
 
-  const options = {
-    paginationSize: 4,
-    pageStartIndex: 1,
-    firstPageText: '<<',
-    prePageText: '<',
-    nextPageText: '>',
-    lastPageText: '>>',
-    nextPageTitle: 'First page',
-    prePageTitle: 'Pre page',
-    firstPageTitle: 'Next page',
-    lastPageTitle: 'Last page',
-    showTotal: true,
-    paginationTotalRenderer: customTotal,
-    disablePageTitle: true,
+  const formatedDate = (cell, row) => {
+    return moment(cell).format('DD/MM/YYYY');
+  };
+
+  const indexingSrNo = (cell, row, rowIndex) => {
+    return rowIndex + 1;
+  };
+
+  const calculateTotalLicenceCost = (cell, row) => {
+    let totalLicenseCost = 0;
+    totalLicenseCost = row.purchasedLicenses
+      .map((licence) => licence.totalPrice)
+      .reduce((prev, next) => prev + next);
+    return totalLicenseCost;
+  };
+
+  const paginationOption = {
+    custom: true,
+    totalSize: totalCount,
     sizePerPageList: [
-      {
-        text: '3',
-        value: 3,
-      },
-      {
-        text: '5',
-        value: 5,
-      },
-      {
-        text: '10',
-        value: 10,
-      },
-      {
-        text: 'All',
-        value: corporateManageLicenseData.length,
-      },
+      { text: '3', value: 3 },
+      { text: '5', value: 5 },
+      { text: '10', value: 10 },
     ],
+    sizePerPage: pageSize,
+    page: pageNo,
   };
 
   const columns = [
     {
-      dataField: 'id',
+      dataField: 'srNo',
       text: 'Sr no.',
+      formatter: indexingSrNo,
     },
     {
-      dataField: 'orderNo',
+      dataField: 'orderId',
       text: 'Order No',
     },
     {
-      dataField: 'orderDate',
+      dataField: 'createdAt',
       text: 'Order Date',
+      formatter: formatedDate,
     },
     {
-      dataField: 'licenseType',
+      dataField: 'purchasedLicenses.type',
       text: 'License Type',
       formatter: SubTableLicenseType,
     },
     {
-      dataField: 'liceneType',
+      dataField: 'purchasedLicenses.quantity',
       text: 'No of License',
       formatter: SubTableLicenseNo,
     },
     {
-      dataField: 'licenseCost',
+      dataField: 'purchasedLicenses.totalPrice',
       text: 'License Cost (USD)',
+      formatter: calculateTotalLicenceCost,
     },
-    {
-      dataField: 'status',
-      text: 'Status',
-    },
+
+    //commented as status field is not coming from API.
+    // {
+    //   dataField: 'status',
+    //   text: 'Status',
+    // },
+
     {
       dataField: 'action',
       text: 'Action',
@@ -104,17 +112,47 @@ const CorporateManageLicense = () => {
     },
   ];
 
-  return (
-    <BootstrapTable
-      keyField='id'
-      data={
-        corporateManageLicenseData === null ? [] : corporateManageLicenseData
+  const onTableChange = (type, newState) => {
+    if (type === 'pagination') {
+      if (
+        (newState.page && newState.page !== pageNo) ||
+        newState.sizePerPage !== pageSize
+      ) {
+        dispatch(
+          displayCorporateManageLicenseDataAsync(
+            newState.page,
+            newState.sizePerPage
+          )
+        );
       }
-      columns={columns}
-      bordered={false}
-      noDataIndication='No records found!'
-      pagination={paginationFactory(options)}
-    />
+    }
+  };
+
+  return (
+    <>
+      <PaginationProvider pagination={paginationFactory(paginationOption)}>
+        {({ paginationProps, paginationTableProps }) => {
+          return (
+            <Pagination paginationProps={paginationProps}>
+              <BootstrapTable
+                keyField='orderId'
+                bordered={false}
+                data={
+                  corporateManageLicenseData === null
+                    ? []
+                    : corporateManageLicenseData
+                }
+                columns={columns}
+                remote
+                noDataIndication='No records found!'
+                {...paginationTableProps}
+                onTableChange={onTableChange}
+              />
+            </Pagination>
+          );
+        }}
+      </PaginationProvider>
+    </>
   );
 };
 
