@@ -3,6 +3,7 @@ import { Modal, Button } from 'react-bootstrap';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import ManageEmailTable from './EmailTemplateContainer/Email-Table';
 import AddEmailEditForm from './EmailTemplateContainer/Add-Email';
+import {showSuccessSnackbar} from '../../actions/snackbar.action'
 import { ManageEmailTemplateAction, displayEmailTemplateDataAsync,deleteEmailTemplateDataAsync } from '../../actions/manageEmailTemplate.action';
 import { getAllRolesAsync } from '../../actions/rolesAndPermission.action';
 import { Card, CardBody, CardHeader, CardHeaderToolbar } from '../../../_metronic/_partials/controls';
@@ -15,9 +16,11 @@ const ManageUsers = () => {
   const {
     selectedEmailTemplate,
     modalDialog,
+    emailTemplateUpdated,
+    emailAddedSuccessfully,
+    emailTemplateDeleted,
     refreshEmailTemplateData
   } = useSelector(state => state.emailTemplate, shallowEqual)
-  const [SelectedRowIndex, SetIndex] = useState(null);
   const { roles, refreshRoles } = useSelector(state => state.rolesAndPermission, shallowEqual);
 
   useEffect(() => {
@@ -26,11 +29,17 @@ const ManageUsers = () => {
     }
   }, [refreshEmailTemplateData]);
 
-  // useEffect(() => {
-  //   if (refreshRoles) {
-  //     dispatch(getAllRolesAsync());
-  //   }
-  // }, [refreshRoles]);
+  useEffect(() => {
+    if (emailAddedSuccessfully) {
+      dispatch(showSuccessSnackbar('success',"Email template added successfully",2000));
+    } if (emailTemplateUpdated) {
+      dispatch(showSuccessSnackbar('success',"Email template updated successfully",2000));
+    }
+     if (emailTemplateDeleted) {
+      dispatch(showSuccessSnackbar('success',"Email template deleted successfully",2000));
+     }
+  }, [emailAddedSuccessfully,emailTemplateUpdated,emailTemplateDeleted]);
+
 
   const onOpenModal = () => {
     dispatch(ManageEmailTemplateAction.openModal());
@@ -41,7 +50,6 @@ const ManageUsers = () => {
   };
 
   const setSelectedUser = (row,rowIndex) => {
-    SetIndex(rowIndex)
     dispatch(ManageEmailTemplateAction.setSelectedEmailTemplate(row));
   }
 
@@ -76,7 +84,7 @@ onCloseDialog()
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <AddEmailEditForm onCloseModal={onCloseModal} SelectedRowIndex={SelectedRowIndex} selectedEmail={selectedEmailTemplate}  roles={roles} />
+              <AddEmailEditForm onCloseModal={onCloseModal}  selectedEmail={selectedEmailTemplate}  roles={roles} />
             </Modal.Body>
           </Modal>
           <DeleteModalContainer
