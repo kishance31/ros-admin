@@ -52,7 +52,7 @@ const manageCorporateReducer = (state = initialState, action) => {
         state,
       };
     }
-    case manageCorporateMap.UPDATE_MANAGE_CORPORATE_ISACTIVE: {
+    case manageCorporateMap.UPDATE_MANAGE_CORPORATE_ISACTIVE_SUCCESS: {
       let tempManageCorporateData = state.manageCorporateData.map((company) => {
         if (company._id === action.payload._id) {
           return { ...company, isActive: action.payload.isActive };
@@ -63,6 +63,11 @@ const manageCorporateReducer = (state = initialState, action) => {
       return {
         ...state,
         manageCorporateData: tempManageCorporateData,
+      };
+    }
+    case manageCorporateMap.UPDATE_MANAGE_CORPORATE_ISACTIVE_ERROR: {
+      return {
+        state,
       };
     }
     case manageCorporateMap.SET_PAGE_NO: {
