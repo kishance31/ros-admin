@@ -32,7 +32,7 @@ const ManageCorporate = () => {
 
   const activeDeactiveAction = (_id, isActive) => {
     dispatch(
-      manageCorporateAction.updateManageCorporateIsActive(_id, isActive)
+      manageCorporateAction.updateManageCorporateIsActiveAsync(_id, isActive)
     );
   };
 
