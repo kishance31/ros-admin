@@ -10,6 +10,8 @@ export const manageCorporateMap = {
     'UPDATE_MANAGE_CORPORATE_STATUS_SUCCESS',
   UPDATE_MANAGE_CORPORATE_STATUS_ERROR: 'UPDATE_MANAGE_CORPORATE_STATUS_ERROR',
   UPDATE_MANAGE_CORPORATE_ISACTIVE: 'UPDATE_MANAGE_CORPORATE_ISACTIVE',
+  SET_PAGE_NO: 'SET_PAGE_NO',
+  STE_PAGE_SIZE: 'STE_PAGE_SIZE',
 };
 
 export const manageCorporateAction = {
@@ -50,9 +52,21 @@ export const manageCorporateAction = {
       payload: { _id: _id, isActive: isActive },
     };
   },
+  setPageNo: (pageNo) => {
+    return {
+      type: manageCorporateMap.SET_PAGE_NO,
+      payload: pageNo,
+    };
+  },
+  setPageSize: (pageSize) => {
+    return {
+      type: manageCorporateMap.STE_PAGE_SIZE,
+      payload: pageSize,
+    };
+  },
 };
 
-export const displayManageCorporateDataAsync = (tokens) => {
+export const displayManageCorporateDataAsync = (pageNo, pageSize, tokens) => {
   return async (dispatch) => {
     try {
       dispatch({
@@ -69,7 +83,12 @@ export const displayManageCorporateDataAsync = (tokens) => {
       if (manageCorporateAdminListResponse.data.response.responseCode === 200) {
         dispatch({
           type: manageCorporateMap.DISPLAY_MANAGE_CORPORATE_DATA_SUCCESS,
-          payload: manageCorporateAdminListResponse.data.response.adminList,
+          payload: {
+            manageCorporateData:
+              manageCorporateAdminListResponse.data.response.data[0].list,
+            pageNo: pageNo,
+            pageSize: pageSize,
+          },
         });
       }
     } catch (error) {
