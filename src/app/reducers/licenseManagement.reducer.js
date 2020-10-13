@@ -15,7 +15,6 @@ const licenseManagementReducer = (state = initialState, action) => {
             return {
                 ...state,
                 licenseModal: true,
-                refereshLicenseList: false
             }
         }
         case licenseManagementMap.CLOSE_LICENSE_MODAL: {
@@ -23,7 +22,6 @@ const licenseManagementReducer = (state = initialState, action) => {
                 ...state,
                 licenseModal: false,
                 selectedLicense: "",
-                refereshLicenseList: false
             }
         }
         case licenseManagementMap.FETCH_LICENSE_LIST: {
@@ -31,7 +29,8 @@ const licenseManagementReducer = (state = initialState, action) => {
                 ...state,
                 licenseList: [
                     ...action.payload
-                ]
+                ],
+                refereshLicenseList: false
             }
         }
         case licenseManagementMap.SELECTED_LICENSE: {

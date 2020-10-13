@@ -3,8 +3,9 @@ import { useSelector } from 'react-redux'
 import BootstrapTable from "react-bootstrap-table-next";
 import { VendorTableActionButtons } from './VendorTableActionButton';
 import paginationFactory from "react-bootstrap-table2-paginator";
+import {SmallProductImage} from './TableProductImage';
 
-const ImportItemFromVendorTable = ({onClickVendorItemEdit, onClickVendorItemAddButton, setSelectedCategory, deleteData}) => {
+const ImportItemFromVendorTable = ({onClickVendorItemEdit, onClickVendorItemAddButton, setSelectedProduct, deleteData}) => {
 
     const itemListData = useSelector(state => state.categoryModal.vendorItemList);
   
@@ -16,7 +17,8 @@ const ImportItemFromVendorTable = ({onClickVendorItemEdit, onClickVendorItemAddB
         },
         {
             dataField: 'product_image',
-            text: 'Product Image'
+            text: 'Product Image',
+            formatter: SmallProductImage
         },
         {
             dataField: 'product_name',
@@ -35,7 +37,11 @@ const ImportItemFromVendorTable = ({onClickVendorItemEdit, onClickVendorItemAddB
             text: 'ROS Code'
         },
         {
-            dataField:  'license_id',
+            dataField: 'ros_cost',
+            text: 'ROS Cost'
+        },
+        {
+            dataField:  'license_id.type',
             text: 'License Type'
         },
         {
@@ -44,8 +50,7 @@ const ImportItemFromVendorTable = ({onClickVendorItemEdit, onClickVendorItemAddB
             headerAlign: 'center',
             formatter: VendorTableActionButtons,
             formatExtraData: {
-                setSelectedCategory: setSelectedCategory,
-                onClickVendorItemEdit: onClickVendorItemEdit,
+                setSelectedProduct: setSelectedProduct,
                 onClickVendorItemAddButton: onClickVendorItemAddButton,
                 deleteData: deleteData
             }
@@ -58,7 +63,7 @@ const ImportItemFromVendorTable = ({onClickVendorItemEdit, onClickVendorItemAddB
             bootstrap4
             bordered={false}
             remote
-            keyField="srno"
+            keyField="_id"
             data={itemListData === null ? [] : itemListData}
             columns={coloumn}
             pagination={paginationFactory()}

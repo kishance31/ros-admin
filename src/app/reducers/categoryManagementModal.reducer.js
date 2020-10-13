@@ -16,11 +16,14 @@ const initialState = {
     subCategoryList: [],
     selectedCategory: {},
     selectedSubCategory: {},
+    selectedProduct: {},
     refereshCategoryList: true,
     vendorItemList: [],
+    productCount: 0,
     refereshVendorList: true,
     filter: false,
-    AllProduct: true
+    AllProduct: true,
+    isLoading: false,
 }
 
 const categoryModalreducer = (state = initialState, action) => {
@@ -60,6 +63,7 @@ const categoryModalreducer = (state = initialState, action) => {
                 },
                 refereshCategoryList: false,
                 refereshVendorList: false,
+                subCategoryList: [],
             }
         }
 
@@ -72,6 +76,9 @@ const categoryModalreducer = (state = initialState, action) => {
                     importItemModal: false
                 },
                 selectedCategory: {},
+                subCategoryList: [],
+                selectedProduct: {},
+                categorySelected: 'category',
             }
         }
 
@@ -187,6 +194,12 @@ const categoryModalreducer = (state = initialState, action) => {
                 selectedSubCategory: action.payload
             }
         }
+        case CategoryManagementMap.SELECTED_PRODUCT: {
+            return {
+                ...state,
+                selectedProduct: action.payload
+            }
+        }
 
         case CategoryManagementMap.DISPLAY_CATEGORY_DATA: {
             return {
@@ -195,7 +208,7 @@ const categoryModalreducer = (state = initialState, action) => {
                 categoryList: action.payload,
                 filter: false,
                 refereshVendorList: false,
-                selectedCategory: ""
+                selectedCategory: {}
             }
         }
 
@@ -226,8 +239,9 @@ const categoryModalreducer = (state = initialState, action) => {
         case CategoryManagementMap.IMPORT_VENDOR_ITEM_SUCCESSFULLY: {
             return {
                 ...state,
-                vendorItemList: [...action.payload],
-                refereshVendorList: true,
+                vendorItemList: [...action.payload.list],
+                productCount: action.payload.totalProducts,
+                refereshVendorList: false,
                 refereshCategoryList: false,
                 AllProduct: true,
             }
@@ -260,7 +274,7 @@ const categoryModalreducer = (state = initialState, action) => {
             return {
                 ...state,
                 refereshVendorList: false,
-                selectedCategory: "",
+                selectedCategory: {},
                 categoryManagementModal: {
                     ...state.categoryManagementModal,
                     categoryModal: false,
@@ -270,11 +284,17 @@ const categoryModalreducer = (state = initialState, action) => {
                 }
             }
         }
-
+        case CategoryManagementMap.EDIT_PRODUCT:
+        case CategoryManagementMap.ADD_PRODUCT: {
+            return {
+                ...state,
+                isLoading: true,
+            }
+        }
+        case CategoryManagementMap.ADD_PRODUCT_SUCCESS:
         case CategoryManagementMap.EDIT_PRODUCT_SUCCESSFULLY: {
             return {
                 ...state,
-                refereshCategoryList: true,
                 refereshVendorList: true,
                 categoryManagementModal: {
                     ...state.categoryManagementModal,
@@ -282,10 +302,14 @@ const categoryModalreducer = (state = initialState, action) => {
                     importItemModal: false,
                     ItemUpdateModal: false,
                     openConfirmModal: false
-                }
+                },
+                subCategoryList: [],
+                categorySelected: 'category',
+                isLoading: false,
             }
         }
 
+        case CategoryManagementMap.ADD_PRODUCT_ERROR:
         case CategoryManagementMap.EDIT_PRODUCT_FAIL: {
             return {
                 ...state,
@@ -296,7 +320,8 @@ const categoryModalreducer = (state = initialState, action) => {
                     importItemModal: false,
                     ItemUpdateModal: false,
                     openConfirmModal: false
-                }
+                },
+                isLoading: false,
             }
         }
         default:

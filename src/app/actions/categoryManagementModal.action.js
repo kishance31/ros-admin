@@ -32,8 +32,13 @@ export const CategoryManagementMap = {
     CLOSE_CONFIRM_MODAL: 'CLOSE_CONFIRM_MODAL',
     ITEM_DELETE_SUCCESSFULLY: 'ITEM_DELETE_SUCCESSFULLY',
     ITEM_DELETE_FAIL: 'ITEM_DELETE_FAIL',
+    EDIT_PRODUCT: "EDIT_PRODUCT",
     EDIT_PRODUCT_SUCCESSFULLY: 'EDIT_PRODUCT_SUCCESSFULLY',
-    EDIT_PRODUCT_FAIL: 'EDIT_PRODUCT_FAIL'
+    EDIT_PRODUCT_FAIL: 'EDIT_PRODUCT_FAIL',
+    ADD_PRODUCT: "ADD_PRODUCT",
+    ADD_PRODUCT_SUCCESS: "ADD_PRODUCT_SUCCESS",
+    ADD_PRODUCT_ERROR: "ADD_PRODUCT_ERROR",
+    SELECTED_PRODUCT: "SELECTED_PRODUCT",
 }
 
 export const CategoryManagementAction = {
@@ -89,6 +94,12 @@ export const CategoryManagementAction = {
             payload: subCategory
         }
     },
+    setSelectedProduct: (product) => {
+        return {
+            type: CategoryManagementMap.SELECTED_PRODUCT,
+            payload: product
+        }
+    },
     backToCategory: () => ({ type: CategoryManagementMap.BACK_TO_CATEGORY }),
 }
 
@@ -124,7 +135,6 @@ export const DisplayCategoryListAsync = () => {
                 method: "GET",
                 headers: {
                     'Content-type': 'appplication/json',
-                    'tokens': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZjMyNTBiZDcxYzA0OTQxODI3ZTIzZWIiLCJlbWFpbCI6ImFkbWluQHJvcy5vcmciLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE2MDA0MzI2ODEsImV4cCI6MTYwNDY2NjI4MX0.WYcVMzj2g8rfGR_LJuw6lBp_rdZBOoqJmfjLLF3-F0g"
                 },
             })
             if (categoryList.data.response.responseCode === 200) {
@@ -248,7 +258,7 @@ export const EditCategoryAsync = (category_name) => {
                 dispatch({ type: CategoryManagementMap.EDIT_CATEGORY_FAIL })
             }
         } catch (error) {
-            dispatch({type: CategoryManagementMap.EDIT_CATEGORY_FAIL })
+            dispatch({ type: CategoryManagementMap.EDIT_CATEGORY_FAIL })
         }
     }
 }
@@ -302,99 +312,66 @@ export const EditSubCategoryDataAsync = (subcategory_name) => {
     }
 }
 
-export const EditProductAsync = (data) => {
-    return async (dispatch, getstate) => {
-        const { auth, categoryModal } = getstate();
-        const token = auth.tokens;
-        const _id = categoryModal.selectedCategory._id
+export const EditProductAsync = (data, _id) => {
+    return async (dispatch) => {
         try {
+            dispatch({ type: CategoryManagementMap.EDIT_PRODUCT });
             let editProductRes = await axios({
                 url: `http://127.0.0.1:4000/api/corporate-admin/product/updateProduct/${_id}`,
                 method: 'PUT',
                 data: data,
                 headers: {
-                    'Content-type': 'application/json',
-                    'tokens': token
+                    'Content-type': 'multipart/form-data',
                 }
             })
-            if(editProductRes.data.response.responseCode === 200){
-                dispatch({type: CategoryManagementMap.EDIT_PRODUCT_SUCCESSFULLY})
+            if (editProductRes.data.response.responseCode === 200) {
+                dispatch({ type: CategoryManagementMap.EDIT_PRODUCT_SUCCESSFULLY })
             }
         } catch (error) {
-            dispatch({type: CategoryManagementMap.EDIT_PRODUCT_FAIL})
+            dispatch({ type: CategoryManagementMap.EDIT_PRODUCT_FAIL })
         }
     }
 }
 
-export const DisplayVendorItemAsync = (value) => {
-    return async (dispatch, getstate) => {
-        const { auth } = getstate();
-        const token = auth.tokens;
-        const Data = {
-            category_id: value
-        }
-        if(!value){
-
-            try{
-                let vendorItemList = await axios({
-                    url: `http://127.0.0.1:4000/api/corporate-admin/product/getProductList`,
-                    method: 'POST',
-                    data: Data,
-                    headers: {
-                        'Content-type': 'application/json',
-                        'tokens': token
-                    }
-                })
-                if(vendorItemList.data.response.responseCode === 200){
-                dispatch({type: CategoryManagementMap.IMPORT_VENDOR_ITEM_SUCCESSFULLY, payload: vendorItemList.data.response.data})
-                }
-            }catch(error){
-                console.log('error in display')
-            }
-        }else {
-            try{
-                let vendorItemList = await axios({
-                    url: `http://127.0.0.1:4000/api/corporate-admin/product/getProductList/`,
-                    method: 'POST',
-                    data: Data,
-                    headers: {
-                        // 'Content-type': 'application/json',
-                        'Content-type': 'application/json',
-                        'tokens': token
-                    }
-                })
-                dispatch({type: CategoryManagementMap.IMPORT_VENDOR_ITEM_SUCCESSFULLY, payload: vendorItemList.data.response.data})
-    
-            }catch(error){
-                console.log('error in display')
-            }
-        }
-        
-    }
-}
-
-export const addVendorItemAsync = (data) => {
-    return async (dispatch, getstate) => {
-        const { auth } = getstate();
-        const token = auth.tokens;
+export const DisplayVendorItemAsync = () => {
+    return async (dispatch) => {
         try {
-            let addItemToVendor = await axios({
+            let {data} = await axios({
+                url: `http://127.0.0.1:4000/api/corporate-admin/product/getProductList/0/5`,
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json',
+                }
+            })
+            if (data.response && data.response.responseCode === 200) {
+                dispatch({ type: CategoryManagementMap.IMPORT_VENDOR_ITEM_SUCCESSFULLY, payload: data.response })
+            }
+        } catch (error) {
+            console.log('error in display')
+        }
+    }
+}
+
+export const addVendorItemAsync = (product) => {
+    return async (dispatch) => {
+        try {
+            dispatch({ type: CategoryManagementMap.ADD_PRODUCT });
+            let { data } = await axios({
                 url: `http://127.0.0.1:4000/api/corporate-admin/product/saveProduct`,
                 method: 'POST',
-                data: data,
+                data: product,
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                    'tokens': token
                 }
             })
-            if(addItemToVendor.data.response.responseCode === 200){
-                dispatch({type: CategoryManagementMap.IMPORT_VENDOR_ITEM_SUCCESSFULLY, payload: addItemToVendor.data.response.data })
+            if (data.response && data.response.responseCode === 200) {
+                dispatch({ type: CategoryManagementMap.ADD_PRODUCT_SUCCESS })
             }
-            else{
-                console.log('error inside Try of addVendorItemAsync');
+            else {
+                dispatch({ type: CategoryManagementMap.ADD_PRODUCT_ERROR });
             }
         } catch (error) {
-            console.log('error in catch of addVendorItemAsync');
+            dispatch({ type: CategoryManagementMap.ADD_PRODUCT_ERROR });
         }
     }
 }
@@ -418,7 +395,7 @@ export const addVendorItemAsync = (data) => {
 //             })
 //             console.log('PRODUCT LIST DATA MASTER', responseProductList);
 //         } catch (error) {
-            
+
 //         }else{
 //             try {
 //                 let responseProductList = await axios({
@@ -432,7 +409,7 @@ export const addVendorItemAsync = (data) => {
 //                 })
 //                 console.log('PRODUCT LIST DATA SLAVE', responseProductList);
 //             } catch (error) {
-                
+
 //             }
 //         }
 //     }
@@ -440,7 +417,7 @@ export const addVendorItemAsync = (data) => {
 
 export const displaySubCategoryList = (value) => {
     return async (dispatch, getstate) => {
-        const {auth} = getstate()
+        const { auth } = getstate()
         const token = auth.tokens
         try {
             let subCategoryListResponse = await axios({
@@ -451,7 +428,7 @@ export const displaySubCategoryList = (value) => {
                     'tokens': token
                 }
             })
-            if(subCategoryListResponse.data.response.responseCode === 200) {
+            if (subCategoryListResponse.data.response.responseCode === 200) {
                 dispatch({ type: CategoryManagementMap.STORE_SUB_CATEGORY, payload: subCategoryListResponse.data.response.data })
             }
         } catch (error) {
@@ -461,11 +438,11 @@ export const displaySubCategoryList = (value) => {
 
 export const deleteProductAsync = () => {
     return async (dispatch, getstate) => {
-        const {auth, categoryModal} = getstate()
+        const { auth, categoryModal } = getstate()
         const _id = categoryModal.selectedCategory._id
         const token = auth.tokens
         try {
-            
+
             let deleteProductResponse = await axios({
                 url: `http://localhost:4000/api/corporate-admin/product/deleteProduct/${_id}`,
                 method: "DELETE",
@@ -474,11 +451,11 @@ export const deleteProductAsync = () => {
                     'tokens': token
                 }
             })
-            if(deleteProductResponse.data.response.responseCode === 200) {
+            if (deleteProductResponse.data.response.responseCode === 200) {
                 dispatch({ type: CategoryManagementMap.ITEM_DELETE_SUCCESSFULLY })
             }
         } catch (error) {
-            dispatch({ type: CategoryManagementMap.ITEM_DELETE_FAIL  })
+            dispatch({ type: CategoryManagementMap.ITEM_DELETE_FAIL })
         }
     }
 }
