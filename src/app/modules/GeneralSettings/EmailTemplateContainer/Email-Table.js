@@ -53,17 +53,13 @@ const ManageEmailTable = ({ onOpenModal, setSelectedUser, onOpenDialog }) => {
   };
   const columns = [
     {
-      dataField: 'templateName',
-      text: 'Template Name',
+      dataField: 'title',
+      text: 'Title',
     },
     {
-      dataField: 'templateEntities',
-      text: 'Template Entities',
+      dataField: 'subject',
+      text: 'Subject',
     },    
-    {
-      dataField: 'entities',
-      text: 'Entities',
-    },
     {
       dataField: 'description',
       text: 'Description',
@@ -90,6 +86,7 @@ const ManageEmailTable = ({ onOpenModal, setSelectedUser, onOpenDialog }) => {
         bordered={false}
         keyField='email'
         data={displaylist}
+        noDataIndication='No records found!'
         columns={columns}
         pagination={paginationFactory(options)}
       />

@@ -7,18 +7,14 @@ import { useDispatch } from 'react-redux';
 import { addEmailTemplateAsync,EditEmailTemplateAsync } from '../../../actions/manageEmailTemplate.action';
 
 const ManageEmailSchema = (user) => (Yup.object().shape({
-templateName: Yup.string()
+title: Yup.string()
     .min(3, 'Minimum 3 symbols')
     .max(50, 'Maximum 50 symbols')
-    .required('templateName is required'),
-  templateEntities: Yup.string()
+    .required('title is required'),
+  subject: Yup.string()
     .min(3, 'Minimum 3 symbols')
     .max(50, 'Maximum 50 symbols')
-    .required('templateEntities is required'),
-  entities: Yup.string()
-    .min(3,'Minimum 3 symbols')
-    .max(50, 'Maximum 50 symbols')
-    .required('entities is required'),
+    .required('subject is required'),
     description: Yup.string()
     .min(3,'Minimum 3 symbols')
     .max(50, 'Maximum 50 symbols')
@@ -26,7 +22,7 @@ templateName: Yup.string()
   
 }));
 
-const AddEmailForm = ({ actionsLoading, selectedEmail, SelectedRowIndex, roles, onCloseModal }) => {
+const AddEmailForm = ({ actionsLoading, selectedEmail, roles, onCloseModal }) => {
 
   const dispatch = useDispatch();
   const addEmail = (values) => { 
@@ -35,15 +31,14 @@ const AddEmailForm = ({ actionsLoading, selectedEmail, SelectedRowIndex, roles, 
         onCloseModal()
       }
       else {
-        dispatch(EditEmailTemplateAsync({ ...values,SelectedRowIndex }))
+        dispatch(EditEmailTemplateAsync({ ...values }))
         onCloseModal()
       }
     }
 
   const initValues = {
-    templateName: "",
-    templateEntities: "",
-    entities: "",
+    title: "",
+    subject: "",
     description: "",
   }
 
@@ -76,29 +71,20 @@ const AddEmailForm = ({ actionsLoading, selectedEmail, SelectedRowIndex, roles, 
                 <div className="form-group row">
                   <div className="col-lg-6">
                     <Field
-                      name="templateName"
+                      name="title"
                       component={Input}
                       placeholder="Eg. Templated Name"
-                      label="Template Name"
-                    />
-                  </div>
-                  <div className="col-lg-6">
-                    <Field
-                      name="templateEntities"
-                      component={Input}
-                      placeholder="Eg. Full Name"
-                      label="Template Entities"
+                      label="Title"
                     />
                   </div>
                   </div>
                   <div className="form-group row">
                   <div className="col-lg-6">
                     <Field
-                      type={Input}
-                      name="entities"
+                      name="subject"
                       component={Input}
-                      placeholder=""
-                      label="Add Entities"
+                      placeholder="Eg. Subject"
+                      label="Subject"
                     />
                   </div>
                   <div className="col-lg-6">

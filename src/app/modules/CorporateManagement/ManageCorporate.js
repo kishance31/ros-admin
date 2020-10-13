@@ -1,7 +1,10 @@
 import React, { useEffect } from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
-import paginationFactory from 'react-bootstrap-table2-paginator';
-import { useSelector, useDispatch } from 'react-redux';
+import paginationFactory, {
+  PaginationProvider,
+} from 'react-bootstrap-table2-paginator';
+import { Pagination } from '../../../_metronic/_partials/controls';
+import { shallowEqual, useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
 
 import ActionButtons from './ManageCorporate/ActionButtons';
@@ -12,13 +15,14 @@ import {
 
 const ManageCorporate = () => {
   const dispatch = useDispatch();
-  const manageCorporateData = useSelector(
-    (state) => state.manageCorporate.manageCorporateData
+  const { manageCorporateData, totalCount, pageSize, pageNo } = useSelector(
+    (state) => state.manageCorporate,
+    shallowEqual
   );
 
   useEffect(() => {
-    dispatch(displayManageCorporateDataAsync());
-  }, [dispatch]);
+    dispatch(displayManageCorporateDataAsync(pageNo, pageSize));
+  }, [dispatch, pageNo, pageSize]);
 
   const approveRejectAction = (_id, status) => {
     dispatch(
@@ -28,48 +32,24 @@ const ManageCorporate = () => {
 
   const activeDeactiveAction = (_id, isActive) => {
     dispatch(
-      manageCorporateAction.updateManageCorporateIsActive(_id, isActive)
+      manageCorporateAction.updateManageCorporateIsActiveAsync(_id, isActive)
     );
   };
 
-  const customTotal = (from, to, size) => (
-    <span className='react-bootstrap-table-pagination-total ml-4'>
-      Showing {from} to {to} of {size} Results
-    </span>
-  );
+  const formatedDate = (cell, row) => {
+    return moment(cell).format('DD/MM/YYYY');
+  };
 
-  const options = {
-    paginationSize: 4,
-    pageStartIndex: 1,
-    firstPageText: '<<',
-    prePageText: '<',
-    nextPageText: '>',
-    lastPageText: '>>',
-    nextPageTitle: 'First page',
-    prePageTitle: 'Pre page',
-    firstPageTitle: 'Next page',
-    lastPageTitle: 'Last page',
-    showTotal: true,
-    paginationTotalRenderer: customTotal,
-    disablePageTitle: true,
+  const paginationOption = {
+    custom: true,
+    totalSize: totalCount,
     sizePerPageList: [
-      {
-        text: '3',
-        value: 3,
-      },
-      {
-        text: '5',
-        value: 5,
-      },
-      {
-        text: '10',
-        value: 10,
-      },
-      {
-        text: 'All',
-        value: manageCorporateData.length,
-      },
+      { text: '3', value: 3 },
+      { text: '5', value: 5 },
+      { text: '10', value: 10 },
     ],
+    sizePerPage: pageSize,
+    page: pageNo,
   };
 
   const columns = [
@@ -96,9 +76,7 @@ const ManageCorporate = () => {
     {
       dataField: 'createdAt',
       text: 'Registration Date',
-      formatter: (cell, row) => {
-        return moment(cell).format('DD/MM/YYYY');
-      },
+      formatter: formatedDate,
     },
     {
       dataField: 'status',
@@ -115,15 +93,37 @@ const ManageCorporate = () => {
     },
   ];
 
+  const onTableChange = (type, newState) => {
+    if (type === 'pagination') {
+      if (newState.page && newState.page !== pageNo) {
+        dispatch(manageCorporateAction.setPageNo(newState.page));
+      } else if (newState.sizePerPage && newState.sizePerPage !== pageSize) {
+        dispatch(manageCorporateAction.setPageSize(newState.sizePerPage));
+      }
+    }
+  };
+
   return (
-    <BootstrapTable
-      keyField='_id'
-      data={manageCorporateData === null ? [] : manageCorporateData}
-      columns={columns}
-      bordered={false}
-      noDataIndication='No records found!'
-      pagination={paginationFactory(options)}
-    />
+    <>
+      <PaginationProvider pagination={paginationFactory(paginationOption)}>
+        {({ paginationProps, paginationTableProps }) => {
+          return (
+            <Pagination paginationProps={paginationProps}>
+              <BootstrapTable
+                keyField='_id'
+                bordered={false}
+                data={manageCorporateData === null ? [] : manageCorporateData}
+                columns={columns}
+                remote
+                noDataIndication='No records found!'
+                {...paginationTableProps}
+                onTableChange={onTableChange}
+              />
+            </Pagination>
+          );
+        }}
+      </PaginationProvider>
+    </>
   );
 };
 

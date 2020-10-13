@@ -8,7 +8,7 @@ const ActionButtons = ({ row, activeDeactiveAction }) => {
         className={row.isActive ? 'd-none' : 'mx-3'}
         size='sm'
         variant='outline-success'
-        onClick={() => activeDeactiveAction(row.id, true)}
+        onClick={() => activeDeactiveAction(row.orderId, true)}
       >
         Active
       </Button>
@@ -16,7 +16,7 @@ const ActionButtons = ({ row, activeDeactiveAction }) => {
         className={!row.isActive ? 'd-none' : 'mx-3'}
         size='sm'
         variant='outline-danger'
-        onClick={() => activeDeactiveAction(row.id, false)}
+        onClick={() => activeDeactiveAction(row.orderId, false)}
       >
         Deactive
       </Button>
