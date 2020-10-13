@@ -90,6 +90,8 @@ const AddEmailForm = ({ actionsLoading, selectedEmail, SelectedRowIndex, roles, 
                       label="Template Entities"
                     />
                   </div>
+                  </div>
+                  <div className="form-group row">
                   <div className="col-lg-6">
                     <Field
                       type={Input}
@@ -99,8 +101,6 @@ const AddEmailForm = ({ actionsLoading, selectedEmail, SelectedRowIndex, roles, 
                       label="Add Entities"
                     />
                   </div>
-                </div>
-                <div className="form-group row">
                   <div className="col-lg-6">
                     <Field
                       name="description"
@@ -109,7 +109,8 @@ const AddEmailForm = ({ actionsLoading, selectedEmail, SelectedRowIndex, roles, 
                       label="Description"
                     />
                   </div>
-                </div>
+                
+              </div>
               </Form>
             </Modal.Body>
             <Modal.Footer>

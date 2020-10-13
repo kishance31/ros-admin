@@ -2,10 +2,10 @@ import React from 'react';
 import { useSelector } from 'react-redux'
 import BootstrapTable from "react-bootstrap-table-next";
 import { VendorTableActionButtons } from './VendorTableActionButton';
-import paginationFactory from "react-bootstrap-table2-paginator";
-
-const ImportItemFromVendorTable = ({onClickVendorItemEdit, onClickVendorItemAddButton, setSelectedCategory, deleteData}) => {
-
+import paginationFactory, { PaginationProvider } from "react-bootstrap-table2-paginator";
+import { Pagination } from '../../../../../_metronic/_partials/controls'
+const ImportItemFromVendorTable = (props) => {
+    const {onClickVendorItemEdit, onClickVendorItemAddButton, setSelectedCategory, deleteData, isLoading, totalCount, pageNumber, pageSize} = props;
     const itemListData = useSelector(state => state.categoryModal.vendorItemList);
   
    const coloumn = [

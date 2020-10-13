@@ -17,6 +17,7 @@ import { AuthReducer } from '../app/reducers/auth.reducer';
 import snackBarReducer from '../app/reducers/snackbar.reducer';
 import categoryModalreducer from '../app/reducers/categoryManagementModal.reducer';
 import licenseManagementReducer from '../app/reducers/licenseManagement.reducer';
+import cmsSettingsReducer from '../app/reducers/cmsSetting.reducer';
 export const rootReducer = combineReducers({
   auth: AuthReducer,
   customers: customersSlice.reducer,
@@ -34,6 +35,7 @@ export const rootReducer = combineReducers({
   licenceManagement: licenseManagementReducer,
   snackBar: snackBarReducer,
   emailTemplate: manageEmailTemplateReducer,
+  cmsSetting: cmsSettingsReducer
 });
 
 // export function* rootSaga() {
