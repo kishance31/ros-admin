@@ -7,6 +7,7 @@ import { remarksSlice } from '../app/modules/ECommerce/_redux/remarks/remarksSli
 import { specificationsSlice } from '../app/modules/ECommerce/_redux/specifications/specificationsSlice';
 import manageUserReducer from '../app/reducers/manageUser.reducer';
 import rolesAndPermissionReducer from '../app/reducers/rolesAndPermission.reducer';
+import permissionReducer from '../app/reducers/permission.reducer'
 import manageCorporateReducer from '../app/reducers/manageCorporate.reducer';
 import corporateManageLicenseReducer from '../app/reducers/corporateManageLicense.reducer';
 import manageEmailTemplateReducer from '../app/reducers/manageEmailTemplate.reducer';
@@ -25,6 +26,7 @@ export const rootReducer = combineReducers({
   specifications: specificationsSlice.reducer,
   manageUser: manageUserReducer,
   rolesAndPermission: rolesAndPermissionReducer,
+  permission:permissionReducer,
   manageCorporate: manageCorporateReducer,
   licenceOrder: licenceOrderReducer,
   corporateManageLicense: corporateManageLicenseReducer,
@@ -34,6 +36,7 @@ export const rootReducer = combineReducers({
   licenceManagement: licenseManagementReducer,
   snackBar: snackBarReducer,
   emailTemplate: manageEmailTemplateReducer,
+  
 });
 
 // export function* rootSaga() {
