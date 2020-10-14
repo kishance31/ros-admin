@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+import getServerCore from '../../utils/apiUtils';
 export const corporateManageLicenseMap = {
   DISPLAY_CORPORATE_MANAGE_LICENSE_DATA_START:
     'DISPLAY_CORPORATE_MANAGE_LICENSE_DATA_START',
@@ -10,6 +10,9 @@ export const corporateManageLicenseMap = {
   UPDATE_CORPORATE_MANAGE_LICENSE_ISACTIVE:
     'UPDATE_CORPORATE_MANAGE_LICENSE_ISACTIVE',
 };
+
+const { serverUrls } = getServerCore();
+const corporateUrl = serverUrls.getCorporateUrl()
 
 export const corporateManageLicenseAction = {
   updateCorporateManageLicenseIsActive: (orderId, isActive) => {
@@ -32,7 +35,7 @@ export const displayCorporateManageLicenseDataAsync = (
           corporateManageLicenseMap.DISPLAY_CORPORATE_MANAGE_LICENSE_DATA_START,
       });
       let corporateManageLicenceListResponse = await axios({
-        url: `http://127.0.0.1:4000/api/corporate-admin/purchaseLicense/getAllPurchasedLicense/${pageNo -
+        url: `${corporateUrl}/purchaseLicense/getAllPurchasedLicense/${pageNo -
           1}/${pageSize}`,
         method: 'POST',
         headers: {

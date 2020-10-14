@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+import getServerCore from '../../utils/apiUtils';
 export const ManageEmailTemplateMap = {
     OPEN_MODAL: 'OPEN_MODAL',
     CLOSE_MODAL: 'CLOSE_MODAL',
@@ -58,6 +58,9 @@ export const ManageEmailTemplateAction = {
     }
 }
 
+const { serverUrls } = getServerCore();
+const emailTemplate = serverUrls.getEmailTemplate()
+
 export const displayEmailTemplateDataAsync = (tokens) => {
     return async (dispatch) => {
       try {
@@ -65,7 +68,7 @@ export const displayEmailTemplateDataAsync = (tokens) => {
             type: ManageEmailTemplateMap.DISPLAY_EMAIL_TEMPLATE_DATA_START,
         })
         let ManageEmailTemplateResponse = await axios({
-          url: `http://127.0.0.1:4000/api/admin/email-template/getEmailTemplateList`,
+          url: `${emailTemplate}/getEmailTemplateList`,
           method: 'GET',
           headers: {
             tokens,
@@ -88,14 +91,13 @@ export const displayEmailTemplateDataAsync = (tokens) => {
 
  
 export const deleteEmailTemplateDataAsync = (row,tokens) => {
-    console.log(row,'roewwe1221')
     return async (dispatch) => {
         try {
             dispatch({
                 type: ManageEmailTemplateMap.DELETE_EMAIL_TEMPLATE_DATA_START,
             })
             let deleteEmailTemplateResponse = await axios({
-                url: `http://127.0.0.1:4000/api/admin/email-template/deleteEmailTemplate/${row._id}`,
+                url: `${emailTemplate}/deleteEmailTemplate/${row._id}`,
                 method: 'DELETE',
                 headers: {
                   tokens
@@ -122,7 +124,7 @@ export const addEmailTemplateAsync = (data, tokens) => {
                 type: ManageEmailTemplateMap.ADD_EMAIL_TEMPLATE_DATA_START,
             })
             let addEmailTeamplateAsync = await axios({
-                url: `http://127.0.0.1:4000/api/admin/email-template/saveEmailTemplate`,
+                url: `${emailTemplate}/saveEmailTemplate`,
                 method:"POST",
                 data,
                 headers: {
@@ -143,15 +145,13 @@ export const addEmailTemplateAsync = (data, tokens) => {
     }
 }
 export const EditEmailTemplateAsync = (data, tokens) => {
-    console.log(data,'dataaaaa1212121212')
-
     return async (dispatch) => {
         try { 
             dispatch({
                 type: ManageEmailTemplateMap.EDIT_EMAIL_TEMPLATE_DATA_START,
             })
             let updateEmailTemplate = await axios({
-                url: `http://127.0.0.1:4000/api/admin/email-template/updateEmailTemplate/${data._id}`,
+                url: `${emailTemplate}/updateEmailTemplate/${data._id}`,
                 method: 'PUT',
                 data:{
                     title:data.title,
