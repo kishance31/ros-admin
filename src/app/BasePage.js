@@ -37,15 +37,8 @@ export default function BasePage() {
 				<ContentRoute path="/admin-management" component={AdminManagement} />
 				<ContentRoute path="/license-management" component={LicenseManagement} />
 				<ContentRoute path="/category-management" component={CategoryManagement} />
-        <ContentRoute
-          path='/corporate-management'
-          component={CorporateManagement}
-        />
-		<ContentRoute
-          path='/general-settings'
-          component={GeneralSettings}
-        />
-
+        		<ContentRoute path='/corporate-management' component={CorporateManagement} />
+				<ContentRoute path='/general-settings' component={GeneralSettings} />
 				<ContentRoute path="/builder" component={BuilderPage} />
 				<ContentRoute path="/my-page" component={MyPage} />
 				<Route path="/google-material" component={GoogleMaterialPage} />

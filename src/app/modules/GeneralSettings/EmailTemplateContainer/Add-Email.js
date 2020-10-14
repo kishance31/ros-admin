@@ -77,6 +77,8 @@ const AddEmailForm = ({ actionsLoading, selectedEmail, roles, onCloseModal }) =>
                       label="Title"
                     />
                   </div>
+                  </div>
+                  <div className="form-group row">
                   <div className="col-lg-6">
                     <Field
                       name="subject"
@@ -85,8 +87,6 @@ const AddEmailForm = ({ actionsLoading, selectedEmail, roles, onCloseModal }) =>
                       label="Subject"
                     />
                   </div>
-                </div>
-                <div className="form-group row">
                   <div className="col-lg-6">
                     <Field
                       name="description"
@@ -95,7 +95,8 @@ const AddEmailForm = ({ actionsLoading, selectedEmail, roles, onCloseModal }) =>
                       label="Description"
                     />
                   </div>
-                </div>
+                
+              </div>
               </Form>
             </Modal.Body>
             <Modal.Footer>

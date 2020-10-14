@@ -27,6 +27,7 @@ export function TextArea({
     <>
       {label && <label>Enter {label}</label>}
       <textarea
+        rows={5}
         type={type}
         className={getFieldCSSClasses(touched[field.name], errors[field.name])}
         {...field}
