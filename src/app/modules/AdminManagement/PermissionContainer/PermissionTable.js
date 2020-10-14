@@ -1,108 +1,215 @@
-import React, {useRef} from 'react';
+import React, { useState } from 'react';
+import { Button } from 'react-bootstrap';
 import BootstrapTable from "react-bootstrap-table-next";
-import cellEditFactory, { Type } from 'react-bootstrap-table2-editor';
+import cellEditFactory from 'react-bootstrap-table2-editor';
 
-export const data = [   
-  {
-    formName: 'Manage User',
-    add: <input type="checkbox" />
-  },{
-    formName: 'Roles & Permission',
-  },{
-    formName: 'Permission',
-  },{
-    formName: 'Categoty Management',
-  },{
-    formName: 'Item/License Management',
-  },{
-    formName: 'Corporate Management',
-  },{
-    formName: 'Invoice Management',
-  },{
-    formName: 'General Settings',
-  }
-]
-
-export const columns = [
-  {
-    dataField: 'formName',
-    text: 'Form name',
-  },
-  {
-    dataField: 'add',
-    text: 'Add',
-    editor: {
-      type: Type.CHECKBOX,
-      value: 'Y:N'
-    }
-  },
-  {
-    dataField: 'edit',
-    text: 'Edit',
-    editor: {
-      type: Type.CHECKBOX,
-      value: 'Y:N'
-    }
-  },
-  {
-    dataField: 'view',
-    text: 'View',
-    editor: {
-      type: Type.CHECKBOX,
-      value: 'Y:N'
-    }
-  },
-  {
-    dataField: 'delete',
-    text: 'Delete',
-    editor: {
-      type: Type.CHECKBOX,
-      value: 'Y:N'
-    }
-  },
-  {
-    dataField: 'active',
-    text: 'Active',
-    editor: {
-      type: Type.CHECKBOX,
-      value: 'Y:N'
-    }
-  },
-  {
-    dataField: 'deactive',
-    text: 'Deactive',
-    editor: {
-      type: Type.CHECKBOX,
-      value: 'Y:N'
-    }
-  },
-  {
-    dataField: 'approve',
-    text: 'Approve',
-    editor: {
-      type: Type.CHECKBOX,
-      value: 'Y:N'
-    }
-  },
-  {
-    dataField: 'reject',
-    text: 'Reject',
-    editor: {
-      type: Type.CHECKBOX,
-      value: 'Y:N'
-    }
-  },
-];
-
+const CheckBoxInput = (props) => {
+  const { value, onUpdate } = props;
+  return (
+    <input type="checkbox" style={{ marginLeft: 10 }} checked={value}
+      onChange={(event) => {
+        onUpdate(event.target.checked)
+      }}
+    />
+  );
+}
 const PermissionTable = () => {
-  const tableRef = useRef();
-  const onTableChange = () => {
-    console.log(tableRef.current)
+
+  let tableData = [
+    {
+      formName: 'Manage User',
+      add: false,
+      edit: false,
+      view: false,
+      delete: false,
+      active: false,
+      deactive: false,
+      approve: false,
+      reject: false,
+    }, {
+      formName: 'Roles & Permission',
+      add: false,
+      edit: false,
+      view: false,
+      delete: false,
+      active: false,
+      deactive: false,
+      approve: false,
+      reject: false,
+    }, {
+      formName: 'Permission',
+      add: false,
+      edit: false,
+      view: false,
+      delete: false,
+      active: false,
+      deactive: false,
+      approve: false,
+      reject: false,
+    }, {
+      formName: 'Categoty Management',
+      add: false,
+      edit: false,
+      view: false,
+      delete: false,
+      active: false,
+      deactive: false,
+      approve: false,
+      reject: false,
+    }, {
+      formName: 'Item/License Management',
+      add: false,
+      edit: false,
+      view: false,
+      delete: false,
+      active: false,
+      deactive: false,
+      approve: false,
+      reject: false,
+    }, {
+      formName: 'Corporate Management',
+      add: false,
+      edit: false,
+      view: false,
+      delete: false,
+      active: false,
+      deactive: false,
+      approve: false,
+      reject: false,
+    }, {
+      formName: 'Invoice Management',
+      add: false,
+      edit: false,
+      view: false,
+      delete: false,
+      active: false,
+      deactive: false,
+      approve: false,
+      reject: false,
+    }, {
+      formName: 'General Settings',
+      add: false,
+      edit: false,
+      view: false,
+      delete: false,
+      active: false,
+      deactive: false,
+      approve: false,
+      reject: false,
+    }
+  ]
+  const [data, setData] = useState(tableData)
+
+  const editorMethod = (editorProps, value) => {
+    return (
+      <CheckBoxInput {...editorProps} value={value} />
+    )
   }
 
+  const columns = [
+    {
+      dataField: 'formName',
+      text: 'Form name',
+    },
+    {
+      dataField: 'add',
+      text: 'Add',
+      formatter: (cell) => {
+        return (
+          <input type="checkbox" style={{ marginLeft: 10 }} checked={cell} />
+        );
+      },
+      editorRenderer: editorMethod
+    },
+    {
+      dataField: 'edit',
+      text: 'Edit',
+      formatter: (cell) => {
+        return (
+          <input type="checkbox" style={{ marginLeft: 10 }} checked={cell} />
+        );
+      },
+      editorRenderer: editorMethod
+    },
+    {
+      dataField: 'view',
+      text: 'View',
+      formatter: (cell) => {
+        return (
+          <input type="checkbox" style={{ marginLeft: 10 }} checked={cell} />
+        );
+      },
+      editorRenderer: editorMethod
+    },
+    {
+      dataField: 'delete',
+      text: 'Delete',
+      formatter: (cell) => {
+        return (
+          <input type="checkbox" style={{ marginLeft: 10 }} checked={cell} />
+        );
+      },
+      editorRenderer: editorMethod
+    },
+    {
+      dataField: 'active',
+      text: 'Active',
+      formatter: (cell) => {
+        return (
+          <input type="checkbox" style={{ marginLeft: 10 }} checked={cell} />
+        );
+      },
+      editorRenderer: editorMethod
+    },
+
+    {
+      dataField: 'deactive',
+      text: 'Deactive',
+      formatter: (cell) => {
+        return (
+          <input type="checkbox" style={{ marginLeft: 10 }} checked={cell} />
+        );
+      },
+      editorRenderer: editorMethod
+    },
+    {
+      dataField: 'approve',
+      text: 'Approve',
+      formatter: (cell) => {
+        return (
+          <input type="checkbox" style={{ marginLeft: 10 }} checked={cell} />
+        );
+      },
+      editorRenderer: editorMethod
+    },
+    {
+      dataField: 'reject',
+      text: 'Reject',
+      formatter: (cell) => {
+        return (
+          <input type="checkbox" style={{ marginLeft: 10 }} checked={cell} />
+        );
+      },
+      editorRenderer: editorMethod
+    },
+  ];
+  const onTableChange = (type, newState) => {
+
+    const { data, cellEdit } = newState;
+    const updatedData = data.map(item => {
+      if (item.formName === cellEdit.rowId) {
+        let itemData = item;
+        itemData[cellEdit.dataField] = cellEdit.newValue
+        return itemData;
+      }
+      return item;
+    })
+    setData(updatedData)
+    console.log(newState);
+  }
   return (
     <div className="container" style={{ marginTop: 25 }}>
-      <button onClick={onTableChange}>GET</button>
+      <Button variant="secondary" >Save</Button>
       <BootstrapTable
         wrapperClasses="table-responsive"
         hover
@@ -110,15 +217,15 @@ const PermissionTable = () => {
         bootstrap4
         remote
         bordered={false}
-        keyField='id'
+        keyField='formName'
         data={data}
         columns={columns}
-        ref={tableRef}
-        cellEdit={ cellEditFactory({blurToSave: true }) }
+        cellEdit={cellEditFactory({ mode: 'click', blurToSave: true })}
+        onTableChange={onTableChange}
+        remote={{ cellEdit: true }}
       />
     </div>
   )
 }
 
 export default PermissionTable;
-
