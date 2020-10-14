@@ -1,5 +1,6 @@
 import axios from "axios"
 import getServerCore from '../../utils/apiUtils';
+
 import {showSuccessSnackbar} from './snackbar.action';
 export const cmsSettingsMap = {
     SAVE_CONTACT_US_SUCCESSFULLY: 'SAVE_CONTACT_US_SUCCESSFULLY',
@@ -20,7 +21,6 @@ export const cmsSettingsAction = {
 
 const { serverUrls } = getServerCore();
 const cmsUrl = serverUrls.getCmsUrl()
-
 export const addContactUsAsync = (values) => {
     return async (dispatch) => {
         try {
