@@ -1,4 +1,5 @@
 import axios from "axios"
+import getServerCore from '../../utils/apiUtils';
 import {showSuccessSnackbar} from './snackbar.action';
 export const cmsSettingsMap = {
     SAVE_CONTACT_US_SUCCESSFULLY: 'SAVE_CONTACT_US_SUCCESSFULLY',
@@ -17,11 +18,14 @@ export const cmsSettingsAction = {
 
 }
 
+const { serverUrls } = getServerCore();
+const cmsUrl = serverUrls.getCmsUrl()
+
 export const addContactUsAsync = (values) => {
     return async (dispatch) => {
         try {
             let contactUsResponse = await axios({
-                url: `http://localhost:4000/api/admin/cms/updateContactUs`,
+                url: `${cmsUrl}/updateContactUs`,
                 method: "PUT",
                 data: values,
                 headers: {
@@ -46,7 +50,7 @@ export const dispalayConstactUsDetails = () => {
     return async (dispatch) => {
         try {
             let constactUsDetails = await axios({
-                url: `http://localhost:4000/api/admin/cms/getContactUsList`,
+                url: `${cmsUrl}/getContactUsList`,
                 method: 'GET',
                 headers:{
                     'Content-type': ' application/json',
@@ -68,7 +72,7 @@ export const addAboutUsAsync = (data) => {
     return async (dispatch) => {
         try {
             let aboutUsResponse = await axios({
-                url: `http://localhost:4000/api/admin/cms/updateAboutUs`,
+                url: `${cmsUrl}/updateAboutUs`,
                 method: "PUT",
                 data: data,
                 headers: {
@@ -92,7 +96,7 @@ export const getAboutUsDataAsync = () => {
     return async (dispatch) => {
         try {
             let aboutUsDetails = await axios({
-                url: `http://localhost:4000/api/admin/cms/getAboutUsList`,
+                url: `${cmsUrl}/getAboutUsList`,
                 method: 'GET',
                 headers:{
                     'Content-type': ' application/json',

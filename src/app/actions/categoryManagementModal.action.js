@@ -1,4 +1,6 @@
 import axios from "axios"
+import getServerCore from '../../utils/apiUtils';
+import {showSuccessSnackbar} from './snackbar.action';
 
 export const CategoryManagementMap = {
     OPEN_CATEGORY_MODAL: 'OPEN_CATEGORY_MODAL',
@@ -91,13 +93,17 @@ export const CategoryManagementAction = {
     },
     backToCategory: () => ({ type: CategoryManagementMap.BACK_TO_CATEGORY }),
 }
+const { serverUrls } = getServerCore();
+const categoryUrl = serverUrls.getCategory();
+const subCategoryUrl = serverUrls.getSubCategory();
 
 export const addCategoryDataAsync = (categoryName) => {
     return async (dispatch) => {
+        console.log('categoryUrl', categoryUrl);
         try {
             dispatch({ type: CategoryManagementMap.ADD_CATEGORY_START })
             let { data } = await axios({
-                url: `http://127.0.0.1:4000/api/corporate-admin/category/saveCategory`,
+                url: `${categoryUrl}/saveCategory`,
                 method: "POST",
                 data: { category_name: categoryName },
                 headers: {

@@ -1,5 +1,7 @@
 import axios from 'axios';
 import { ManageUserAction } from './manageUser.action'
+import getServerCore from '../../utils/apiUtils';
+import {showSuccessSnackbar} from './snackbar.action';
 
 export const RolesAndPermissionMap = {
   ADD_ROLE: 'ADD_ROLE',
@@ -31,19 +33,24 @@ export const RolesAndPermissionAction = {
   deleteRoleError: () => ({ type: RolesAndPermissionMap.DELETE_ROLE_ERROR }),
 };
 
+const { serverUrls } = getServerCore();
+const rolesUrl = serverUrls.getRolesAndPermission();
+
 export const getAllRolesAsync = () => async (dispatch, getState) => {
   try {
     dispatch(RolesAndPermissionAction.getRoles());
     let { data } = await axios({
-      url: "http://localhost:4000/api/admin/role/getAllRoles",
+      url: `${rolesUrl}/getAllRoles`,
       method: "GET",
     });
     if (data.response && data.response.responseCode === 200) {
       return dispatch(RolesAndPermissionAction.getRolesSuccess(data.response.data));
     }
     dispatch(RolesAndPermissionAction.getRolesError());
+    dispatch(showSuccessSnackbar('error',"Error while display list",'3000'));
   } catch (error) {
     dispatch(RolesAndPermissionAction.getRolesError());
+    dispatch(showSuccessSnackbar('error',"Error while display list",'3000'));
   }
 }
 
@@ -51,16 +58,20 @@ export const addRoleAsync = (roleName) => async (dispatch, getState) => {
   try {
     dispatch(RolesAndPermissionAction.addRole());
     let { data } = await axios({
-      url: "http://localhost:4000/api/admin/role/addRole",
+      url: `${rolesUrl}/addRole`,
       method: "POST",
       data: { roleName },
     });
     if (data.response && data.response.responseCode === 200) {
-      return dispatch(RolesAndPermissionAction.addRoleSuccess());
-    }
-    dispatch(RolesAndPermissionAction.addRoleError());
+      dispatch(RolesAndPermissionAction.addRoleSuccess());
+      dispatch(showSuccessSnackbar('success',"Role Added Successfully",'3000'));
+    }else{
+      dispatch(showSuccessSnackbar('error',"Not able to create",'3000'));
+      dispatch(RolesAndPermissionAction.addRoleError());
+  }
   } catch (error) {
     dispatch(RolesAndPermissionAction.addRoleError());
+    dispatch(showSuccessSnackbar('error',"Not able to create",'3000'));
   }
 }
 
@@ -68,18 +79,21 @@ export const editRoleAsync = (roleName, roleId) => async (dispatch, getState) =>
   try {
     dispatch(RolesAndPermissionAction.editRole());
     let { data } = await axios({
-      url: "http://localhost:4000/api/admin/role/updateRole",
+      url: `${rolesUrl}/updateRole`,
       method: "POST",
       data: { roleName, roleId },
     });
     if (data.response && data.response.responseCode === 200) {
+      
       dispatch(RolesAndPermissionAction.editRoleSuccess());
       dispatch(ManageUserAction.refreshManageUserData());
-      return;
+      dispatch(showSuccessSnackbar('success',"Role Updating Successfully",'3000'));
     }
     dispatch(RolesAndPermissionAction.editRoleError());
+    dispatch(showSuccessSnackbar('error',"Updating Fail",'3000'));
   } catch (error) {
     dispatch(RolesAndPermissionAction.editRoleError());
+    dispatch(showSuccessSnackbar('error',"Updating Fail",'3000'));
   }
 }
 
@@ -87,7 +101,7 @@ export const deleteRoleAsync = (roleId) => async (dispatch) => {
   try {
     dispatch(RolesAndPermissionAction.deleteRole());
     let { data } = await axios({
-      url: "http://localhost:4000/api/admin/role/deleteRole",
+      url: `${rolesUrl}/deleteRole`,
       method: "POST",
       data: { roleId },
       headers: {
@@ -95,10 +109,14 @@ export const deleteRoleAsync = (roleId) => async (dispatch) => {
       }
     });
     if (data.response && data.response.responseCode === 200) {
-      return dispatch(RolesAndPermissionAction.deleteRoleSuccess());
-    }
+      dispatch(RolesAndPermissionAction.deleteRoleSuccess());
+      dispatch(showSuccessSnackbar('success',"Role Deleted Successfully",'3000'));
+    }else{
     dispatch(RolesAndPermissionAction.deleteRoleError());
-  } catch (error) {
+    dispatch(showSuccessSnackbar('error',"Role Deleted Successfully",'3000'));
+  }
+} catch (error) {
     dispatch(RolesAndPermissionAction.deleteRoleError());
+    dispatch(showSuccessSnackbar('error',"Role Deleted Successfully",'3000'));
   }
 }

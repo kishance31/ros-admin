@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+import getServerCore from '../../utils/apiUtils';
 export const manageCorporateMap = {
   DISPLAY_MANAGE_CORPORATE_DATA_START: 'DISPLAY_MANAGE_CORPORATE_DATA_START',
   DISPLAY_MANAGE_CORPORATE_DATA_SUCCESS:
@@ -19,12 +19,16 @@ export const manageCorporateMap = {
   STE_PAGE_SIZE: 'STE_PAGE_SIZE',
 };
 
+const { serverUrls } = getServerCore();
+const adminUrl = serverUrls.getAdminUrl()
+const emailTemplate = serverUrls.getEmailTemplate()
+
 export const manageCorporateAction = {
   updateManageCorporateStatusAsync: (_id, status, tokens) => {
     let updateApiUrl =
       status === 'APPROVED'
-        ? `http://127.0.0.1:4000/api/admin/approve/corporate-admin/${_id}`
-        : `http://127.0.0.1:4000/api/admin/reject/corporate-admin/${_id}`;
+        ? `${adminUrl}/approve/corporate-admin/${_id}`
+        : `${adminUrl}/reject/corporate-admin/${_id}`;
 
     return async (dispatch) => {
       try {
@@ -52,7 +56,7 @@ export const manageCorporateAction = {
     };
   },
   updateManageCorporateIsActiveAsync: (_id, isActive, tokens) => {
-    let updateApiUrl = `http://127.0.0.1:4000/api/admin/updateCorporateStatusByAdmin/${_id}`;
+    let updateApiUrl = `${adminUrl}/updateCorporateStatusByAdmin/${_id}`;
     return async (dispatch) => {
       try {
         dispatch({
@@ -102,7 +106,7 @@ export const displayManageCorporateDataAsync = (pageNo, pageSize, tokens) => {
         type: manageCorporateMap.DISPLAY_MANAGE_CORPORATE_DATA_START,
       });
       let manageCorporateAdminListResponse = await axios({
-        url: `http://127.0.0.1:4000/api/admin/getCorporateAdmins`,
+        url: `${adminUrl}/getCorporateAdmins`,
         method: 'GET',
         headers: {
           tokens,
