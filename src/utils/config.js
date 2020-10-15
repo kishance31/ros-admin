@@ -1,7 +1,7 @@
 const AppConfigs = {
     serverConfig: {
-        host: 'http://localhost',
-        port: '4000',
+        host: process.env.REACT_APP_HOST, //'http://localhost',
+        port: process.env.REACT_APP_PORT, //'4000',
         defaultRoute: 'api',
         admin: 'admin',
         role: 'role',
@@ -20,7 +20,7 @@ const AppConfigs = {
         license: 'license',
         branch: 'branch',
         purchaseLicense:'purchaseLicense',
-        serverUrl: 'http://localhost:4000/api'
+        serverUrl: process.env.REACT_APP_SERVER_URL, // 'http://localhost:4000/api'
     }
 };
 

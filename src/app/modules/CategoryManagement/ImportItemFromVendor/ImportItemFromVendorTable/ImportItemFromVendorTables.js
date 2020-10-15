@@ -8,7 +8,7 @@ import { Pagination } from '../../../../../_metronic/_partials/controls'
 
 
 const ImportItemFromVendorTable = (props) => {
-    const {onClickVendorItemEdit, onClickVendorItemAddButton, setSelectedCategory, deleteData, isLoading, totalCount, pageNumber, pageSize} = props;
+    const {onClickVendorItemEdit, onClickVendorItemAddButton, setSelectedProduct, deleteData, isLoading, totalCount, pageNumber, pageSize} = props;
     const itemListData = useSelector(state => state.categoryModal.vendorItemList);
   
    const coloumn = [

@@ -107,6 +107,7 @@ export const CategoryManagementAction = {
 const { serverUrls } = getServerCore();
 const categoryUrl = serverUrls.getCategory();
 const subCategoryUrl = serverUrls.getSubCategory();
+const productUrl = serverUrls.getproduct();
 
 export const addCategoryDataAsync = (categoryName) => {
     return async (dispatch) => {
@@ -137,7 +138,7 @@ export const DisplayCategoryListAsync = () => {
     return async (dispatch) => {
         try {
             let categoryList = await axios({
-                url: `http://127.0.0.1:4000/api/corporate-admin/category/getCategoryList`,
+                url: `${categoryUrl}/getCategoryList`,
                 method: "GET",
                 headers: {
                     'Content-type': 'appplication/json',
@@ -162,7 +163,7 @@ export const DisplaySubCategoryListAsync = () => {
         const id = categoryModal.selectedCategory._id
         try {
             let subCategoryResponse = await axios({
-                url: `http://127.0.0.1:4000/api/corporate-admin/sub-category/getSubCategoryByCategoryId/${id}`,
+                url: `${subCategoryUrl}/getSubCategoryByCategoryId/${id}`,
                 method: 'GET',
                 headers: {
                     'Content-type': 'appplication/json',
@@ -180,7 +181,7 @@ export const DisplaySubCategoryList = (value) => {
     return async (dispatch, getState) => {
         try {
             let subCategoryResponse = await axios({
-                url: `http://127.0.0.1:4000/api/corporate-admin/sub-category/getSubCategoryByCategoryId/${value}`,
+                url: `${subCategoryUrl}/getSubCategoryByCategoryId/${value}`,
                 method: 'GET',
                 headers: {
                     'Content-type': 'appplication/json',
@@ -198,7 +199,7 @@ export const ClickDeleteCategoryAsync = (id) => {
     return async (dispatch) => {
         try {
             let categoryList = await axios({
-                url: `http://127.0.0.1:4000/api/corporate-admin/category/deleteCategory/${id}`,
+                url: `${categoryUrl}/deleteCategory/${id}`,
                 method: "GET",
                 headers: {
                     'Content-type': 'appplication/json'
@@ -221,7 +222,7 @@ export const DeactiveCategoryAsync = (id) => {
         const { categoryModal } = getState()
         try {
             let { data } = await axios({
-                url: `http://127.0.0.1:4000/api/corporate-admin/category/updateCategoryStatus/${id}`,
+                url: `${categoryUrl}/updateCategoryStatus/${id}`,
                 method: "PUT",
                 data: { status: !categoryModal.selectedCategory.status },
                 headers: {
@@ -251,7 +252,7 @@ export const EditCategoryAsync = (category_name) => {
         try {
             dispatch({ type: CategoryManagementMap.EDIT_CATEGORY_START })
             let { data } = await axios({
-                url: `http://127.0.0.1:4000/api/corporate-admin/category/updateCategory/${id}`,
+                url: `${categoryUrl}/updateCategory/${id}`,
                 method: 'PUT',
                 data: { category_name },
                 headers: {
@@ -275,7 +276,7 @@ export const addSubCategoryDataAsync = (subcategory_name) => {
             dispatch({ type: CategoryManagementMap.ADD_CATEGORY_START })
             const { selectedCategory } = getState().categoryModal;
             let { data } = await axios({
-                url: `http://127.0.0.1:4000/api/corporate-admin/sub-category/saveSubCategory`,
+                url: `${subCategoryUrl}/saveSubCategory`,
                 method: 'POST',
                 data: { subcategory_name, category_id: selectedCategory._id },
                 headers: {
@@ -299,7 +300,7 @@ export const EditSubCategoryDataAsync = (subcategory_name) => {
         try {
             const { selectedSubCategory } = getState().categoryModal;
             let { data } = await axios({
-                url: `http://127.0.0.1:4000/api/corporate-admin/sub-category/updateSubCategory/${selectedSubCategory._id}`,
+                url: `${subCategoryUrl}/updateSubCategory/${selectedSubCategory._id}`,
                 method: 'PUT',
                 data: { subcategory_name, category_id: selectedSubCategory.category_id },
                 headers: {
@@ -323,7 +324,7 @@ export const EditProductAsync = (data, _id) => {
         try {
             dispatch({ type: CategoryManagementMap.EDIT_PRODUCT });
             let editProductRes = await axios({
-                url: `http://127.0.0.1:4000/api/corporate-admin/product/updateProduct/${_id}`,
+                url: `${productUrl}/updateProduct/${_id}`,
                 method: 'PUT',
                 data: data,
                 headers: {
@@ -343,7 +344,7 @@ export const DisplayVendorItemAsync = () => {
     return async (dispatch) => {
         try {
             let {data} = await axios({
-                url: `http://127.0.0.1:4000/api/corporate-admin/product/getProductList/0/5`,
+                url: `${productUrl}/getProductList/0/5`,
                 method: 'POST',
                 headers: {
                     'Content-type': 'application/json',
@@ -363,7 +364,7 @@ export const addVendorItemAsync = (product) => {
         try {
             dispatch({ type: CategoryManagementMap.ADD_PRODUCT });
             let { data } = await axios({
-                url: `http://127.0.0.1:4000/api/corporate-admin/product/saveProduct`,
+                url: `${productUrl}/saveProduct`,
                 method: 'POST',
                 data: product,
                 headers: {
@@ -427,7 +428,7 @@ export const displaySubCategoryList = (value) => {
         const token = auth.tokens
         try {
             let subCategoryListResponse = await axios({
-                url: `http://localhost:4000/api/corporate-admin/sub-category/getSubCategoryByCategoryId/${value}`,
+                url: `${subCategoryUrl}/getSubCategoryByCategoryId/${value}`,
                 method: "GET",
                 headers: {
                     'Content-type': 'application/json',
@@ -450,7 +451,7 @@ export const deleteProductAsync = () => {
         try {
 
             let deleteProductResponse = await axios({
-                url: `http://localhost:4000/api/corporate-admin/product/deleteProduct/${_id}`,
+                url: `${productUrl}/deleteProduct/${_id}`,
                 method: "DELETE",
                 headers: {
                     'Content-type': 'application/json',
