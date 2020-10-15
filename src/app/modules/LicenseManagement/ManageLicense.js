@@ -17,7 +17,6 @@ const ManageLicense = () => {
         if (refereshLicenseList) {
             dispatch(displayLicenseListAsync())
         }
-        
     }, [refereshLicenseList])
 
     const setSelectedLicense = (license) => {

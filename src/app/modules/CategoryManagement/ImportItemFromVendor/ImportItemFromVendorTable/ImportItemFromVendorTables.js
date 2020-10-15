@@ -2,10 +2,13 @@ import React from 'react';
 import { useSelector } from 'react-redux'
 import BootstrapTable from "react-bootstrap-table-next";
 import { VendorTableActionButtons } from './VendorTableActionButton';
+import {SmallProductImage} from './TableProductImage';
 import paginationFactory, { PaginationProvider } from "react-bootstrap-table2-paginator";
 import { Pagination } from '../../../../../_metronic/_partials/controls'
+
+
 const ImportItemFromVendorTable = (props) => {
-    const {onClickVendorItemEdit, onClickVendorItemAddButton, setSelectedCategory, deleteData, isLoading, totalCount, pageNumber, pageSize} = props;
+    const {onClickVendorItemEdit, onClickVendorItemAddButton, setSelectedProduct, deleteData, isLoading, totalCount, pageNumber, pageSize} = props;
     const itemListData = useSelector(state => state.categoryModal.vendorItemList);
   
    const coloumn = [
@@ -16,7 +19,8 @@ const ImportItemFromVendorTable = (props) => {
         },
         {
             dataField: 'product_image',
-            text: 'Product Image'
+            text: 'Product Image',
+            formatter: SmallProductImage
         },
         {
             dataField: 'product_name',
@@ -35,7 +39,11 @@ const ImportItemFromVendorTable = (props) => {
             text: 'ROS Code'
         },
         {
-            dataField:  'license_id',
+            dataField: 'ros_cost',
+            text: 'ROS Cost'
+        },
+        {
+            dataField:  'license_id.type',
             text: 'License Type'
         },
         {
@@ -44,8 +52,7 @@ const ImportItemFromVendorTable = (props) => {
             headerAlign: 'center',
             formatter: VendorTableActionButtons,
             formatExtraData: {
-                setSelectedCategory: setSelectedCategory,
-                onClickVendorItemEdit: onClickVendorItemEdit,
+                setSelectedProduct: setSelectedProduct,
                 onClickVendorItemAddButton: onClickVendorItemAddButton,
                 deleteData: deleteData
             }
@@ -58,7 +65,7 @@ const ImportItemFromVendorTable = (props) => {
             bootstrap4
             bordered={false}
             remote
-            keyField="srno"
+            keyField="_id"
             data={itemListData === null ? [] : itemListData}
             columns={coloumn}
             pagination={paginationFactory()}

@@ -5,17 +5,29 @@ import ImportItemFromVendorTable from './ImportItemFromVendorTable/ImportItemFro
 import { Modal } from "react-bootstrap";
 import { Formik } from "formik";
 import AddItemFromVendorForm from './ImportItemFromVendorTable/AddItemFromVendorForm';
-import { CategoryManagementAction, CategoryManagementMap, deleteProductAsync, DisplayVendorItemAsync } from '../../../actions/categoryManagementModal.action'
+import {
+    CategoryManagementAction,
+    CategoryManagementMap,
+    deleteProductAsync,
+    DisplayVendorItemAsync,
+    DisplayCategoryListAsync
+} from '../../../actions/categoryManagementModal.action'
 import { displayLicenseListAsync } from '../../../actions/licenseManagement.action';
+
 const ImportItemFromVendor = (props) => {
-    const { onClickVendorItemEdit } = props;
+
     const dispatch = useDispatch()
+
     const categoryList = useSelector(state => state.categoryModal.categoryList);
     const vendorModalState = useSelector(state => state.categoryModal.categoryManagementModal.importItemModal)
     const refereshList = useSelector(state => state.categoryModal.refereshVendorList)
+    const refereshLicenseList = useSelector(state => state.licenceManagement.refereshLicenseList)
     const openDeleteModal = useSelector(state => state.categoryModal.categoryManagementModal.openConfirmModal)
+    const refereshCategoryList = useSelector(state => state.categoryModal.refereshCategoryList);
+    const selectedCategoryitem = useSelector(state => state.categoryModal.categorySelected);
+
     const onClickVendorItemAddButton = () => {
-        dispatch(DisplayVendorItemAsync())
+        // dispatch(DisplayVendorItemAsync())
         dispatch(CategoryManagementAction.toggleAddCategoryModal(CategoryManagementMap.OPEN_VENDOR_ITEM_MODAL))
     }
 
@@ -40,40 +52,49 @@ const ImportItemFromVendor = (props) => {
     const closeModal = () => {
         dispatch(CategoryManagementAction.toggleAddCategoryModal(CategoryManagementMap.CLOSE_CONFIRM_MODAL))
     }
-    
-    const setSelectedCategory = (user) => {
-        dispatch(CategoryManagementAction.setSelectedCategory(user))
+
+    const setSelectedProduct = (product) => {
+        dispatch(CategoryManagementAction.setSelectedProduct(product));
     }
     useEffect(() => {
         if (refereshList) {
             dispatch(DisplayVendorItemAsync())
+        }
+    }, [refereshList]);
+
+    useEffect(() => {
+        if (refereshLicenseList) {
             dispatch(displayLicenseListAsync())
         }
-    }, [refereshList])
+    }, [refereshLicenseList]);
+
+    useEffect(() => {
+        if (refereshCategoryList && selectedCategoryitem === "category") {
+            dispatch(DisplayCategoryListAsync())
+        }
+    }, [refereshCategoryList])
 
     return (
         <Card>
-            <CardHeader title="Category Management">
+            <CardHeader title="Products Management">
                 <CardHeaderToolbar>
-                    <form>
-                        <div>
-                            <input
-                                type="text"
-                                className="form-control"
-                                name="searchText"
-                                placeholder="Search"
-                                //   onBlur={handleBlur}
-                                //   value={values.searchText}
-                                onChange={(e) => {
-                                    // setFieldValue("searchText", e.target.value);
-                                    // handleSubmit();
-                                }}
-                            />
-                            <small className="form-text text-muted">
+                    <div className="mr-10">
+                        <input
+                            type="text"
+                            className="form-control"
+                            name="searchText"
+                            placeholder="Search . . ."
+                            //   onBlur={handleBlur}
+                            //   value={values.searchText}
+                            onChange={(e) => {
+                                // setFieldValue("searchText", e.target.value);
+                                // handleSubmit();
+                            }}
+                        />
+                        {/* <small className="form-text text-muted">
                                 <b>Search</b> in all fields
-                    </small>
-                        </div>
-                    </form>
+                    </small> */}
+                    </div>
                     <button
                         type="button"
                         className="btn btn-primary"
@@ -84,7 +105,7 @@ const ImportItemFromVendor = (props) => {
                 </CardHeaderToolbar>
             </CardHeader>
             <CardBody>
-                
+
                 <Formik
                     initialValues={{
                         status: "",
@@ -110,23 +131,24 @@ const ImportItemFromVendor = (props) => {
                                             name="status"
                                             placeholder="Filter by Status"
                                             onChange={(e) => {
-                                                if(e.target.value === 0){
+                                                if (e.target.value === 0) {
                                                     displayAllCategory()
-                                                }else{
-                                                selectedCategory(e.target.value)}
+                                                } else {
+                                                    selectedCategory(e.target.value)
+                                                }
                                                 setFieldValue("status", e.target.value);
                                                 handleSubmit();
                                             }}
                                             onBlur={handleBlur}
-                                          value={values.status}
+                                            value={values.status}
                                         >
                                             <option value="0">All</option>
-                                        {
-                                            categoryList.map((item, index) => (
-                                            <option key={index} value={item._id}>{item.category_name}</option>
-                                            ))
-                                        }
-                                            </select>
+                                            {
+                                                categoryList.map((item, index) => (
+                                                    <option key={index} value={item._id}>{item.category_name}</option>
+                                                ))
+                                            }
+                                        </select>
                                         <small className="form-text text-muted">
                                             <b>Filter</b> by Category Name
                                         </small>
@@ -136,31 +158,31 @@ const ImportItemFromVendor = (props) => {
                         )}
                 </Formik>
 
-                
+
 
                 <Modal
-                        show={openDeleteModal}
-                        onHide={closeModal}
-                        aria-labelledby="example-modal-sizes-title-lg"
-                    >
-                        {selectedCategory ? 
+                    show={openDeleteModal}
+                    onHide={closeModal}
+                    aria-labelledby="example-modal-sizes-title-lg"
+                >
+                    {selectedCategory ?
                         <>
-                        <Modal.Header closeButton>
-                            <Modal.Title id="example-modal-sizes-title-lg">
-                              <span> Delete Product!!</span>
-                            </Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                            <span>Are you sure to Delete Product ?</span>
-                        </Modal.Body>
-                        <Modal.Footer>
-                            <div>
-                                <button type="button" className="btn btn-light btn-elevate" onClick={closeModal}>Cancel</button>
-                                <button type="button" className="btn btn-delete btn-primary" onClick={deleteProduct}>Delete</button>
-                            </div>
-                        </Modal.Footer>
+                            <Modal.Header closeButton>
+                                <Modal.Title id="example-modal-sizes-title-lg">
+                                    <span> Delete Product!!</span>
+                                </Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
+                                <span>Are you sure to Delete Product ?</span>
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <div>
+                                    <button type="button" className="btn btn-light btn-elevate" onClick={closeModal}>Cancel</button>
+                                    <button type="button" className="btn btn-delete btn-primary" onClick={deleteProduct}>Delete</button>
+                                </div>
+                            </Modal.Footer>
                         </>
-                         : []}
+                        : []}
                 </Modal>
 
                 <Modal
@@ -172,19 +194,21 @@ const ImportItemFromVendor = (props) => {
                     <Modal.Header closeButton >
                         <Modal.Title>
                             <>
-                                <h1 className="float-center">Add Item</h1>
+                                <h1 className="float-center">Add Product</h1>
                             </>
                         </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <AddItemFromVendorForm
-                            setSelectedCategory = {setSelectedCategory}
                             onHideVendorModal={onHideVendorModal}
-                            deleteData={deleteData}
                         />
                     </Modal.Body>
                 </Modal>
-                <ImportItemFromVendorTable onClickVendorItemEdit={onClickVendorItemEdit} deleteData={deleteData} setSelectedCategory={setSelectedCategory} onClickVendorItemAddButton={onClickVendorItemAddButton} />
+                <ImportItemFromVendorTable
+                    deleteData={deleteData}
+                    setSelectedProduct={setSelectedProduct}
+                    onClickVendorItemAddButton={onClickVendorItemAddButton}
+                />
             </CardBody>
         </Card>
     )

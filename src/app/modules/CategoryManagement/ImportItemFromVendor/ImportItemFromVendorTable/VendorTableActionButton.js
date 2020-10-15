@@ -4,18 +4,18 @@ export const VendorTableActionButtons = (cellContent,
     row,
     rowIndex,
     {
-        OnAddCategory,setSelectedCategory,
+        setSelectedProduct,
         onClickVendorItemAddButton,
         deleteData
     }
     ) => {
     const onClickVendorItemEdit = (row) => {
-       setSelectedCategory(row) 
+       setSelectedProduct(row) 
        onClickVendorItemAddButton()
     }
 
     const onClickDeleteData = (row) => {
-        setSelectedCategory(row) 
+        setSelectedProduct(row) 
         deleteData()
     }
 
