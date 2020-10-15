@@ -1,4 +1,5 @@
 import axios from 'axios';
+import getServerCore from '../../utils/apiUtils';
 
 export const actionTypes = {
     Login_Start: "Login_Start",
@@ -29,6 +30,8 @@ export const UserActions = {
     // logout: () => ({ type: actionTypes.Logout }),
 };
 
+// const { serverUrls, apiCall } = getServerCore();
+
 const getErrorMsg = (data) => {
     if (data.response) {
         return data.response.responseMessage || data.response.message;
@@ -39,6 +42,8 @@ const getErrorMsg = (data) => {
     return "Login Error.";
 }
 
+const { serverUrls } = getServerCore();
+const adminUrl = serverUrls.getAdminUrl()
 
 export const loginAsync = (userCreds) => {
     return async (dispatch) => {
@@ -46,7 +51,8 @@ export const loginAsync = (userCreds) => {
             dispatch(UserActions.loginStart());
             const { data } = await axios({
                 method: "POST",
-                url: "http://localhost:4000/api/admin/login",
+                // url: "http://localhost:4000/api/admin/login",
+                url: `${adminUrl}/login`,
                 data: userCreds,
                 headers: {
                     'Content-Type': "application/json"
@@ -69,7 +75,8 @@ export const logoutAsync = () => {
         try {
             await axios({
                 method: "POST",
-                url: "http://localhost:4000/api/admin/logout",
+                // url: "http://localhost:4000/api/admin/logout",
+                url: `${adminUrl}/logout`,
             });
             return dispatch(UserActions.logout());
         } catch (error) {
@@ -83,7 +90,8 @@ export const forgotPasswordApi = (email) => async (dispatch) => {
         dispatch(UserActions.forgotPassword(email));
         let { data } = await axios({
             method: "POST",
-            url: `http://localhost:4000/api/admin/forgotPassword`,
+            // url: `http://localhost:4000/api/admin/forgotPassword`,
+            url: `${adminUrl}/forgotPassword`,
             data: { email },
             headers: {
                 'Content-Type': "application/json",
@@ -104,7 +112,9 @@ export const resetPasswordApi = (payload) => async (dispatch) => {
         dispatch(UserActions.resetPassword());
         let { data } = await axios({
             method: "POST",
-            url: `http://localhost:4000/api/admin/resetPassword`,
+            // url: `http://localhost:4000/api/admin/resetPassword`,
+            url: `${adminUrl}/resetPassword`,
+            
             data: payload,
             headers: {
                 'Content-Type': "application/json",

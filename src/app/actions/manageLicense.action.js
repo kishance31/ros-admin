@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+import getServerCore from '../../utils/apiUtils';
 export const ManageLicenseMap = {
   ADD_LICENSE_DATA_START: 'ADD_LICENSE_DATA_START',
   ADD_LICENSE_DATA_SUCCESS: 'ADD_LICENSE_DATA_SUCCESS',
@@ -17,7 +17,9 @@ export const ManageUserAction = {
     };
   },
 };
-
+const { serverUrls } = getServerCore();
+const license = serverUrls.getLicenseUrl()
+console.log('aaaaaaaaaaaaaaa', license);
 export const addLicenseAsync = (data, tokens) => {
 
     return async (dispatch) => {
@@ -26,7 +28,7 @@ export const addLicenseAsync = (data, tokens) => {
                 type: ManageLicenseMap.ADD_LICENSE_DATA_START
             });
             let addLicenseResponse = await axios({
-                url: `http://127.0.0.1:4000/api/license/addLicense`,
+                url: `${license}/addLicense`,
                 method: 'POST',
                 headers: {
                     tokens,
@@ -56,7 +58,7 @@ export const addLicenseListAsync = () => {
         type: ManageLicenseMap.ADD_LICENSE_LIST_START,
       });
       let addLicenseListResponse = await axios({
-        url: `http://127.0.0.1:4000/api/license/licenseList`,
+        url: `${license}/licenseList`,
         method: 'GET',
       });
       if (addLicenseListResponse.data.response.responseCode === 200) {

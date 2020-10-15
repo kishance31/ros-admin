@@ -1,5 +1,6 @@
 import axios from 'axios';
-
+import getServerCore from '../../utils/apiUtils';
+import {showSuccessSnackbar} from './snackbar.action';
 export const licenseManagementMap = {
     OPEN_LICENSE_MODAL: 'OPEN_LICENSE_MODAL',
     CLOSE_LICENSE_MODAL: 'CLOSE_LICENSE_MODAL',
@@ -14,6 +15,9 @@ export const licenseManagementMap = {
 
 }
 
+const { serverUrls } = getServerCore();
+const license = serverUrls.getLicenseUrl()
+console.log('adminUrl', license);
 export const licenseManagementActions = {
     
     toggleLicenseModal: (type) => {
@@ -28,11 +32,13 @@ export const licenseManagementActions = {
 }
 
 export const displayLicenseListAsync = () => {
+    console.log('adminUrl', license);
+
     return async (dispatch, getstate) => {
         const {auth} = getstate();
         try {
             let licenseList = await axios({
-                url: `http://localhost:4000/api/license/licenseList`,
+                url: `${license}/licenseList`,
                 method: "GET",
                 headers: {
                     'Content-type': 'appplication/json',
@@ -54,7 +60,7 @@ export const addLicenseDataAsync = (data) => {
         const {auth} = getstate();
         try {
             let addLicenseAsync = await axios({
-                url: `http://localhost:4000/api/license/addLicense`,
+                url: `${license}/addLicense`,
                 method:"POST",
                 data,
                 headers: {
@@ -63,7 +69,10 @@ export const addLicenseDataAsync = (data) => {
                 }
             })
             if(addLicenseAsync.data.response.responseCode === 201) {
+                dispatch(showSuccessSnackbar('success',"license Added Successfully",'3000'));
                 dispatch({type: licenseManagementMap.LICENSE_EDIT_SUCCESSFULLY })
+            }else{
+                dispatch(showSuccessSnackbar('error',"please try again",'3000'));
             }
         } catch (error) {
             dispatch({type: licenseManagementMap.LICENSE_EDIT_FAIL })
@@ -80,7 +89,7 @@ export const editLicenseDataAsync = (values) => {
         const {auth} = useState();
         try {
             let EditLicenseAsync = await axios({
-                url: `http://localhost:4000/api/license/update`,
+                url: `${license}/update`,
                 method: "POST",
                 data: Data,
                 headers: {
@@ -89,10 +98,13 @@ export const editLicenseDataAsync = (values) => {
                 }
             })
             if(EditLicenseAsync.data.response.responseCode === 200){
+                dispatch(showSuccessSnackbar('success',"license Updated Successfully",'3000'));
                 dispatch({type: licenseManagementMap.LICENSE_ADDED_SUCCESSFULLY })
+            }else{
+                dispatch(showSuccessSnackbar('error',"please try again",'3000'));
             }
         } catch (error) {
-            
+            dispatch(showSuccessSnackbar('error',"please try again",'3000'));
         }
     }
 }
@@ -107,7 +119,7 @@ export const deactiveLicenseStatusAsync = (selectedLicense) => {
         if(active) {
             try{
                 let UpdateStatus = await axios({
-                    url: `http://localhost:4000/api/license/deactivate/${type}`,
+                    url: `${license}/deactivate/${type}`,
                     method: 'POST',
                     headers: {
                         "Content-type": "application/json",
@@ -115,16 +127,20 @@ export const deactiveLicenseStatusAsync = (selectedLicense) => {
                     }
                 })
                 if(UpdateStatus.data.response.responseCode === 200){
+                    dispatch(showSuccessSnackbar('success',"Status Change Successfully",'3000'));
                     dispatch({type: licenseManagementMap.UPDATE_LICENSE_SUCCESSFULLY})
+                }else{
+                    dispatch(showSuccessSnackbar('error',"please try again",'3000'));
                 }
             }
             catch(error) {
+                dispatch(showSuccessSnackbar('error',"please try again",'3000'));
                 dispatch({type: licenseManagementMap.UPDATE_LICENSE_FAIL})
             }
         }else {
             try{
                 let UpdateStatus = await axios({
-                    url: `http://localhost:4000/api/license/activate/${type}`,
+                    url: `${license}/activate/${type}`,
                     method: 'POST',
                     headers: {
                         "Content-type": "application/json",
@@ -132,10 +148,14 @@ export const deactiveLicenseStatusAsync = (selectedLicense) => {
                     }
                 })
                 if(UpdateStatus.data.response.responseCode === 200){
+                    dispatch(showSuccessSnackbar('success',"Status Change Successfully",'3000'));
                     dispatch({type: licenseManagementMap.UPDATE_LICENSE_SUCCESSFULLY})
+                }else{
+                    dispatch(showSuccessSnackbar('error',"please try again",'3000'));
                 }
             }
             catch(error) {
+                dispatch(showSuccessSnackbar('error',"please try again",'3000'));
                 dispatch({type: licenseManagementMap.UPDATE_LICENSE_FAIL})
             }
         } 

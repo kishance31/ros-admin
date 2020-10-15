@@ -31,7 +31,6 @@ const ManageUsers = () => {
   useEffect(() => {
     if (refreshManageUserData) {
       dispatch(displayManageUserDataAsync());
-      dispatch(showSuccessSnackbar('error',"Hello!",'2000'));
     }
   }, [refreshManageUserData]);
 

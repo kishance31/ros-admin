@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+import getServerCore from '../../utils/apiUtils';
 export const ManageEmailTemplateMap = {
     OPEN_MODAL: 'OPEN_MODAL',
     CLOSE_MODAL: 'CLOSE_MODAL',
@@ -58,28 +58,57 @@ export const ManageEmailTemplateAction = {
     }
 }
 
+const { serverUrls } = getServerCore();
+const emailTemplate = serverUrls.getEmailTemplate()
+
 export const displayEmailTemplateDataAsync = (tokens) => {
     return async (dispatch) => {
-        try {
-            dispatch({
-                    type: ManageEmailTemplateMap.DISPLAY_EMAIL_TEMPLATE_DATA_START,
-                    payload: {}
-                })
-        } catch (error) {
-            dispatch({
-                type: ManageEmailTemplateMap.DISPLAY_EMAIL_TEMPLATE_DATA_ERROR
-            })
+      try {
+        dispatch({
+            type: ManageEmailTemplateMap.DISPLAY_EMAIL_TEMPLATE_DATA_START,
+        })
+        let ManageEmailTemplateResponse = await axios({
+          url: `${emailTemplate}/getEmailTemplateList`,
+          method: 'GET',
+          headers: {
+            tokens,
+            'Content-Type': 'application/json',
+          },
+        });
+        if (ManageEmailTemplateResponse.data.response.responseCode === 200) {
+          dispatch({
+            type: ManageEmailTemplateMap.DISPLAY_EMAIL_TEMPLATE_DATA_SUCCESS,
+            payload: ManageEmailTemplateResponse.data.response.data,
+          });
         }
-    }
-}
+      } catch (error) {
+        dispatch({
+            type: ManageEmailTemplateMap.DISPLAY_EMAIL_TEMPLATE_DATA_ERROR
+        });
+      }
+    };
+  };
+
  
 export const deleteEmailTemplateDataAsync = (row,tokens) => {
     return async (dispatch) => {
         try {
             dispatch({
-                    type: ManageEmailTemplateMap.DELETE_EMAIL_TEMPLATE_DATA_SUCCESS,
-                    payload: row
-                })
+                type: ManageEmailTemplateMap.DELETE_EMAIL_TEMPLATE_DATA_START,
+            })
+            let deleteEmailTemplateResponse = await axios({
+                url: `${emailTemplate}/deleteEmailTemplate/${row._id}`,
+                method: 'DELETE',
+                headers: {
+                  tokens
+                },
+              });
+              if (deleteEmailTemplateResponse.data.response.responseCode === 200) {
+                dispatch({
+                  type: ManageEmailTemplateMap.DELETE_EMAIL_TEMPLATE_DATA_SUCCESS,
+                  payload: deleteEmailTemplateResponse.data.response,
+                });
+              }
         } catch (error) {
             dispatch({
                 type: ManageEmailTemplateMap.DELETE_EMAIL_TEMPLATE_DATA_ERROR
@@ -91,10 +120,23 @@ export const addEmailTemplateAsync = (data, tokens) => {
 
     return async (dispatch) => {
         try { 
-        dispatch({
+            dispatch({
+                type: ManageEmailTemplateMap.ADD_EMAIL_TEMPLATE_DATA_START,
+            })
+            let addEmailTeamplateAsync = await axios({
+                url: `${emailTemplate}/saveEmailTemplate`,
+                method:"POST",
+                data,
+                headers: {
+                    tokens
+                }
+            })
+            if(addEmailTeamplateAsync.data.response.responseCode === 200) {
+                dispatch({
                     type: ManageEmailTemplateMap.ADD_EMAIL_TEMPLATE_DATA_SUCCESS,
-                    payload: data
+                    payload: addEmailTeamplateAsync.data.response.data,
                 })
+            }
         } catch (error) {
             dispatch({
                 type: ManageEmailTemplateMap.ADD_EMAIL_TEMPLATE_DATA_ERROR
@@ -103,13 +145,29 @@ export const addEmailTemplateAsync = (data, tokens) => {
     }
 }
 export const EditEmailTemplateAsync = (data, tokens) => {
-
     return async (dispatch) => {
         try { 
-        dispatch({
-                    type: ManageEmailTemplateMap.EDIT_EMAIL_TEMPLATE_DATA_SUCCESS,
-                    payload: data
+            dispatch({
+                type: ManageEmailTemplateMap.EDIT_EMAIL_TEMPLATE_DATA_START,
+            })
+            let updateEmailTemplate = await axios({
+                url: `${emailTemplate}/updateEmailTemplate/${data._id}`,
+                method: 'PUT',
+                data:{
+                    title:data.title,
+                    subject:data.subject,
+                    description:data.description
+                },
+                headers: {
+                  tokens,
+                },
+              });
+              if(updateEmailTemplate.data.response.responseCode === 200) {
+                dispatch({
+                    type: ManageEmailTemplateMap.ADD_EMAIL_TEMPLATE_DATA_SUCCESS,
+                    payload: updateEmailTemplate.data.response.data,
                 })
+            } 
         } catch (error) {
             dispatch({
                 type: ManageEmailTemplateMap.EDIT_EMAIL_TEMPLATE_DATA_ERROR

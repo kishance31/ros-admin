@@ -1,5 +1,6 @@
 import axios from 'axios';
-
+import getServerCore from '../../utils/apiUtils';
+import {showSuccessSnackbar} from '../actions/snackbar.action';
 export const ManageUserMap = {
     OPEN_MODAL: 'OPEN_MODAL',
     CLOSE_MODAL: 'CLOSE_MODAL',
@@ -91,7 +92,8 @@ export const ManageUserAction = {
     updateUserSuccess: () => ({ type: ManageUserMap.UPDATE_ADMIN_STATUS_SUCCESS }),
     updateUserError: () => ({ type: ManageUserMap.UPDATE_ADMIN_STATUS_ERROR }),
 }
-
+const { serverUrls } = getServerCore();
+const adminsUrl = serverUrls.getAdminUrl()
 export const displayManageUserDataAsync = () => {
     return async (dispatch, getState) => {
         try {
@@ -100,7 +102,8 @@ export const displayManageUserDataAsync = () => {
             });
             const { pageNumber, pageSize } = getState().manageUser
             let {data} = await axios({
-                url: `http://127.0.0.1:4000/api/admin/getAdmins/${pageNumber - 1}/${pageSize}`,
+                url:`${adminsUrl}/getAdmins/${pageNumber - 1}/${pageSize}`,
+                // url: `http://127.0.0.1:4000/api/admin/getAdmins/${pageNumber - 1}/${pageSize}`,
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
@@ -129,7 +132,7 @@ export const addManageUserAsync = (data, tokens) => {
                 type: ManageUserMap.ADD_MANAGEUSER_DATA_START
             });
             let addUserDataResponse = await axios({
-                url: `http://127.0.0.1:4000/api/admin/createAdmin`,
+                url: `${adminsUrl}/createAdmin`,
                 method: 'POST',
                 headers: {
                     tokens,
@@ -138,9 +141,11 @@ export const addManageUserAsync = (data, tokens) => {
                 data
             });
             if (addUserDataResponse.data.response && addUserDataResponse.data.response.responseCode === 200) {
+                dispatch(showSuccessSnackbar('success',"Added User Successfully",'3000'));
                 dispatch({
                     type: ManageUserMap.ADD_MANAGEUSER_DATA_SUCCESS,
                 })
+                
             }
         } catch (error) {
             dispatch({
@@ -158,7 +163,7 @@ export const editManageUserAsync = (userObj) => {
             });
             const { tokens } = getState().auth;
             let editManageUserData = await axios({
-                url: `http://127.0.0.1:4000/api/admin/editAdmin/${userObj._id}`,
+                url: `${adminsUrl}/editAdmin/${userObj._id}`,
                 method: 'PUT',
                 headers: {
                     tokens
@@ -167,14 +172,18 @@ export const editManageUserAsync = (userObj) => {
             });
             console.log(editManageUserData);
             if (editManageUserData.data.response.responseCode === 200) {
-                return dispatch({
+                dispatch({
                     type: ManageUserMap.EDIT_MANAGEUSER_DATA_SUCCESS
                 });
+                dispatch(showSuccessSnackbar('success',"Updated User Successfully",'3000'));
+            }else{
+                dispatch(showSuccessSnackbar('error',"Updating Fail",'3000'));
             }
         } catch (error) {
             dispatch({
                 type: ManageUserMap.EDIT_MANAGEUSER_DATA_ERROR
             })
+            dispatch(showSuccessSnackbar('error',"Updating Fail",'3000'));
         }
     }
 }
@@ -184,15 +193,19 @@ export const deleteManageUserAsync = (id) => {
         try {
             dispatch(ManageUserAction.deleteUser());
             let { data } = await axios({
-                url: `http://localhost:4000/api/admin/deleteAdmin/${id}`,
+                url: `${adminsUrl}/deleteAdmin/${id}`,
                 method: 'PUT',
             });
             console.log(data);
             if (data.response && data.response.responseCode === 200) {
-                return dispatch(ManageUserAction.deleteUserSuccess());
-            }
+                dispatch(ManageUserAction.deleteUserSuccess());
+                dispatch(showSuccessSnackbar('success',"User Deleted Successfully",'3000'));
+            }else{
             dispatch(ManageUserAction.deleteUserError());
+            dispatch(showSuccessSnackbar('error',"Please try once again",'3000'));
+            }
         } catch (error) {
+            dispatch(showSuccessSnackbar('error',"Please try once again",'3000'));
             dispatch(ManageUserAction.deleteUserError());
         }
     }
@@ -203,7 +216,7 @@ export const updateAdminStatusAsync = (id, isActive) => {
         try {
             dispatch(ManageUserAction.updateUser());
             let { data } = await axios({
-                url: `http://127.0.0.1:4000/api/admin/updateAdminStatus/${id}`,
+                url: `${adminsUrl}/updateAdminStatus/${id}`,
                 method: 'PUT',
                 headers: {
                     "Content-Type": "application/json"
@@ -211,10 +224,13 @@ export const updateAdminStatusAsync = (id, isActive) => {
                 data: { isActive }
             });
             if (data.response && data.response.responseCode === 200) {
-                return dispatch(ManageUserAction.updateUserSuccess());
-            }
+                dispatch(showSuccessSnackbar('success',"User Deleted Successfully",'3000'));
+                dispatch(ManageUserAction.updateUserSuccess());
+            }else{
+                dispatch(showSuccessSnackbar('error',"Not Deleted",'3000'));
             dispatch(ManageUserAction.updateUserError());
-        } catch (error) {
+        }} catch (error) {
+            dispatch(showSuccessSnackbar('error',"Not Deleted",'3000'));
             dispatch(ManageUserAction.updateUserError());
         }
     }
