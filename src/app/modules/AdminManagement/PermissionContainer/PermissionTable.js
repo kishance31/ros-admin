@@ -1,231 +1,137 @@
-import React, { useState } from 'react';
-import { Button } from 'react-bootstrap';
+import React, { useEffect, useMemo, useState } from 'react';
+import { DropdownButton, DropdownItem, Button, Form } from 'react-bootstrap';
 import BootstrapTable from "react-bootstrap-table-next";
-import cellEditFactory from 'react-bootstrap-table2-editor';
 
-const CheckBoxInput = (props) => {
-  const { value, onUpdate } = props;
-  return (
-    <input type="checkbox" style={{ marginLeft: 10 }} checked={value}
-      onChange={(event) => {
-        onUpdate(event.target.checked)
-      }}
-    />
-  );
+const checkBoxFormatter = (cell, row, rowIndex, { updateTableState, type }) => {
+	return (
+		<input
+			type="checkbox"
+			style={{ marginLeft: 10 }}
+			checked={cell}
+			onChange={e => updateTableState(row.formName, type, e.target.checked)}
+		/>
+	)
 }
-const PermissionTable = () => {
 
-  let tableData = [
-    {
-      formName: 'Manage User',
-      add: false,
-      edit: false,
-      view: false,
-      delete: false,
-      active: false,
-      deactive: false,
-      approve: false,
-      reject: false,
-    }, {
-      formName: 'Roles & Permission',
-      add: false,
-      edit: false,
-      view: false,
-      delete: false,
-      active: false,
-      deactive: false,
-      approve: false,
-      reject: false,
-    }, {
-      formName: 'Permission',
-      add: false,
-      edit: false,
-      view: false,
-      delete: false,
-      active: false,
-      deactive: false,
-      approve: false,
-      reject: false,
-    }, {
-      formName: 'Categoty Management',
-      add: false,
-      edit: false,
-      view: false,
-      delete: false,
-      active: false,
-      deactive: false,
-      approve: false,
-      reject: false,
-    }, {
-      formName: 'Item/License Management',
-      add: false,
-      edit: false,
-      view: false,
-      delete: false,
-      active: false,
-      deactive: false,
-      approve: false,
-      reject: false,
-    }, {
-      formName: 'Corporate Management',
-      add: false,
-      edit: false,
-      view: false,
-      delete: false,
-      active: false,
-      deactive: false,
-      approve: false,
-      reject: false,
-    }, {
-      formName: 'Invoice Management',
-      add: false,
-      edit: false,
-      view: false,
-      delete: false,
-      active: false,
-      deactive: false,
-      approve: false,
-      reject: false,
-    }, {
-      formName: 'General Settings',
-      add: false,
-      edit: false,
-      view: false,
-      delete: false,
-      active: false,
-      deactive: false,
-      approve: false,
-      reject: false,
-    }
-  ]
-  const [data, setData] = useState(tableData)
+const PermissionTable = ({ names, types, roles, savePermissions }) => {
 
-  const editorMethod = (editorProps, value) => {
-    return (
-      <CheckBoxInput {...editorProps} value={value} />
-    )
-  }
+	const [selectedRole, setSelectedRole] = useState(null);
 
-  const columns = [
-    {
-      dataField: 'formName',
-      text: 'Form name',
-    },
-    {
-      dataField: 'add',
-      text: 'Add',
-      formatter: (cell) => {
-        return (
-          <input type="checkbox" style={{ marginLeft: 10 }} checked={cell} />
-        );
-      },
-      editorRenderer: editorMethod
-    },
-    {
-      dataField: 'edit',
-      text: 'Edit',
-      formatter: (cell) => {
-        return (
-          <input type="checkbox" style={{ marginLeft: 10 }} checked={cell} />
-        );
-      },
-      editorRenderer: editorMethod
-    },
-    {
-      dataField: 'view',
-      text: 'View',
-      formatter: (cell) => {
-        return (
-          <input type="checkbox" style={{ marginLeft: 10 }} checked={cell} />
-        );
-      },
-      editorRenderer: editorMethod
-    },
-    {
-      dataField: 'delete',
-      text: 'Delete',
-      formatter: (cell) => {
-        return (
-          <input type="checkbox" style={{ marginLeft: 10 }} checked={cell} />
-        );
-      },
-      editorRenderer: editorMethod
-    },
-    {
-      dataField: 'active',
-      text: 'Active',
-      formatter: (cell) => {
-        return (
-          <input type="checkbox" style={{ marginLeft: 10 }} checked={cell} />
-        );
-      },
-      editorRenderer: editorMethod
-    },
+	const getTableData = (names, types, selectedRole) => {
+		const typesObj = {};
+		types.forEach(type => typesObj[type] = false);
 
-    {
-      dataField: 'deactive',
-      text: 'Deactive',
-      formatter: (cell) => {
-        return (
-          <input type="checkbox" style={{ marginLeft: 10 }} checked={cell} />
-        );
-      },
-      editorRenderer: editorMethod
-    },
-    {
-      dataField: 'approve',
-      text: 'Approve',
-      formatter: (cell) => {
-        return (
-          <input type="checkbox" style={{ marginLeft: 10 }} checked={cell} />
-        );
-      },
-      editorRenderer: editorMethod
-    },
-    {
-      dataField: 'reject',
-      text: 'Reject',
-      formatter: (cell) => {
-        return (
-          <input type="checkbox" style={{ marginLeft: 10 }} checked={cell} />
-        );
-      },
-      editorRenderer: editorMethod
-    },
-  ];
-  const onTableChange = (type, newState) => {
+		const tableData = [];
+		names.forEach(name => {
+			if (name.subForms.length) {
+				name.subForms.map(subform => {
+					let obj = {
+						formName: subform.name, ...typesObj
+					}
+					if (selectedRole && selectedRole.permissions.length) {
+						let selectedRoleData = roles.find(role => role._id === selectedRole._id);
+						let currentRole = selectedRoleData.permissions.find(role => role.name === subform.name);
+						currentRole.types.forEach(typ => { obj[typ] = true });
+					}
+					tableData.push(obj);
+				})
+			} else {
+				tableData.push({ formName: name.name, ...typesObj });
+			}
+		})
+		return tableData;
+	}
 
-    const { data, cellEdit } = newState;
-    const updatedData = data.map(item => {
-      if (item.formName === cellEdit.rowId) {
-        let itemData = item;
-        itemData[cellEdit.dataField] = cellEdit.newValue
-        return itemData;
-      }
-      return item;
-    })
-    setData(updatedData)
-    console.log(newState);
-  }
-  return (
-    <div className="container" style={{ marginTop: 25 }}>
-      <Button variant="secondary" >Save</Button>
-      <BootstrapTable
-        wrapperClasses="table-responsive"
-        hover
-        classes="table table-head-custom table-vertical-center"
-        bootstrap4
-        remote
-        bordered={false}
-        keyField='formName'
-        data={data}
-        columns={columns}
-        cellEdit={cellEditFactory({ mode: 'click', blurToSave: true })}
-        onTableChange={onTableChange}
-        remote={{ cellEdit: true }}
-      />
-    </div>
-  )
+	const tableData = useMemo(() => getTableData(names, types, selectedRole), [names, types, selectedRole]);
+
+	const [tableState, setTableState] = useState(tableData);
+
+	useEffect(() => {
+		if (tableData.length) {
+			setTableState(tableData)
+		}
+	}, [tableData]);
+
+	const updateTableState = (formName, type, value) => {
+		let newState = tableData.map(tab => {
+			if (tab.formName === formName) {
+				tab[type] = value;
+			}
+			return tab;
+		})
+		setTableState(newState);
+	}
+
+	const getColumns = (types) => {
+		const columns = [
+			{
+				dataField: 'formName',
+				text: 'Form name',
+				editable: false,
+			},
+		]
+		types.forEach(type => {
+			let options = {
+				dataField: type,
+				text: type,
+				formatter: checkBoxFormatter,
+				formatExtraData: { updateTableState, type }
+			}
+			columns.push(options);
+		})
+		return columns;
+	}
+
+	const newcolumns = useMemo(() => getColumns(types), [types, tableState]);
+
+	return (
+		<>
+			<div className="d-flex justify-content-between mx-10">
+				<Form.Control
+					as="select"
+					id="dropdown-item-button"
+					onChange={(e) => {
+						if (e.target.value) {
+							setSelectedRole(roles.find(role => role._id === e.target.value))
+						} else {
+							setSelectedRole(null);
+						}
+					}}
+					value={selectedRole ? selectedRole._id : ""}
+					style={{ maxWidth: "fit-content" }}
+				>
+					<option value="">Select Role</option>
+					{
+						roles.map(role => (
+							<option
+								key={role._id}
+								value={role._id}
+							>
+								{role.roleName}
+							</option>
+						))
+					}
+				</Form.Control>
+				<Button
+					variant="primary"
+					onClick={() => savePermissions(tableState, selectedRole)}
+				>Save</Button>
+			</div>
+			<div className="container" style={{ marginTop: 25 }}>
+				<BootstrapTable
+					wrapperClasses="table-responsive"
+					hover
+					classes="table table-head-custom table-vertical-center"
+					bootstrap4
+					remote
+					bordered={false}
+					keyField='formName'
+					data={tableState}
+					columns={newcolumns}
+				/>
+			</div>
+		</>
+	)
 }
 
 export default PermissionTable;

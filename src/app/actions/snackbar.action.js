@@ -1,10 +1,5 @@
 
-
-
-
 export const showSuccessSnackbar = (variant,message,duration) => {
-  console.log(variant,'varianttt')
-  console.log(message,'message')
     return {
       type: "SNACKBAR_SUCCESS",
       payload: {

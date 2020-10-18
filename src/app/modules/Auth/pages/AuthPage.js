@@ -53,7 +53,7 @@ export function AuthPage() {
                   <div className="opacity-70 font-weight-bold	text-white">
                     &copy; 2020 ROS
                   </div>
-                  <div className="d-flex">
+                  {/* <div className="d-flex">
                     <Link to="/terms" className="text-white">
                       Privacy
                     </Link>
@@ -63,7 +63,7 @@ export function AuthPage() {
                     <Link to="/terms" className="text-white ml-10">
                       Contact
                     </Link>
-                  </div>
+                  </div> */}
                 </div>
                 {/* end:: Aside footer for desktop */}
               </div>

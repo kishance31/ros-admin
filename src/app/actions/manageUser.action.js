@@ -141,7 +141,7 @@ export const addManageUserAsync = (data, tokens) => {
                 data
             });
             if (addUserDataResponse.data.response && addUserDataResponse.data.response.responseCode === 200) {
-                dispatch(showSuccessSnackbar('success',"Added User Successfully",'3000'));
+                dispatch(showSuccessSnackbar('success',"Added User Successfully",3000));
                 dispatch({
                     type: ManageUserMap.ADD_MANAGEUSER_DATA_SUCCESS,
                 })
@@ -175,15 +175,15 @@ export const editManageUserAsync = (userObj) => {
                 dispatch({
                     type: ManageUserMap.EDIT_MANAGEUSER_DATA_SUCCESS
                 });
-                dispatch(showSuccessSnackbar('success',"Updated User Successfully",'3000'));
+                dispatch(showSuccessSnackbar('success',"Updated User Successfully",3000));
             }else{
-                dispatch(showSuccessSnackbar('error',"Updating Fail",'3000'));
+                dispatch(showSuccessSnackbar('error',"Updating Fail",3000));
             }
         } catch (error) {
             dispatch({
                 type: ManageUserMap.EDIT_MANAGEUSER_DATA_ERROR
             })
-            dispatch(showSuccessSnackbar('error',"Updating Fail",'3000'));
+            dispatch(showSuccessSnackbar('error',"Updating Fail",3000));
         }
     }
 }
@@ -199,13 +199,13 @@ export const deleteManageUserAsync = (id) => {
             console.log(data);
             if (data.response && data.response.responseCode === 200) {
                 dispatch(ManageUserAction.deleteUserSuccess());
-                dispatch(showSuccessSnackbar('success',"User Deleted Successfully",'3000'));
+                dispatch(showSuccessSnackbar('success',"User Deleted Successfully",3000));
             }else{
             dispatch(ManageUserAction.deleteUserError());
-            dispatch(showSuccessSnackbar('error',"Please try once again",'3000'));
+            dispatch(showSuccessSnackbar('error',"Please try once again",3000));
             }
         } catch (error) {
-            dispatch(showSuccessSnackbar('error',"Please try once again",'3000'));
+            dispatch(showSuccessSnackbar('error',"Please try once again",3000));
             dispatch(ManageUserAction.deleteUserError());
         }
     }
@@ -224,13 +224,13 @@ export const updateAdminStatusAsync = (id, isActive) => {
                 data: { isActive }
             });
             if (data.response && data.response.responseCode === 200) {
-                dispatch(showSuccessSnackbar('success',"User Deleted Successfully",'3000'));
+                dispatch(showSuccessSnackbar('success',"User Deleted Successfully",3000));
                 dispatch(ManageUserAction.updateUserSuccess());
             }else{
-                dispatch(showSuccessSnackbar('error',"Not Deleted",'3000'));
+                dispatch(showSuccessSnackbar('error',"Not Deleted",3000));
             dispatch(ManageUserAction.updateUserError());
         }} catch (error) {
-            dispatch(showSuccessSnackbar('error',"Not Deleted",'3000'));
+            dispatch(showSuccessSnackbar('error',"Not Deleted",3000));
             dispatch(ManageUserAction.updateUserError());
         }
     }

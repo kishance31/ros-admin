@@ -46,6 +46,12 @@ const rolesAndPermissionReducer = (state = initialState, action) => {
                 refreshRoles: true,
             }
         }
+        case RolesAndPermissionMap.REFRESH_ROLES: {
+            return {
+                ...state,
+                refreshRoles: true,
+            }
+        }
         default:
             return { ...state }
     }

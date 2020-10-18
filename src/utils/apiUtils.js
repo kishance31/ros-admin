@@ -60,12 +60,6 @@ const serverUrls = {
     getproduct (){
         return `${this.getDefaulUrl()}/${userRoute}/${product}`
     },
-
-
-
-
-
-    
     getEmployeeUrl() {
         return `${this.getCorporateUrl()}/${employee}`;
     },
