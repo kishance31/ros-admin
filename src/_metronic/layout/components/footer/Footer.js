@@ -30,7 +30,7 @@ export function Footer() {
             ROS
           </a>
         </div>
-        <div className="nav nav-dark order-1 order-md-2">
+        {/* <div className="nav nav-dark order-1 order-md-2">
           <a
             href="/"
             rel="noopener noreferrer"
@@ -52,7 +52,7 @@ export function Footer() {
           >
             Contact
           </a>
-        </div>
+        </div> */}
       </div>
     </div>
   );

@@ -28,7 +28,6 @@ const RolesAndPermission = () => {
     }, [refreshRoles]);
 
     const onAddRole = () => {
-        console.log(addRoleRef.current.value)
         if (addRoleRef.current.value) {
             dispatch(addRoleAsync(addRoleRef.current.value));
             addRoleRef.current.value = "";

@@ -2,6 +2,10 @@ import React, { useEffect } from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
 import {EditButtons} from './EditButtons';
 import { useSelector } from 'react-redux';
+import {
+  NoRecordsFoundMessage,
+  PleaseWaitMessage,
+} from "../../../../_metronic/_helpers";
 
 
 const ManageLicenseTable = ({openModal, setSelectedLicense, ToggleButton}) => {
@@ -40,10 +44,23 @@ const ManageLicenseTable = ({openModal, setSelectedLicense, ToggleButton}) => {
     }},
   ];
 
+  const noDataIndication = () => {
+    return (
+      <>
+        {
+          // isLoading ? (
+          //   <PleaseWaitMessage entities={null} />
+          // ) : (
+              <NoRecordsFoundMessage entities={licenseList} />
+            // )
+        }
+      </>
+    )
+  }
+
   return (
     <>
     <div>
-      <div className='container' style={{ marginTop: 50 }}>
         <BootstrapTable
           wrapperClasses='table-responsive'
           hover
@@ -54,8 +71,8 @@ const ManageLicenseTable = ({openModal, setSelectedLicense, ToggleButton}) => {
           keyField='type'
           data={licenseList}
           columns={columns}
+          noDataIndication={noDataIndication}
         />
-      </div>
     </div>
     </>
   );

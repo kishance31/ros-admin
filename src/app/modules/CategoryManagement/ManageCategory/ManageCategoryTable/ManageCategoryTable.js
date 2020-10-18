@@ -78,7 +78,7 @@ const ManageCategoryTable = ({
                 data={categorySelected === "category" ? entities : categorySelected === "subcategory" ? subcategoryData : []}
                 // data={categorySelected === "subcategory" ? subcategoryData : entities}
                 columns={columns}
-                pagination={paginationFactory()}
+                // pagination={paginationFactory()}
                 noDataIndication="Table is Empty"
             >
             </BootstrapTable>

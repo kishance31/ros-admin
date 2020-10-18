@@ -33,7 +33,7 @@ export const EditButtons = (cellContent,
                 className={row.status ? "btn btn-primary font-weight-bolder font-size-sm mr-3" : "btn btn-danger font-weight-bolder font-size-sm mr-3"}
                 onClick={() => ClickDeleteCategoryAsync(row)}
             >
-                {row.active ? "ACTIVE": "DEACTIVE"}
+                {!row.active ? "ACTIVE": "DEACTIVE"}
                 
               
                 </a>

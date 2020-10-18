@@ -76,6 +76,7 @@ const authReducer = (state = initialAuthState, action) => {
                     fullname: `${user.firstName} ${user.lastName}`
                 },
                 tokens,
+                isLoading: false
             };
         }
         case actionTypes.FORGOT_PASSWORD:

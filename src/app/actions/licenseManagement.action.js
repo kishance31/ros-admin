@@ -69,10 +69,10 @@ export const addLicenseDataAsync = (data) => {
                 }
             })
             if(addLicenseAsync.data.response.responseCode === 201) {
-                dispatch(showSuccessSnackbar('success',"license Added Successfully",'3000'));
+                dispatch(showSuccessSnackbar('success',"license Added Successfully",3000));
                 dispatch({type: licenseManagementMap.LICENSE_EDIT_SUCCESSFULLY })
             }else{
-                dispatch(showSuccessSnackbar('error',"please try again",'3000'));
+                dispatch(showSuccessSnackbar('error',"please try again",3000));
             }
         } catch (error) {
             dispatch({type: licenseManagementMap.LICENSE_EDIT_FAIL })
@@ -98,13 +98,13 @@ export const editLicenseDataAsync = (values) => {
                 }
             })
             if(EditLicenseAsync.data.response.responseCode === 200){
-                dispatch(showSuccessSnackbar('success',"license Updated Successfully",'3000'));
+                dispatch(showSuccessSnackbar('success',"license Updated Successfully",3000));
                 dispatch({type: licenseManagementMap.LICENSE_ADDED_SUCCESSFULLY })
             }else{
-                dispatch(showSuccessSnackbar('error',"please try again",'3000'));
+                dispatch(showSuccessSnackbar('error',"please try again",3000));
             }
         } catch (error) {
-            dispatch(showSuccessSnackbar('error',"please try again",'3000'));
+            dispatch(showSuccessSnackbar('error',"please try again",3000));
         }
     }
 }
@@ -127,14 +127,14 @@ export const deactiveLicenseStatusAsync = (selectedLicense) => {
                     }
                 })
                 if(UpdateStatus.data.response.responseCode === 200){
-                    dispatch(showSuccessSnackbar('success',"Status Change Successfully",'3000'));
+                    dispatch(showSuccessSnackbar('success',"Status Change Successfully",3000));
                     dispatch({type: licenseManagementMap.UPDATE_LICENSE_SUCCESSFULLY})
                 }else{
-                    dispatch(showSuccessSnackbar('error',"please try again",'3000'));
+                    dispatch(showSuccessSnackbar('error',"please try again",3000));
                 }
             }
             catch(error) {
-                dispatch(showSuccessSnackbar('error',"please try again",'3000'));
+                dispatch(showSuccessSnackbar('error',"please try again",3000));
                 dispatch({type: licenseManagementMap.UPDATE_LICENSE_FAIL})
             }
         }else {
@@ -148,14 +148,14 @@ export const deactiveLicenseStatusAsync = (selectedLicense) => {
                     }
                 })
                 if(UpdateStatus.data.response.responseCode === 200){
-                    dispatch(showSuccessSnackbar('success',"Status Change Successfully",'3000'));
+                    dispatch(showSuccessSnackbar('success',"Status Change Successfully",3000));
                     dispatch({type: licenseManagementMap.UPDATE_LICENSE_SUCCESSFULLY})
                 }else{
-                    dispatch(showSuccessSnackbar('error',"please try again",'3000'));
+                    dispatch(showSuccessSnackbar('error',"please try again",3000));
                 }
             }
             catch(error) {
-                dispatch(showSuccessSnackbar('error',"please try again",'3000'));
+                dispatch(showSuccessSnackbar('error',"please try again",3000));
                 dispatch({type: licenseManagementMap.UPDATE_LICENSE_FAIL})
             }
         } 

@@ -104,6 +104,7 @@ export const CategoryManagementAction = {
     },
     backToCategory: () => ({ type: CategoryManagementMap.BACK_TO_CATEGORY }),
 }
+
 const { serverUrls } = getServerCore();
 const categoryUrl = serverUrls.getCategory();
 const subCategoryUrl = serverUrls.getSubCategory();
@@ -167,7 +168,6 @@ export const DisplaySubCategoryListAsync = () => {
                 method: 'GET',
                 headers: {
                     'Content-type': 'appplication/json',
-                    'tokens': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZjMyNTBiZDcxYzA0OTQxODI3ZTIzZWIiLCJlbWFpbCI6ImFkbWluQHJvcy5vcmciLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE2MDA0MzI2ODEsImV4cCI6MTYwNDY2NjI4MX0.WYcVMzj2g8rfGR_LJuw6lBp_rdZBOoqJmfjLLF3-F0g"
                 }
             })
             dispatch({ type: CategoryManagementMap.STORE_SUB_CATEGORY, payload: subCategoryResponse.data.response.data })
@@ -185,7 +185,6 @@ export const DisplaySubCategoryList = (value) => {
                 method: 'GET',
                 headers: {
                     'Content-type': 'appplication/json',
-                    'tokens': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZjMyNTBiZDcxYzA0OTQxODI3ZTIzZWIiLCJlbWFpbCI6ImFkbWluQHJvcy5vcmciLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE2MDA0MzI2ODEsImV4cCI6MTYwNDY2NjI4MX0.WYcVMzj2g8rfGR_LJuw6lBp_rdZBOoqJmfjLLF3-F0g"
                 }
             })
             dispatch({ type: CategoryManagementMap.STORE_SUB_CATEGORY, payload: subCategoryResponse.data.response.data })
@@ -340,16 +339,20 @@ export const EditProductAsync = (data, _id) => {
     }
 }
 
-export const DisplayVendorItemAsync = () => {
+export const DisplayVendorItemAsync = (value) => {
     return async (dispatch) => {
         try {
-            let {data} = await axios({
+            let options = {
                 url: `${productUrl}/getProductList/0/5`,
                 method: 'POST',
                 headers: {
                     'Content-type': 'application/json',
                 }
-            })
+            }
+            if(value) {
+                options.data = value;
+            }
+            let {data} = await axios(options)
             if (data.response && data.response.responseCode === 200) {
                 dispatch({ type: CategoryManagementMap.IMPORT_VENDOR_ITEM_SUCCESSFULLY, payload: data.response })
             }

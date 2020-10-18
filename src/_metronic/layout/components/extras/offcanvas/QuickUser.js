@@ -1,6 +1,7 @@
 /* eslint-disable no-script-url,jsx-a11y/anchor-is-valid,no-undef */
 import React from 'react';
 import SVG from 'react-inlinesvg';
+import {useSelector} from "react-redux";
 import { useDispatch } from 'react-redux';
 // import { useHistory } from 'react-router-dom';
 import { toAbsoluteUrl } from '../../../../_helpers';
@@ -9,6 +10,8 @@ import { logoutAsync } from '../../../../../app/actions/auth.actions';
 export function QuickUser() {
   // const history = useHistory();
   const dispatch = useDispatch();
+
+  const {user} = useSelector(state => state.auth);
 
   const logoutClick = () => {
     // const toggle = document.getElementById("kt_quick_user_toggle");
@@ -27,7 +30,7 @@ export function QuickUser() {
       <div className='offcanvas-header d-flex align-items-center justify-content-between pb-5'>
         <h3 className='font-weight-bold m-0'>
           User Profile
-          <small className='text-muted font-size-sm ml-2'>12 messages</small>
+          {/* <small className='text-muted font-size-sm ml-2'>12 messages</small> */}
         </h3>
         <a
           href='#'
@@ -41,24 +44,24 @@ export function QuickUser() {
       <div className='offcanvas-content pr-5 mr-n5'>
         <div className='d-flex align-items-center mt-5'>
           <div className='symbol symbol-100 mr-5'>
-            <div
+            {/* <div
               className='symbol-label'
               style={{
                 backgroundImage: `url(${toAbsoluteUrl(
                   '/media/users/300_21.jpg'
                 )})`,
               }}
-            />
-            <i className='symbol-badge bg-success' />
+            /> */}
+            {/* <i className='symbol-badge bg-success' /> */}
           </div>
           <div className='d-flex flex-column'>
             <a
               href='#'
               className='font-weight-bold font-size-h5 text-dark-75 text-hover-primary'
             >
-              James Jones
+              {user.fullname}
             </a>
-            <div className='text-muted mt-1'>Application Developer</div>
+            {/* <div className='text-muted mt-1'>Application Developer</div> */}
             <div className='navi mt-2'>
               <a href='#' className='navi-item'>
                 <span className='navi-link p-0 pb-2'>
@@ -72,7 +75,7 @@ export function QuickUser() {
                     </span>
                   </span>
                   <span className='navi-text text-muted text-hover-primary'>
-                    jm@softplus.com
+                  {user.email}
                   </span>
                 </span>
               </a>
@@ -91,7 +94,7 @@ export function QuickUser() {
 
         <div className='separator separator-dashed mt-8 mb-5' />
 
-        <div className='navi navi-spacer-x-0 p-0'>
+        {/* <div className='navi navi-spacer-x-0 p-0'>
           <a href='/user/profile' className='navi-item'>
             <div className='navi-link'>
               <div className='symbol symbol-40 bg-light mr-3'>
@@ -176,11 +179,11 @@ export function QuickUser() {
               </div>
             </div>
           </a>
-        </div>
+        </div> */}
 
-        <div className='separator separator-dashed my-7'></div>
+        {/* <div className='separator separator-dashed my-7'></div> */}
 
-        <div>
+        {/* <div>
           <h5 className='mb-5'>Recent Notifications</h5>
 
           <div className='d-flex align-items-center bg-light-warning rounded p-5 gutter-b'>
@@ -274,7 +277,7 @@ export function QuickUser() {
               +8%
             </span>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

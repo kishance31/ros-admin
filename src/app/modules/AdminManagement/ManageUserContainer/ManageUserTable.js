@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory, {
-    PaginationProvider,
+  PaginationProvider,
 } from "react-bootstrap-table2-paginator";
 import { Pagination } from "../../../../_metronic/_partials/controls";
 import {
@@ -108,34 +108,32 @@ const ManageUserTable = (props) => {
   }
 
   return (
-    <div className='container' style={{ marginTop: 50 }}>
-      <PaginationProvider pagination={paginationFactory(paginationOptions)}>
-        {({ paginationProps, paginationTableProps }) => {
-          return (
-            <Pagination
-              isLoading={isLoading}
-              paginationProps={paginationProps}
+    <PaginationProvider pagination={paginationFactory(paginationOptions)}>
+      {({ paginationProps, paginationTableProps }) => {
+        return (
+          <Pagination
+            isLoading={isLoading}
+            paginationProps={paginationProps}
+          >
+            <BootstrapTable
+              wrapperClasses="table-responsive"
+              hover={false}
+              bordered={false}
+              classes="table table-head-custom table-vertical-center overflow-hidden"
+              bootstrap4
+              remote
+              keyField='email'
+              data={displaylist}
+              columns={columns}
+              {...paginationTableProps}
+              noDataIndication={noDataIndication}
+              onTableChange={onTableChange}
             >
-              <BootstrapTable
-                wrapperClasses="table-responsive"
-                hover={false}
-                bordered={false}
-                classes="table table-head-custom table-vertical-center overflow-hidden"
-                bootstrap4
-                remote
-                keyField='email'
-                data={displaylist}
-                columns={columns}
-                {...paginationTableProps}
-                noDataIndication={noDataIndication}
-                onTableChange={onTableChange}
-              >
-              </BootstrapTable>
-            </Pagination>
-          );
-        }}
-      </PaginationProvider>
-    </div>
+            </BootstrapTable>
+          </Pagination>
+        );
+      }}
+    </PaginationProvider>
   );
 };
 

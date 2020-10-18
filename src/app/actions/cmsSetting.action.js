@@ -34,14 +34,14 @@ export const addContactUsAsync = (values) => {
             });
             if (contactUsResponse.data.response.responseCode === 200) {
                 dispatch(cmsSettingsAction.addContactUsDetails(contactUsResponse.data.response.data))
-                dispatch(showSuccessSnackbar('success',"Contact Us Update Successfully",'3000'));
+                dispatch(showSuccessSnackbar('success',"Contact Us Update Successfully",3000));
             }else{
                 dispatch({type: cmsSettingsMap.UPDATE_CONTACT_US_FAIL})
-                dispatch(showSuccessSnackbar('error',"Error while updating",'3000'));
+                dispatch(showSuccessSnackbar('error',"Error while updating",3000));
             }
         } catch (err) {
             dispatch({type: cmsSettingsMap.UPDATE_CONTACT_US_FAIL})
-            dispatch(showSuccessSnackbar('error',"Error while updating",'3000'))
+            dispatch(showSuccessSnackbar('error',"Error while updating",3000))
         }
     }
 }
@@ -58,12 +58,12 @@ export const dispalayConstactUsDetails = () => {
             })
             if (constactUsDetails.data.response.responseCode === 200) {
                  dispatch({type: cmsSettingsMap.FETCH_CONTACT_US_DETAILS, payload: constactUsDetails.data.response.data})
-                //  dispatch(showSuccessSnackbar('success',"Fetch Data Successfully",'3000'));
+                //  dispatch(showSuccessSnackbar('success',"Fetch Data Successfully",3000));
             }else{
-               return dispatch(showSuccessSnackbar('error',"Error while Fetching Data",'3000'));
+               return dispatch(showSuccessSnackbar('error',"Error while Fetching Data",3000));
             }
         } catch (error) {
-            return dispatch(showSuccessSnackbar('error',"Error while Fetching Data",'3000'));
+            return dispatch(showSuccessSnackbar('error',"Error while Fetching Data",3000));
         }
     }
 }
@@ -81,13 +81,13 @@ export const addAboutUsAsync = (data) => {
             });
             if (aboutUsResponse.data.response.responseCode === 200) {
                 dispatch({type: cmsSettingsAction.addAboutUsDetails, payload:aboutUsResponse.data.response.data})
-                dispatch(showSuccessSnackbar('success',"About Us Update Successfully",'3000'));
+                dispatch(showSuccessSnackbar('success',"About Us Update Successfully",3000));
             }else{
-                dispatch(showSuccessSnackbar('error',"Error while updating",'3000'))
+                dispatch(showSuccessSnackbar('error',"Error while updating",3000))
             }
             
         } catch (error) {
-            dispatch(showSuccessSnackbar('error',"Error while updating",'3000'))
+            dispatch(showSuccessSnackbar('error',"Error while updating",3000))
         }
     }
 }
@@ -104,12 +104,12 @@ export const getAboutUsDataAsync = () => {
             })
             if (aboutUsDetails.data.response.responseCode === 200) {
                 dispatch({type: cmsSettingsMap.FETCH_ABOUT_US_DETAILS, payload: aboutUsDetails.data.response.data})
-                // dispatch(showSuccessSnackbar('success',"About Us Update Successfully",'3000'))
+                // dispatch(showSuccessSnackbar('success',"About Us Update Successfully",3000))
             }else{
-                dispatch(showSuccessSnackbar('error',"Error while updating",'3000'))
+                dispatch(showSuccessSnackbar('error',"Error while updating",3000))
             }
         } catch (error) {
-            dispatch(showSuccessSnackbar('error',"Error while updating",'3000'))
+            dispatch(showSuccessSnackbar('error',"Error while updating",3000))
         }
     }
 }

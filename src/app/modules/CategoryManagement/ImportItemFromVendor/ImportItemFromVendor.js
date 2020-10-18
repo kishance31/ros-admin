@@ -35,7 +35,7 @@ const ImportItemFromVendor = (props) => {
         dispatch(deleteProductAsync())
     }
     const selectedCategory = (value) => {
-        dispatch(DisplayVendorItemAsync(value))
+        dispatch(DisplayVendorItemAsync({category_id: value}))
     }
 
     const onHideVendorModal = () => {
@@ -120,7 +120,6 @@ const ImportItemFromVendor = (props) => {
                         values,
                         handleSubmit,
                         handleBlur,
-                        handleChange,
                         setFieldValue,
                     }) => (
                             <form onSubmit={handleSubmit} className="form form-label-right">
@@ -131,7 +130,7 @@ const ImportItemFromVendor = (props) => {
                                             name="status"
                                             placeholder="Filter by Status"
                                             onChange={(e) => {
-                                                if (e.target.value === 0) {
+                                                if (e.target.value === "") {
                                                     displayAllCategory()
                                                 } else {
                                                     selectedCategory(e.target.value)
@@ -142,7 +141,7 @@ const ImportItemFromVendor = (props) => {
                                             onBlur={handleBlur}
                                             value={values.status}
                                         >
-                                            <option value="0">All</option>
+                                            <option value="">All</option>
                                             {
                                                 categoryList.map((item, index) => (
                                                     <option key={index} value={item._id}>{item.category_name}</option>
