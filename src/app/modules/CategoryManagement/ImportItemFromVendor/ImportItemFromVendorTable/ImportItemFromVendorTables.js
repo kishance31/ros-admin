@@ -1,21 +1,23 @@
 import React from 'react';
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import BootstrapTable from "react-bootstrap-table-next";
 import { VendorTableActionButtons } from './VendorTableActionButton';
-import {SmallProductImage} from './TableProductImage';
+import { SmallProductImage } from './TableProductImage';
 import paginationFactory, { PaginationProvider } from "react-bootstrap-table2-paginator";
-import { Pagination } from '../../../../../_metronic/_partials/controls'
-
+import { Pagination } from '../../../../../_metronic/_partials/controls';
+import { NoRecordsFoundMessage, PleaseWaitMessage } from '../../../../../_metronic/_helpers';
+import { CategoryManagementAction } from '../../../../actions/categoryManagementModal.action'
 
 const ImportItemFromVendorTable = (props) => {
-    const {onClickVendorItemEdit, onClickVendorItemAddButton, setSelectedProduct, deleteData, isLoading, totalCount, pageNumber, pageSize} = props;
+
+    const { onClickVendorItemAddButton, setSelectedProduct, deleteData, isLoading, totalCount, pageNumber, pageSize } = props;
     const itemListData = useSelector(state => state.categoryModal.vendorItemList);
-  
-   const coloumn = [
+    const dispatch = useDispatch();
+    const coloumn = [
         {
             dataField: '_id',
             text: 'Sr. no',
-            hidden:true
+            hidden: true
         },
         {
             dataField: 'product_image',
@@ -43,7 +45,7 @@ const ImportItemFromVendorTable = (props) => {
             text: 'ROS Cost'
         },
         {
-            dataField:  'license_id.type',
+            dataField: 'license_id.type',
             text: 'License Type'
         },
         {
@@ -58,21 +60,69 @@ const ImportItemFromVendorTable = (props) => {
             }
         }
     ]
+    const paginationOptions = {
+        custom: true,
+        totalSize: totalCount,
+        sizePerPageList: [
+            { text: "3", value: 3 },
+            { text: "5", value: 5 },
+            { text: "10", value: 10 }
+        ],
+        sizePerPage: pageSize,
+        page: pageNumber,
+    };
+    const noDataIndication = () => {
+        return (
+            <>
+                {
+                    isLoading ? (
+                        <PleaseWaitMessage entities={null} />
+                    ) : (
+                            <NoRecordsFoundMessage entities={itemListData} />
+                        )
+                }
+            </>
+        )
+    }
+    const onTableChange = (type, newState) => {
+        if (type === "pagination") {
+            if (newState.page && newState.page !== pageNumber) {
+                dispatch(CategoryManagementAction.setPage(newState.page));
+            }
+            if (newState.sizePerPage !== pageSize) {
+                dispatch(CategoryManagementAction.setPageSize(newState.sizePerPage));
+            }
+        }
+    }
     return (
-        <BootstrapTable
-            wrapperClasses="table-responsive"
-            classes="table table-head-custom table-vertical-center"
-            bootstrap4
-            bordered={false}
-            remote
-            keyField="_id"
-            data={itemListData === null ? [] : itemListData}
-            columns={coloumn}
-            pagination={paginationFactory()}
-            noDataIndication="Table is Empty"
-        >
-        </BootstrapTable>
-    )
-}
+        <>
+            <PaginationProvider pagination={paginationFactory(paginationOptions)}>
+                {({ paginationProps, paginationTableProps }) => {
+                    return (
+                        <Pagination
+                            isLoading={isLoading}
+                            paginationProps={paginationProps}
+                        >
+                            <BootstrapTable
+                                wrapperClasses="table-responsive"
+                                classes="table table-head-custom table-vertical-center"
+                                bootstrap4
+                                bordered={false}
+                                remote
+                                keyField="_id"
+                                data={itemListData === null ? [] : itemListData}
+                                columns={coloumn}
+                                {...paginationTableProps}
+                                noDataIndication={noDataIndication}
+                                onTableChange={onTableChange}
+                            >
+                            </BootstrapTable>
+                        </Pagination>
+                    );
+                }}
+            </PaginationProvider>
+        </>
+    );
+};
 
 export default ImportItemFromVendorTable;
