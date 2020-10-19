@@ -13,13 +13,11 @@ const AppConfigs = {
         category: 'category',
         subCategory: 'sub-category',
         product: 'product',
-
-
-
         employee: 'employee',
         license: 'license',
         branch: 'branch',
         purchaseLicense:'purchaseLicense',
+        costSummary: 'cost-summary',
         serverUrl: process.env.REACT_APP_SERVER_URL, // 'http://localhost:4000/api'
     }
 };
