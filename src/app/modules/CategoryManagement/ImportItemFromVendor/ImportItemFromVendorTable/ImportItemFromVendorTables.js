@@ -10,7 +10,7 @@ import { CategoryManagementAction } from '../../../../actions/categoryManagement
 
 const ImportItemFromVendorTable = (props) => {
 
-    const { onClickVendorItemAddButton, setSelectedProduct, deleteData, isLoading, totalCount, pageNumber, pageSize } = props;
+    const { onClickVendorItemAddButton, setSelectedProduct, deleteData, isLoading, productCount, pageNumber, pageSize } = props;
     const itemListData = useSelector(state => state.categoryModal.vendorItemList);
     const dispatch = useDispatch();
     const coloumn = [
@@ -62,7 +62,7 @@ const ImportItemFromVendorTable = (props) => {
     ]
     const paginationOptions = {
         custom: true,
-        totalSize: totalCount,
+        totalSize: productCount,
         sizePerPageList: [
             { text: "3", value: 3 },
             { text: "5", value: 5 },
