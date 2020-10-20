@@ -45,7 +45,7 @@ const serverUrls = {
         return `${this.getAdminUrl()}/${emailTemplate}`
     },
     getCorporateUrl() {
-        return `${this.getAdminUrl()}/${userRoute}`;
+        return `${this.getDefaulUrl()}/${userRoute}`;
     },
     getCmsUrl() {
         return `${this.getAdminUrl()}/${cms}`

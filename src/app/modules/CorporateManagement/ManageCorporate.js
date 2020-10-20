@@ -6,7 +6,9 @@ import paginationFactory, {
 import { Pagination } from '../../../_metronic/_partials/controls';
 import { shallowEqual, useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
-
+import {
+  NoRecordsFoundMessage,
+} from "../../../_metronic/_helpers";
 import ActionButtons from './ManageCorporate/ActionButtons';
 import {
   manageCorporateAction,
@@ -103,6 +105,14 @@ const ManageCorporate = () => {
     }
   };
 
+  const noDataIndication = () => {
+    return (
+      <>
+        <NoRecordsFoundMessage entities={manageCorporateData} />
+      </>
+    )
+  }
+
   return (
     <>
       <PaginationProvider pagination={paginationFactory(paginationOption)}>
@@ -118,6 +128,7 @@ const ManageCorporate = () => {
                 noDataIndication='No records found!'
                 {...paginationTableProps}
                 onTableChange={onTableChange}
+                noDataIndication={noDataIndication}
               />
             </Pagination>
           );

@@ -5,20 +5,22 @@ import BootstrapTable from 'react-bootstrap-table-next';
 const ViewModal = ({ show, handleClose, orderDetails }) => {
   const columns = [
     {
-      dataField: 'orderId',
-      text: 'Sr no.',
+      dataField: '_id',
+      text: 'id',
+      hidden: true,
     },
 
     {
       dataField: 'licenceType',
       text: 'Licence Type',
+      formatter: (cell, row, rowIdx) => orderDetails.licenseDetails[rowIdx].type
     },
     {
-      dataField: 'noOfLicence',
+      dataField: 'quantity',
       text: 'No of Licence',
     },
     {
-      dataField: 'licenceCost',
+      dataField: 'totalPrice',
       text: 'Licence Cost',
     },
   ];
@@ -30,8 +32,8 @@ const ViewModal = ({ show, handleClose, orderDetails }) => {
       </Modal.Header>
       <Modal.Body>
         <BootstrapTable
-          keyField='orderId'
-          data={orderDetails === null ? [] : orderDetails}
+          keyField='_id'
+          data={orderDetails && orderDetails.purchasedLicenses ? orderDetails.purchasedLicenses : []}
           columns={columns}
           bordered={false}
           noDataIndication='No records found!'

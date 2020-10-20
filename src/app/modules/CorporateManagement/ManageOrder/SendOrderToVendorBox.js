@@ -4,6 +4,9 @@ import axios from 'axios';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { Input } from '../../../../_metronic/_partials/controls';
+import getServerCore from '../../../../utils/apiUtils'
+
+const { serverUrls } = getServerCore();
 
 const vendorSchema = () => (Yup.object().shape({
     vendorName: Yup.string()
@@ -18,17 +21,19 @@ const vendorSchema = () => (Yup.object().shape({
 const SendOrderToVendorBox = ({ actionsLoading, show, handleClose }) => {
 
     const sendOrder = async (details) => {
-        let sendOrderToVendorData = await axios({
-            url: `http://localhost:4000/api/corporate-admin/sendOrderToVendor`,
+        let { data } = await axios({
+            url: `${serverUrls.getCorporateUrl()}/sendOrderToVendor`,
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             data: {
                 ...details,
-                orderDetails: [{ productName: "" }]
+                orderDetails: [{ productName: "Dummy Product" }]
             }
         });
+
+        // if(data.)
     }
 
     return (
