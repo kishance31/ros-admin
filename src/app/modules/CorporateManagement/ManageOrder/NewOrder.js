@@ -5,48 +5,66 @@ import ActionButtons from './ActionButtons';
 import ExpandedRowNewOrder from './ExpandedRowNewOrder';
 
 const NewOrder = ({ row, confirmNewOrder, manageOrderDispatchUpdate }) => {
-  const [newOrder, setNewOrder] = useState(row.newOrder);
 
-  useEffect(() => {
-    setNewOrder(row.newOrder);
-  }, [row]);
+  // const [productDetails, setProductDetails] = useState([]);
+
+  // useEffect(() => {
+  //   // if(row.productDetails && row.productDetails.length) {
+  //     console.log("effect");
+  //     console.log(row)
+  //     // setProductDetails(row.productDetails.map(prod => ({...prod, firstPaymentTerm: row.firstPaymentTerm})));
+  //   // }
+  // }, []);
 
   const columns = [
     {
-      dataField: 'newOrderId',
-      text: 'Sr no.',
+      dataField: 'employeeId',
+      text: 'employeeId',
+      hidden: true,
     },
     {
-      dataField: 'employeeName',
+      dataField: 'employeeDetails.firstName',
       text: 'Emp. Name',
     },
     {
-      dataField: 'employeeId',
-      text: 'Emp. ID',
+      dataField: 'employeeDetails.email',
+      text: 'Emp. Email',
     },
     {
-      dataField: 'allocatedLicenceType',
+      dataField: 'employeeDetails.license.type',
       text: 'Allo. Lice Type',
     },
     {
-      dataField: 'orderNo',
+      dataField: 'orderId',
       text: 'Ord. No',
     },
     {
       dataField: 'orderDate',
       text: 'Ord. Date',
+      formatter: (cell) => new Date(cell).toLocaleDateString(),
     },
     {
-      dataField: 'orderCost',
+      dataField: 'ordercost',
       text: 'Ord. Cost',
+      formatter: (cell, row) => `
+      $${row.productDetails.reduce((acc, val) => acc += val.ros_cost, 0)}
+      `
     },
     {
-      dataField: 'firstThreeMonthCost',
-      text: 'First 3 Mon Cost',
+      dataField: 'productDetails',
+      text: 'First Time Cost',
+      formatter: (cell, row) => `
+      $${parseFloat((
+        ((cell.reduce((acc, prod) => acc + prod.ros_cost, 0)) / 12)
+        * row.firstPaymentTerm))
+          .toFixed(2)
+        }
+      `
     },
     {
-      dataField: 'paymentStatus',
+      dataField: 'isFirstTimePayment',
       text: 'Pymt. Status',
+      formatter: (cell) => cell ? "Done" : "Pending"
     },
     {
       dataField: 'action',
@@ -61,7 +79,7 @@ const NewOrder = ({ row, confirmNewOrder, manageOrderDispatchUpdate }) => {
   ];
 
   const expandRow = {
-    renderer: (row) => <ExpandedRowNewOrder row={row} />,
+    renderer: (row) => <ExpandedRowNewOrder order={row} />,
     showExpandColumn: true,
     expandByColumnOnly: true,
   };
@@ -69,8 +87,8 @@ const NewOrder = ({ row, confirmNewOrder, manageOrderDispatchUpdate }) => {
   return (
     <div className='ml-5'>
       <BootstrapTable
-        keyField='newOrderId'
-        data={newOrder === null ? [] : newOrder}
+        keyField='orderId'
+        data={row}
         columns={columns}
         bordered={false}
         noDataIndication='No records found!'

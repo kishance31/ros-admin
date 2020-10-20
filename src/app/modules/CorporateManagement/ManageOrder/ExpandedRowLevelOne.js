@@ -1,47 +1,33 @@
 import React, { useState } from 'react';
-import { Button } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 
 import NewOrder from './NewOrder';
 import PastOrder from './PastOrder';
 
 const ExpandedRowLevelOne = ({
-  row,
-  confirmNewOrder,
-  manageOrderDispatchUpdate,
+	row,
+	confirmNewOrder,
+	manageOrderDispatchUpdate,
 }) => {
-  const [newPastFlag, setNewPastFlag] = useState(true);
-
-  return (
-    <div className='jumbotron p-4'>
-      <div className='d-flex justify-content-start'>
-        <Button
-          variant='link'
-          onClick={() => {
-            setNewPastFlag(true);
-          }}
-        >
-          New Order
-        </Button>
-        <Button
-          variant='link'
-          onClick={() => {
-            setNewPastFlag(false);
-          }}
-        >
-          Past Order
-        </Button>
-      </div>
-      {newPastFlag ? (
-        <NewOrder
-          row={row}
-          confirmNewOrder={confirmNewOrder}
-          manageOrderDispatchUpdate={manageOrderDispatchUpdate}
-        />
-      ) : (
-        <PastOrder pastOrder={row.pastOrder} />
-      )}
-    </div>
-  );
+	const [newPastFlag, setNewPastFlag] = useState("new");
+	return (
+		<div className='p-4'>
+			<div className='d-flex justify-content-start' style={{ maxWidth: "fit-content" }}>
+				<Form.Control as="select"
+					value={newPastFlag}
+					onChange={e => setNewPastFlag(e.target.value)}
+				>
+					<option value="new">New Order</option>
+					<option value="past">Past Order</option>
+				</Form.Control>
+			</div>
+			<NewOrder
+				row={newPastFlag === "new" ? row.newOrder : row.pastOrder}
+				confirmNewOrder={confirmNewOrder}
+				manageOrderDispatchUpdate={manageOrderDispatchUpdate}
+			/>
+		</div>
+	);
 };
 
 export default ExpandedRowLevelOne;
