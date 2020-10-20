@@ -1,4 +1,4 @@
-import axios from 'axios';
+
 import AppConfigs from './config';
 const {
     serverConfig: {
@@ -16,19 +16,16 @@ const {
         category,
         subCategory,
         product,
-
-
         branch,
         purchaseLicense,
-        serverUrl
     }
 } = AppConfigs
 
 const serverUrls = {
+
     getHost: () => host,
     getPort: () => port,
     getDefaulUrl: () => `${host}:${port}/${defaultRoute}`,
-
 
     getAdminUrl() {
         return `${this.getDefaulUrl()}/${admin}`
@@ -48,22 +45,22 @@ const serverUrls = {
     getCorporateUrl() {
         return `${this.getAdminUrl()}/${userRoute}`;
     },
-    getCmsUrl(){
+    getCmsUrl() {
         return `${this.getAdminUrl()}/${cms}`
     },
-    getCategory(){
+    getCategory() {
         return `${this.getDefaulUrl()}/${userRoute}/${category}`
     },
-    getSubCategory (){
+    getSubCategory() {
         return `${this.getDefaulUrl()}/${userRoute}/${subCategory}`
     },
-    getproduct (){
+    getproduct() {
         return `${this.getDefaulUrl()}/${userRoute}/${product}`
     },
     getEmployeeUrl() {
         return `${this.getCorporateUrl()}/${employee}`;
     },
-    
+
     getBranchUrl() {
         return `${branch}`;
     },
@@ -71,7 +68,6 @@ const serverUrls = {
         return `${this.getCorporateUrl()}/${purchaseLicense}`
     }
 }
-
 
 const getServerCore = () => {
     return {
