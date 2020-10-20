@@ -125,7 +125,7 @@ const ViewModal = ({ show, handleClose, row, approveRejectAction }) => {
             </InputGroup.Prepend>
             <InputGroup.Append className='col-3 px-0 mr-1'>
               <InputGroup.Text className='w-100 border-left-0'>
-                {row._id}
+                {row.employeeId}
               </InputGroup.Text>
             </InputGroup.Append>
             <InputGroup.Prepend className='col-3 px-0'>
@@ -145,18 +145,18 @@ const ViewModal = ({ show, handleClose, row, approveRejectAction }) => {
 
             {/* Link coming from database is not working. Replace below link with {row.corpDoc} -> 2 place change */}
 
-            <object
-              data='http://infolab.stanford.edu/pub/papers/google.pdf#toolbar=0&navpanes=0&scrollbar=0'
-              type='application/pdf'
+            <img
+              src={row.corpDoc}
+              // type='application/pdf'
               aria-label='Identity Document'
               width='100'
               height='60'
-              className='pdf_scroll overflow-hidden'
-            ></object>
+              // className='pdf_scroll overflow-hidden'
+            />
             <a
               className='btn btn-light btn-sm'
               style={{ width: '100px' }}
-              href='http://infolab.stanford.edu/pub/papers/google.pdf#toolbar=0&navpanes=0&scrollbar=0'
+              href={row.corpDoc}
               target='_blank'
               rel='noopener noreferrer'
             >

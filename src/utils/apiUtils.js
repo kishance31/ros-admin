@@ -18,6 +18,8 @@ const {
         product,
         branch,
         purchaseLicense,
+        costSummary,
+        serverUrl
     }
 } = AppConfigs
 
@@ -60,13 +62,15 @@ const serverUrls = {
     getEmployeeUrl() {
         return `${this.getCorporateUrl()}/${employee}`;
     },
-
     getBranchUrl() {
         return `${branch}`;
     },
     getPurchaseLicenseUrl() {
         return `${this.getCorporateUrl()}/${purchaseLicense}`
-    }
+    },
+    getCostSummaryUrl() {
+        return `${this.getAdminUrl()}/${costSummary}`
+    },
 }
 
 const getServerCore = () => {
