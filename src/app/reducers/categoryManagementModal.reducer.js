@@ -24,6 +24,8 @@ const initialState = {
     filter: false,
     AllProduct: true,
     isLoading: false,
+    pageNumber: 1,
+    pageSize: 5,
 }
 
 const categoryModalreducer = (state = initialState, action) => {
@@ -322,6 +324,21 @@ const categoryModalreducer = (state = initialState, action) => {
                     openConfirmModal: false
                 },
                 isLoading: false,
+            }
+        }
+        case CategoryManagementMap.SET_PAGE: {
+            return {
+                ...state,
+                pageNumber: action.payload,
+                refereshVendorList: true,
+            }
+        } 
+        case CategoryManagementMap.SET_PAGE_SIZE: {
+            return {
+                ...state,
+                pageSize: action.payload,
+                refereshVendorList: true,
+                pageNumber: 1
             }
         }
         default:

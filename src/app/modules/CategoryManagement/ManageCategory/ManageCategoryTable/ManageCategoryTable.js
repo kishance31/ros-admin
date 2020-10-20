@@ -1,11 +1,9 @@
-import React, { useEffect, useMemo, createContext, useContext } from 'react';
+import React from 'react';
 import BootstrapTable from "react-bootstrap-table-next";
-import paginationFactory, { PaginationProvider } from "react-bootstrap-table2-paginator";
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import { Button, ButtonGroup, Card } from "react-bootstrap";
-import { Pagination } from "../../../../../_metronic/_partials/controls";
+import { useSelector } from "react-redux";
 import { sortCaret } from '../../../../../_metronic/_helpers';
 import ActionFormatter from './ActionFormatter';
+
 const ManageCategoryTable = ({
     OnAddCategory, onDisplaySubCategory, setSelectedCategory, EditCategory, setSelectedSubCategory
 }) => {
@@ -23,7 +21,7 @@ const ManageCategoryTable = ({
             hidden: true
         },
         {
-            dataField: categorySelected == "subcategory" ? "subcategory_name" : "category_name",
+            dataField: categorySelected === "subcategory" ? "subcategory_name" : "category_name",
             text: "Category Name",
             sort: true,
             sortCaret: sortCaret,
@@ -52,7 +50,6 @@ const ManageCategoryTable = ({
             text: "Actions",
             headerAlign: 'center',
             align: 'center',
-            headerAlign: 'center',
             formatter: ActionFormatter,
             formatExtraData: {
                 OnAddCategory: OnAddCategory,
@@ -74,11 +71,8 @@ const ManageCategoryTable = ({
                 remote
                 hover
                 keyField="_id"
-                // data={entities === null ? [] : entities}
                 data={categorySelected === "category" ? entities : categorySelected === "subcategory" ? subcategoryData : []}
-                // data={categorySelected === "subcategory" ? subcategoryData : entities}
                 columns={columns}
-                // pagination={paginationFactory()}
                 noDataIndication="Table is Empty"
             >
             </BootstrapTable>
