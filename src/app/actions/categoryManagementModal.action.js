@@ -1,6 +1,6 @@
 import axios from "axios"
 import getServerCore from '../../utils/apiUtils';
-import {showSuccessSnackbar} from './snackbar.action';
+import { showSuccessSnackbar } from './snackbar.action';
 
 export const CategoryManagementMap = {
     OPEN_CATEGORY_MODAL: 'OPEN_CATEGORY_MODAL',
@@ -41,6 +41,8 @@ export const CategoryManagementMap = {
     ADD_PRODUCT_SUCCESS: "ADD_PRODUCT_SUCCESS",
     ADD_PRODUCT_ERROR: "ADD_PRODUCT_ERROR",
     SELECTED_PRODUCT: "SELECTED_PRODUCT",
+    SET_PAGE: "SET_PAGE",
+    SET_PAGE_SIZE: "SET_PAGE_SIZE",
 }
 
 export const CategoryManagementAction = {
@@ -103,6 +105,8 @@ export const CategoryManagementAction = {
         }
     },
     backToCategory: () => ({ type: CategoryManagementMap.BACK_TO_CATEGORY }),
+    setPage: (num) => ({ type: CategoryManagementMap.SET_PAGE, payload: num }),
+    setPageSize: (num) => ({ type: CategoryManagementMap.SET_PAGE_SIZE, payload: num }),
 }
 
 const { serverUrls } = getServerCore();
@@ -340,19 +344,20 @@ export const EditProductAsync = (data, _id) => {
 }
 
 export const DisplayVendorItemAsync = (value) => {
-    return async (dispatch) => {
+    return async (dispatch,getState) => {
         try {
+            const { pageNumber, pageSize } = getState().categoryModal
             let options = {
-                url: `${productUrl}/getProductList/0/5`,
-                method: 'POST',
+                url: `${productUrl}/getProductList/${pageNumber - 1}/${pageSize}`,
+                method: 'POST',       
                 headers: {
                     'Content-type': 'application/json',
                 }
             }
-            if(value) {
+            if (value) {
                 options.data = value;
             }
-            let {data} = await axios(options)
+            let { data } = await axios(options)
             if (data.response && data.response.responseCode === 200) {
                 dispatch({ type: CategoryManagementMap.IMPORT_VENDOR_ITEM_SUCCESSFULLY, payload: data.response })
             }
@@ -452,7 +457,6 @@ export const deleteProductAsync = () => {
         const _id = categoryModal.selectedCategory._id
         const token = auth.tokens
         try {
-
             let deleteProductResponse = await axios({
                 url: `${productUrl}/deleteProduct/${_id}`,
                 method: "DELETE",
