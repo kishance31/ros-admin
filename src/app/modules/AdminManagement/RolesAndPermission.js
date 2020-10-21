@@ -51,9 +51,9 @@ const RolesAndPermission = () => {
             <CardHeader title='Role' style={{ width: '100rem' }}></CardHeader>
             <CardBody>
                 <div className="d-flex justify-content-between">
-                    <InputGroup className="mb-3 ml-7" style={{ width: '25rem' }}>
+                    <InputGroup className="ml-7" style={{ width: '25rem' }}>
                         <FormControl ref={addRoleRef} type="text" placeholder="Enter Role" aria-label="Enter Role" />
-                        <Button onClick={onAddRole} className="ml-5" variant="secondary">Add Role</Button>
+                        <Button onClick={onAddRole} className="ml-5 btn_blue" variant="secondary">Add Role</Button>
                     </InputGroup>
                     <div className="mr-7 text-center my-auto" style={{ fontSize: "1.2rem" }}>
                         <strong>

@@ -34,7 +34,7 @@ const ActionFormatter = (cellContent,
             {
                 categorySelected === "category" ? (
                     <a
-                        className="btn btn-info font-weight-bolder font-size-sm mr-3"
+                        className="btn btn_blue font-weight-bolder font-size-sm mr-3"
                         disabled="disabled"
                         onClick={() => onClickSubCategory(row)}
                     >

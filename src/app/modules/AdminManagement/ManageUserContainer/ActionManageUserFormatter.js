@@ -27,13 +27,13 @@ export function ActionManageUserFormatter(cellContent, row, rowIndex,
     return (
         <>
             <ButtonGroup>
-                <Button onClick={() => onEditUser(row)} variant="secondary">Edit</Button>&nbsp;&nbsp;
-                <Button variant="secondary" onClick={() => onDeleteUser()}>Delete</Button>&nbsp;&nbsp;
+                <Button onClick={() => onEditUser(row)} className="btn btn-success font-weight-bolder font-size-sm mr-3">Edit</Button>&nbsp;&nbsp;
+                <Button className="btn btn-danger font-weight-bolder font-size-sm mr-3" onClick={() => onDeleteUser()}>Delete</Button>&nbsp;&nbsp;
                 {
                     row.isActive ? (
-                        <Button variant="secondary" onClick={() => deactiveUser()}>Deactive</Button>
+                        <Button className="btn btn-danger font-weight-bolder font-size-sm mr-3" onClick={() => deactiveUser()}>Deactive</Button>
                     ) : (
-                        <Button variant="secondary" onClick={() => activeUser()}>Active</Button>
+                        <Button className="btn btn-blue font-weight-bolder font-size-sm mr-3" onClick={() => activeUser()}>Active</Button>
                     )
                 }
             </ButtonGroup>
