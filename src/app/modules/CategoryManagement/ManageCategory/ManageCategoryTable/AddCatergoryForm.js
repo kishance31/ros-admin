@@ -9,9 +9,7 @@ import {
     addSubCategoryDataAsync,
     EditSubCategoryDataAsync
 } from '../../../../actions/categoryManagementModal.action'
-import {
-    Input
-} from '../../../../../_metronic/_partials/controls';
+import { Input } from '../../../../../_metronic/_partials/controls';
 
 const EditCategorySchema = Yup.object().shape({
     category_name: Yup.string()
@@ -46,12 +44,12 @@ const AddCatergoryForm = ({ onHideModal }) => {
 
                 onSubmit={(values) => {
                     console.log('VALUSES', values);
-                    if (modalName == "category" && !categorySel.category_name) {
+                    if (modalName === "category" && !categorySel.category_name) {
                         return dispatch(addCategoryDataAsync(values.category_name));
-                    } else if (modalName == "category" && categorySel) {
+                    } else if (modalName === "category" && categorySel) {
                         return dispatch(EditCategoryAsync(values.category_name));
                     }
-                    if (modalName == "subcategory" && subCategorySel.subcategory_name) {
+                    if (modalName === "subcategory" && subCategorySel.subcategory_name) {
                         dispatch(EditSubCategoryDataAsync(values.category_name))
                     } else {
                         dispatch(addSubCategoryDataAsync(values.category_name))

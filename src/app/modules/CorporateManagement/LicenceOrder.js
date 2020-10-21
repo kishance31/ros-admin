@@ -1,94 +1,91 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { shallowEqual, useSelector, useDispatch } from 'react-redux';
 import BootstrapTable from 'react-bootstrap-table-next';
-import paginationFactory from 'react-bootstrap-table2-paginator';
-
-import ActionButtons from './LicenceOrder/ActionButtons';
+import {ActionButtons} from './LicenceOrder/ActionButtons';
+import {
+	displayCorporateManageLicenseDataAsync,
+} from '../../actions/corporateManageLicense.action';
+import ViewModal from './LicenceOrder/ViewModal';
 
 const LicenceOrder = () => {
-  const licenceOrderData = useSelector(
-    (state) => state.licenceOrder.licenceOrderData
-  );
 
-  const customTotal = (from, to, size) => (
-    <span className='react-bootstrap-table-pagination-total ml-4'>
-      Showing {from} to {to} of {size} Results
-    </span>
-  );
+	const dispatch = useDispatch();
 
-  const options = {
-    paginationSize: 4,
-    pageStartIndex: 1,
-    firstPageText: '<<',
-    prePageText: '<',
-    nextPageText: '>',
-    lastPageText: '>>',
-    nextPageTitle: 'First page',
-    prePageTitle: 'Pre page',
-    firstPageTitle: 'Next page',
-    lastPageTitle: 'Last page',
-    showTotal: true,
-    paginationTotalRenderer: customTotal,
-    disablePageTitle: true,
-    sizePerPageList: [
-      {
-        text: '3',
-        value: 3,
-      },
-      {
-        text: '5',
-        value: 5,
-      },
-      {
-        text: '10',
-        value: 10,
-      },
-      {
-        text: 'All',
-        value: licenceOrderData.length,
-      },
-    ],
-  };
+	const [show, setShow] = useState(false);
+	const [selectedRow, setSelectedRow] = useState(null);
 
-  const columns = [
-    {
-      dataField: 'companyId',
-      text: 'Sr no.',
-    },
+	const handleClose = () => {
+		setShow(false);
+		setSelectedRow(null);
+	};
 
-    {
-      dataField: 'companyName',
-      text: 'Corporate Name',
-    },
-    {
-      dataField: 'orderNo',
-      text: 'Ord. No',
-    },
-    {
-      dataField: 'orderDate',
-      text: 'Ord. Date',
-    },
-    {
-      dataField: 'orderCost',
-      text: 'Ord. Cost',
-    },
-    {
-      dataField: 'action',
-      text: 'Action',
-      formatter: ActionButtons,
-    },
-  ];
+	const handleShow = (row) => {
+		setShow(true);
+		setSelectedRow(row);
+	};
 
-  return (
-    <BootstrapTable
-      keyField='companyId'
-      data={licenceOrderData === null ? [] : licenceOrderData}
-      columns={columns}
-      bordered={false}
-      noDataIndication='No records found!'
-      pagination={paginationFactory(options)}
-    />
-  );
+	const {
+		corporateManageLicenseData,
+		totalCount,
+		pageSize,
+		pageNo,
+	} = useSelector((state) => state.corporateManageLicense, shallowEqual);
+
+	useEffect(() => {
+		dispatch(displayCorporateManageLicenseDataAsync());
+	}, [dispatch]);
+
+	const columns = [
+		{
+			dataField: '_id',
+			text: 'id',
+			hidden: true,
+		},
+
+		{
+			dataField: 'corporateDetails.companyName',
+			text: 'Corporate Name',
+		},
+		{
+			dataField: 'orderId',
+			text: 'Ord. No',
+		},
+		{
+			dataField: 'createdAt',
+			text: 'Ord. Date',
+			formatter: cell => new Date(cell).toLocaleDateString(),
+		},
+		{
+			dataField: 'purchasedLicenses',
+			text: 'Ord. Cost(USD)',
+			formatter: cell => (`$${cell.reduce((acc, val) => acc += val.totalPrice, 0)}`),
+		},
+		{
+			dataField: 'action',
+			text: 'Action',
+			formatter: ActionButtons,
+			formatExtraData: {
+				handleShow
+			}
+		},
+	];
+
+	return (
+		<>
+			<BootstrapTable
+				keyField='_id'
+				data={corporateManageLicenseData}
+				columns={columns}
+				bordered={false}
+				noDataIndication='No records found!'
+			/>
+			<ViewModal
+				show={show}
+				handleClose={handleClose}
+				orderDetails={selectedRow}
+			/>
+		</>
+	);
 };
 
 export default LicenceOrder;

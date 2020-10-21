@@ -6,7 +6,6 @@ import paginationFactory, {
 import { Pagination } from '../../../_metronic/_partials/controls';
 import { shallowEqual, useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
-
 import SubTableLicenseType from './CorporateManageLicense/SubTableLicenseType';
 import SubTableLicenseNo from './CorporateManageLicense/SubTableLicenseNo';
 import ActionButtons from './CorporateManageLicense/ActionButtons';

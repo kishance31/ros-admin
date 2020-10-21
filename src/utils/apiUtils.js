@@ -1,4 +1,4 @@
-import axios from 'axios';
+
 import AppConfigs from './config';
 const {
     serverConfig: {
@@ -24,10 +24,10 @@ const {
 } = AppConfigs
 
 const serverUrls = {
+
     getHost: () => host,
     getPort: () => port,
     getDefaulUrl: () => `${host}:${port}/${defaultRoute}`,
-
 
     getAdminUrl() {
         return `${this.getDefaulUrl()}/${admin}`
@@ -45,18 +45,18 @@ const serverUrls = {
         return `${this.getAdminUrl()}/${emailTemplate}`
     },
     getCorporateUrl() {
-        return `${this.getAdminUrl()}/${userRoute}`;
+        return `${this.getDefaulUrl()}/${userRoute}`;
     },
-    getCmsUrl(){
+    getCmsUrl() {
         return `${this.getAdminUrl()}/${cms}`
     },
-    getCategory(){
+    getCategory() {
         return `${this.getDefaulUrl()}/${userRoute}/${category}`
     },
-    getSubCategory (){
+    getSubCategory() {
         return `${this.getDefaulUrl()}/${userRoute}/${subCategory}`
     },
-    getproduct (){
+    getproduct() {
         return `${this.getDefaulUrl()}/${userRoute}/${product}`
     },
     getEmployeeUrl() {
@@ -72,7 +72,6 @@ const serverUrls = {
         return `${this.getAdminUrl()}/${costSummary}`
     },
 }
-
 
 const getServerCore = () => {
     return {

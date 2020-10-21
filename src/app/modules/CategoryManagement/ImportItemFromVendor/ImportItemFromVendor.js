@@ -25,6 +25,7 @@ const ImportItemFromVendor = (props) => {
     const openDeleteModal = useSelector(state => state.categoryModal.categoryManagementModal.openConfirmModal)
     const refereshCategoryList = useSelector(state => state.categoryModal.refereshCategoryList);
     const selectedCategoryitem = useSelector(state => state.categoryModal.categorySelected);
+    const { pageNumber, pageSize, productCount } = useSelector(state => state.categoryModal)
 
     const onClickVendorItemAddButton = () => {
         // dispatch(DisplayVendorItemAsync())
@@ -208,6 +209,9 @@ const ImportItemFromVendor = (props) => {
                     deleteData={deleteData}
                     setSelectedProduct={setSelectedProduct}
                     onClickVendorItemAddButton={onClickVendorItemAddButton}
+                    productCount={productCount}
+                    pageSize={pageSize}
+                    pageNumber={pageNumber}
                 />
             </CardBody>
         </Card>
