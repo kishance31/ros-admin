@@ -23,7 +23,7 @@ export const EditButtons = (cellContent,
         
         <>
         <a
-            className="btn btn-info font-weight-bolder font-size-sm mr-3"
+            className="btn btn_blue font-weight-bolder font-size-sm mr-3"
             onClick={() => onClickEdit(row)}
         >
             EDIT

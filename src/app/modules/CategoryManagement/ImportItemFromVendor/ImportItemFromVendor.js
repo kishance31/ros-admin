@@ -25,6 +25,7 @@ const ImportItemFromVendor = (props) => {
     const openDeleteModal = useSelector(state => state.categoryModal.categoryManagementModal.openConfirmModal)
     const refereshCategoryList = useSelector(state => state.categoryModal.refereshCategoryList);
     const selectedCategoryitem = useSelector(state => state.categoryModal.categorySelected);
+    const { pageNumber, pageSize, productCount } = useSelector(state => state.categoryModal)
 
     const onClickVendorItemAddButton = () => {
         // dispatch(DisplayVendorItemAsync())
@@ -35,7 +36,7 @@ const ImportItemFromVendor = (props) => {
         dispatch(deleteProductAsync())
     }
     const selectedCategory = (value) => {
-        dispatch(DisplayVendorItemAsync({category_id: value}))
+        dispatch(DisplayVendorItemAsync({ category_id: value }))
     }
 
     const onHideVendorModal = () => {
@@ -125,6 +126,10 @@ const ImportItemFromVendor = (props) => {
                             <form onSubmit={handleSubmit} className="form form-label-right">
                                 <div className="form-group row">
                                     <div className="col-lg-2">
+                                        <label className="mb-3">
+                                            <b>Filter</b> by Category Name
+                                        </label>
+
                                         <select
                                             className="form-control"
                                             name="status"
@@ -148,9 +153,6 @@ const ImportItemFromVendor = (props) => {
                                                 ))
                                             }
                                         </select>
-                                        <small className="form-text text-muted">
-                                            <b>Filter</b> by Category Name
-                                        </small>
                                     </div>
                                 </div>
                             </form>
@@ -207,6 +209,9 @@ const ImportItemFromVendor = (props) => {
                     deleteData={deleteData}
                     setSelectedProduct={setSelectedProduct}
                     onClickVendorItemAddButton={onClickVendorItemAddButton}
+                    productCount={productCount}
+                    pageSize={pageSize}
+                    pageNumber={pageNumber}
                 />
             </CardBody>
         </Card>

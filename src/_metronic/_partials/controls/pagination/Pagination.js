@@ -9,6 +9,7 @@ export function Pagination(props) {
       {children}
       <div className="d-flex justify-content-between align-items-center flex-wrap">
         <PaginationLinks paginationProps={paginationProps} />
+        <div></div>
         <PaginationToolbar
           isLoading={isLoading}
           paginationProps={paginationProps}

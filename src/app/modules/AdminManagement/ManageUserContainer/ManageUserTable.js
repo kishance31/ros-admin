@@ -119,7 +119,7 @@ const ManageUserTable = (props) => {
               wrapperClasses="table-responsive"
               hover={false}
               bordered={false}
-              classes="table table-head-custom table-vertical-center overflow-hidden"
+              classes="table table-head-custom table-vertical-center overflow-hidden center-last-col"
               bootstrap4
               remote
               keyField='email'

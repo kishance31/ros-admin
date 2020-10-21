@@ -332,7 +332,7 @@ const categoryModalreducer = (state = initialState, action) => {
                 pageNumber: action.payload,
                 refereshVendorList: true,
             }
-        } 
+        }
         case CategoryManagementMap.SET_PAGE_SIZE: {
             return {
                 ...state,
