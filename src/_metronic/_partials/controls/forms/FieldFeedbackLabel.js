@@ -14,7 +14,7 @@ const inputLabel = ({ label, touched, error, customFeedbackLabel }) => {
       {customFeedbackLabel && <>{customFeedbackLabel}</>}
       {!customFeedbackLabel && (
         <>
-          Please enter <b>{label}</b>
+          {/* Please enter <b>{label}</b> */}
         </>
       )}
     </div>

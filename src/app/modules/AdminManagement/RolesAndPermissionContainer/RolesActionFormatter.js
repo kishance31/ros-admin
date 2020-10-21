@@ -11,10 +11,12 @@ export const RoleAndPermisionFormatter = (cellContent, row, rowIndex, props) => 
     }
     return (
         <>
-            <ButtonGroup>
-                <Button variant="secondary" onClick={editBtnClick}>Edit</Button>&nbsp;&nbsp;
-                <Button variant="secondary" onClick={deleteBtnClick}>Delete</Button>
-            </ButtonGroup>
+            <div className="text-center">
+                <ButtonGroup>
+                    <Button className="btn btn-success font-weight-bolder font-size-sm mr-3" onClick={editBtnClick}>Edit</Button>&nbsp;&nbsp;
+                <Button className="btn btn-danger font-weight-bolder font-size-sm mr-3" onClick={deleteBtnClick}>Delete</Button>
+                </ButtonGroup>
+            </div>
         </>
     );
 }
