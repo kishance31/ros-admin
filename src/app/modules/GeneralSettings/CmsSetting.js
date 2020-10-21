@@ -9,39 +9,41 @@ import { Card, CardHeader, CardBody } from '../../../_metronic/_partials/control
 const CmsSetting = () => {
     return (
         <>
-        <Card style={{ width: "60rem" ,height: "30rem" }}>
-       
-            <div>
-                <div className='d-flex d-flex justify-content-between align-items-center flex-wrap'>
-                    <NavLink to='/general-settings/cms-settings'>
-                        <span>About Us</span>
-                    </NavLink>
+            <div className="row">
+                <div className="col-xl-6">
+                    <Card>
+                        <div className="card-body pb-5">
+                            <div className='d-flex align-items-center nav-tabs mb-0'>
+                                <NavLink className="nav-link" to='/general-settings/cms-settings'>
+                                    <span>About Us</span>
+                                </NavLink>
 
-                    <NavLink to='/general-settings/cms-settings/Contact-us'>
-                        <span>Contact Us</span>
-                    </NavLink>
+                                <NavLink className="nav-link" to='/general-settings/cms-settings/Contact-us'>
+                                    <span>Contact Us</span>
+                                </NavLink>
 
-                    <NavLink to='/general-settings/cms-settings/notifications'>
-                        <span>Notifications</span>
-                    </NavLink>
+                                <NavLink className="nav-link" to='/general-settings/cms-settings/notifications'>
+                                    <span>Notifications</span>
+                                </NavLink>
 
+                            </div>
+                        </div>
+
+                        <Switch>
+                            <ContentRoute
+                                path='/general-settings/cms-settings'
+                                exact
+                                component={AboutUs}
+                            />
+                            <ContentRoute
+                                path='/general-settings/cms-settings/Contact-us'
+                                exact
+                                component={ContactUs}
+                            />
+                        </Switch>
+                    </Card>
                 </div>
             </div>
-
-            <Switch>
-                <ContentRoute
-                    path='/general-settings/cms-settings'
-                    exact
-                    component={AboutUs}
-                />
-                <ContentRoute
-                    path='/general-settings/cms-settings/Contact-us'
-                    exact
-                    component={ContactUs}
-                />
-            </Switch>
-        </Card>
-
         </>
     )
 }
