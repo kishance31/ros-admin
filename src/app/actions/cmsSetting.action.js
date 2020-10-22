@@ -7,9 +7,9 @@ export const cmsSettingsMap = {
     UPDATE_CONTACT_US_SUCCESSFULLY: 'UPDATE_CONTACT_US_SUCCESSFULLY',
     UPDATE_CONTACT_US_FAIL: 'UPDATE_CONTACT_US_FAIL',
     FETCH_CONTACT_US_DETAILS: 'FETCH_CONTACT_US_DETAILS',
+    SAVE_ABOUT_US_START: 'SAVE_ABOUT_US_START',
+    SAVE_ABOUT_US_ERROR: 'SAVE_ABOUT_US_ERROR',
     SAVE_ABOUT_US_SUCCESSFULLY: 'SAVE_ABOUT_US_SUCCESSFULLY',
-    UPDATE_ABOUT_US_SUCCESSFULLY: 'UPDATE_ABOUT_US_SUCCESSFULLY',
-    UPDATE_ABOUT_US_FAIL: 'UPDATE_ABOUT_US_FAIL',
     FETCH_ABOUT_US_DETAILS: 'FETCH_ABOUT_US_DETAILS'
 }
 
@@ -21,6 +21,7 @@ export const cmsSettingsAction = {
 
 const { serverUrls } = getServerCore();
 const cmsUrl = serverUrls.getCmsUrl()
+
 export const addContactUsAsync = (values) => {
     return async (dispatch) => {
         try {
@@ -68,25 +69,33 @@ export const dispalayConstactUsDetails = () => {
     }
 }
 
-export const addAboutUsAsync = (data) => {
+export const addAboutUsAsync = (aboutUsData) => {
     return async (dispatch) => {
         try {
-            let aboutUsResponse = await axios({
+            dispatch({
+                type: cmsSettingsMap.SAVE_ABOUT_US_START
+            });
+            let {data} = await axios({
                 url: `${cmsUrl}/updateAboutUs`,
                 method: "PUT",
-                data: data,
+                data: aboutUsData,
                 headers: {
                     'Content-type': ' multipart/form-data',
                 }
             });
-            if (aboutUsResponse.data.response.responseCode === 200) {
-                dispatch({type: cmsSettingsAction.addAboutUsDetails, payload:aboutUsResponse.data.response.data})
+            if (data.response && data.response.responseCode === 200) {
+                dispatch(cmsSettingsAction.addAboutUsDetails(data.response.data))
                 dispatch(showSuccessSnackbar('success',"About Us Update Successfully",3000));
             }else{
+                dispatch({
+                    type: cmsSettingsMap.SAVE_ABOUT_US_ERROR
+                });
                 dispatch(showSuccessSnackbar('error',"Error while updating",3000))
             }
-            
         } catch (error) {
+            dispatch({
+                type: cmsSettingsMap.SAVE_ABOUT_US_ERROR
+            });
             dispatch(showSuccessSnackbar('error',"Error while updating",3000))
         }
     }
@@ -104,7 +113,6 @@ export const getAboutUsDataAsync = () => {
             })
             if (aboutUsDetails.data.response.responseCode === 200) {
                 dispatch({type: cmsSettingsMap.FETCH_ABOUT_US_DETAILS, payload: aboutUsDetails.data.response.data})
-                // dispatch(showSuccessSnackbar('success',"About Us Update Successfully",3000))
             }else{
                 dispatch(showSuccessSnackbar('error',"Error while updating",3000))
             }

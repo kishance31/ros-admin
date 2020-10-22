@@ -116,7 +116,6 @@ export const displayManageUserDataAsync = () => {
                 })
             }
         } catch (error) {
-            console.log(error)
             dispatch({
                 type: ManageUserMap.DISPLAY_MANAGEUSER_DATA_ERROR
             })
@@ -170,7 +169,6 @@ export const editManageUserAsync = (userObj) => {
                 },
                 data: userObj,
             });
-            console.log(editManageUserData);
             if (editManageUserData.data.response.responseCode === 200) {
                 dispatch({
                     type: ManageUserMap.EDIT_MANAGEUSER_DATA_SUCCESS

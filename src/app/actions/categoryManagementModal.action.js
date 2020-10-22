@@ -116,7 +116,6 @@ const productUrl = serverUrls.getproduct();
 
 export const addCategoryDataAsync = (categoryName) => {
     return async (dispatch) => {
-        console.log('categoryUrl', categoryUrl);
         try {
             dispatch({ type: CategoryManagementMap.ADD_CATEGORY_START })
             let { data } = await axios({
