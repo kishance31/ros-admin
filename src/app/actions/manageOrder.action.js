@@ -67,7 +67,6 @@ export const getCorporateOrdersAsync = () => async (dispatch, getState) => {
 		}
 		return dispatch(manageOrderAction.getOrderError());
 	} catch (error) {
-		console.log(error)
 		dispatch(manageOrderAction.getOrderError());
 	}
 }

@@ -17,7 +17,6 @@ export const licenseManagementMap = {
 
 const { serverUrls } = getServerCore();
 const license = serverUrls.getLicenseUrl()
-console.log('adminUrl', license);
 export const licenseManagementActions = {
     
     toggleLicenseModal: (type) => {
@@ -32,7 +31,6 @@ export const licenseManagementActions = {
 }
 
 export const displayLicenseListAsync = () => {
-    console.log('adminUrl', license);
 
     return async (dispatch, getstate) => {
         const {auth} = getstate();

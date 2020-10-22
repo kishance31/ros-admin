@@ -19,7 +19,6 @@ export const ManageUserAction = {
 };
 const { serverUrls } = getServerCore();
 const license = serverUrls.getLicenseUrl()
-console.log('aaaaaaaaaaaaaaa', license);
 export const addLicenseAsync = (data, tokens) => {
 
     return async (dispatch) => {

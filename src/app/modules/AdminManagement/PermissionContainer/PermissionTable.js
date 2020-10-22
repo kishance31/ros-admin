@@ -86,7 +86,7 @@ const PermissionTable = ({ names, types, roles, savePermissions }) => {
 
 	return (
 		<>
-			<div className="d-flex justify-content-between mx-10">
+			<div className="d-flex mx-10">
 				<Form.Control
 					as="select"
 					id="dropdown-item-button"
@@ -112,7 +112,7 @@ const PermissionTable = ({ names, types, roles, savePermissions }) => {
 						))
 					}
 				</Form.Control>
-				<Button
+				<Button className="ml-5"
 					variant="primary"
 					onClick={() => savePermissions(tableState, selectedRole)}
 				>Save</Button>

@@ -215,3 +215,52 @@
     height: 18px;
   }
 }
+
+.sticky-toolbar {
+  display: none;
+}
+
+.nav-tabs {
+  margin-bottom: 20px;
+  border-bottom: none;
+
+  .nav-link {
+    border: none;
+    margin-right: 20px;
+    color: $dark !important;
+
+    &.active {
+      color: $blue !important;
+      border-bottom: 1px solid $blue !important;
+      background: transparent;
+      border-radius: 0;
+    }
+  }
+}
+
+.corporate_details_modal {
+  @media (min-width: 992px) {
+    .modal-lg {
+      max-width: 950px;
+    }
+  }
+}
+
+.react-bootstrap-table-pagination {
+  flex-direction: row-reverse;
+
+  div:first-child() {
+    text-align: right;
+  }
+}
+
+.expand-cell-header,
+.expand-cell {
+  cursor: pointer;
+}
+
+.jumbotron {
+  .react-bootstrap-table-pagination .dropdown-toggle {
+    background: #f9f9f9 !important;
+  }
+}

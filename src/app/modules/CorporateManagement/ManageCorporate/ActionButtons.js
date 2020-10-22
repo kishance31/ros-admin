@@ -15,36 +15,38 @@ const ActionButtons = ({ row, approveRejectAction, activeDeactiveAction }) => {
 
   return (
     <>
-      <Button
-        className='mx-3'
-        size='sm'
-        variant='outline-primary'
-        onClick={() => handleShow()}
-      >
-        View
+      <div className="d-flex justify-content-center">
+        <Button
+          className='mx-3 btn-success'
+          size='sm'
+          variant=''
+          onClick={() => handleShow()}
+        >
+          View
       </Button>
-      <ViewModal
-        show={show}
-        handleClose={handleClose}
-        row={row}
-        approveRejectAction={approveRejectAction}
-      />
-      <Button
-        className={row.isActive ? 'd-none' : 'mx-3'}
-        size='sm'
-        variant='outline-success'
-        onClick={() => activeDeactiveAction(row._id, true)}
-      >
-        Active
+        <ViewModal
+          show={show}
+          handleClose={handleClose}
+          row={row}
+          approveRejectAction={approveRejectAction}
+        />
+        <Button
+          className={row.isActive ? 'd-none' : 'mx-3 btn_blue'}
+          size='sm'
+          variant=''
+          onClick={() => activeDeactiveAction(row._id, true)}
+        >
+          Active
       </Button>
-      <Button
-        className={!row.isActive ? 'd-none' : 'mx-3'}
-        size='sm'
-        variant='outline-danger'
-        onClick={() => activeDeactiveAction(row._id, false)}
-      >
-        Deactive
+        <Button
+          className={!row.isActive ? 'd-none' : 'mx-3 btn-danger'}
+          size='sm'
+          variant=''
+          onClick={() => activeDeactiveAction(row._id, false)}
+        > 
+          Deactive
       </Button>
+      </div>
     </>
   );
 };
@@ -55,9 +57,9 @@ export default (
   rowIndex,
   { approveRejectAction, activeDeactiveAction }
 ) => (
-  <ActionButtons
-    row={row}
-    approveRejectAction={approveRejectAction}
-    activeDeactiveAction={activeDeactiveAction}
-  />
-);
+    <ActionButtons
+      row={row}
+      approveRejectAction={approveRejectAction}
+      activeDeactiveAction={activeDeactiveAction}
+    />
+  );

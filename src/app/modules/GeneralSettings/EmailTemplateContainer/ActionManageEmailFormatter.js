@@ -25,11 +25,7 @@ export function ActionManageEmailFormatter(
         className="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
         onClick={() => onEditUser(row, rowIndex)}
       >
-        <span className="svg-icon svg-icon-md svg-icon-primary">
-          <SVG
-            src={toAbsoluteUrl("/media/svg/icons/Communication/Write.svg")}
-          />
-        </span>
+        Edit
       </a>
       <> </>
 
@@ -38,10 +34,7 @@ export function ActionManageEmailFormatter(
         className="btn btn-icon btn-light btn-hover-danger btn-sm"
         onClick={() => onDeleteUser(row, rowIndex)}
       >
-        <span className="svg-icon svg-icon-md svg-icon-danger">
-          <SVG src={toAbsoluteUrl("/media/svg/icons/General/Trash.svg")} />
-        </span>
-      </a>
+        Delete      </a>
     </>
   );
 }
