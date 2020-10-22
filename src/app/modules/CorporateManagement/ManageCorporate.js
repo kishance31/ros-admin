@@ -123,6 +123,7 @@ const ManageCorporate = () => {
                 keyField='_id'
                 bordered={false}
                 data={manageCorporateData === null ? [] : manageCorporateData}
+                classes='center-last-col'
                 columns={columns}
                 remote
                 noDataIndication='No records found!'

@@ -77,11 +77,11 @@ const ManageEmailTable = ({ onOpenModal, setSelectedUser, onOpenDialog }) => {
     }
   ]
   return (
-    <div className='container' style={{ marginTop: 50 }}>
+    <div className='container'>
       <BootstrapTable
         wrapperClasses='table-responsive'
         hover
-        classes='table table-head-custom table-vertical-center'
+        classes='table table-head-custom table-vertical-center center-last-col'
         bootstrap4
         bordered={false}
         keyField='email'

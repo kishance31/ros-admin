@@ -3,23 +3,23 @@ import { NavLink } from 'react-router-dom';
 
 const CorporateManagementLink = () => {
   return (
-    <div className='d-flex justify-content-between'>
-      <NavLink to='/corporate-management'>
+    <div className='d-flex nav-tabs'>
+      <NavLink className="nav-link" to='/corporate-management'>
         <span>Manage Corporate</span>
       </NavLink>
-      <NavLink to='/corporate-management/corporate-manage-license'>
+      <NavLink className="nav-link" to='/corporate-management/corporate-manage-license'>
         <span>Manage License</span>
       </NavLink>
-      <NavLink to='/corporate-management/manage-order'>
+      <NavLink className="nav-link" to='/corporate-management/manage-order'>
         <span>Manage Order</span>
       </NavLink>
-      <NavLink to='/corporate-management/licence-order'>
+      <NavLink className="nav-link" to='/corporate-management/licence-order'>
         <span>Licence Order</span>
       </NavLink>
-      <NavLink to='/corporate-management/order-invoice'>
+      <NavLink className="nav-link" to='/corporate-management/order-invoice'>
         <span>Order Invoice</span>
       </NavLink>
-      <NavLink to='/corporate-management/cost-summary'>
+      <NavLink className="nav-link" to='/corporate-management/cost-summary'>
         <span>Cost Summary</span>
       </NavLink>
     </div>
