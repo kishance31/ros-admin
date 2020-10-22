@@ -233,6 +233,7 @@
       color: $blue !important;
       border-bottom: 1px solid $blue !important;
       background: transparent;
+      border-radius: 0;
     }
   }
 }
@@ -250,5 +251,16 @@
 
   div:first-child() {
     text-align: right;
+  }
+}
+
+.expand-cell-header,
+.expand-cell {
+  cursor: pointer;
+}
+
+.jumbotron {
+  .react-bootstrap-table-pagination .dropdown-toggle {
+    background: #f9f9f9 !important;
   }
 }

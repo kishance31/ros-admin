@@ -89,6 +89,7 @@ const FirstInvoice = ({ firstInvoiceData }) => {
       keyField='firstInvoiceId'
       data={firstInvoiceData === null ? [] : firstInvoiceData}
       columns={columns}
+      classes="center-last-col"
       bordered={false}
       noDataIndication='No records found!'
       expandRow={expandRow}
