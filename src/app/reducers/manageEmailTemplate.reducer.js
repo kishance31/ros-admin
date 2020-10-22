@@ -1,4 +1,3 @@
-
 import { ManageEmailTemplateMap } from '../actions/manageEmailTemplate.action';
 
 const initialState = {
@@ -7,12 +6,14 @@ const initialState = {
     },
     modalDialog: false,
     displaylist: [],
-    emailTemplateUpdated:false,
-    emailAddedSuccessfully:false,
-    emailTemplateDeleted:false,
+    emailTemplateUpdated: false,
+    emailAddedSuccessfully: false,
+    emailTemplateDeleted: false,
     totalCount: 0,
     selectedEmailTemplate: null,
     refreshEmailTemplateData: true,
+    pageNumber: 1,
+    pageSize: 5,
 }
 
 
@@ -54,9 +55,8 @@ const manageEmailTemplateReducer = (state = initialState, action) => {
                 displaylist: action.payload,
                 totalCount: state.displaylist.count,
                 refreshEmailTemplateData: false,
-                emailTemplateDeleted:false,
-                emailAddedSuccessfully:false,
-                emailTemplateDeleted:false
+                emailTemplateDeleted: false,
+                emailAddedSuccessfully: false,
             }
         }
         case ManageEmailTemplateMap.DISPLAY_EMAIL_TEMPLATE_DATA_ERROR: {
@@ -82,11 +82,11 @@ const manageEmailTemplateReducer = (state = initialState, action) => {
             return {
                 ...state,
                 displaylist: action.payload,
-                emailAddedSuccessfully:true,
+                emailAddedSuccessfully: true,
                 refreshEmailTemplateData: true,
             }
         }
-        
+
         case ManageEmailTemplateMap.ADD_EMAIL_TEMPLATE_DATA_ERROR: {
             return {
                 ...state,
@@ -99,7 +99,7 @@ const manageEmailTemplateReducer = (state = initialState, action) => {
             return {
                 ...state,
                 displaylist: state.displaylist,
-                emailTemplateUpdated:true,
+                emailTemplateUpdated: true,
                 refreshEmailTemplateData: true,
 
             }
@@ -122,10 +122,22 @@ const manageEmailTemplateReducer = (state = initialState, action) => {
                 selectedEmailTemplate: action.payload,
             }
         }
-        default:
+        case ManageEmailTemplateMap.SET_PAGE: {
             return {
-                ...state
+                ...state,
+                pageNumber: action.payload,
+                refreshEmailTemplateData: true,
             }
+        }
+        case ManageEmailTemplateMap.SET_PAGE_SIZE: {
+            return {
+                ...state,
+                pageSize: action.payload,
+                refreshEmailTemplateData: true,
+                pageNumber: 1
+            }
+        }
+        default: return { ...state }
     }
 }
 

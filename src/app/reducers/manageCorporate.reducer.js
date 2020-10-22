@@ -2,7 +2,7 @@ import { manageCorporateMap } from '../actions/manageCorporate.action';
 
 const initialState = {
   manageCorporateData: [],
-  pageNo: 1,
+  pageNumber: 1,
   pageSize: 5,
   totalCount: 0,
 };
@@ -70,17 +70,20 @@ const manageCorporateReducer = (state = initialState, action) => {
         state,
       };
     }
-    case manageCorporateMap.SET_PAGE_NO: {
+    case manageCorporateMap.SET_PAGE: {
       return {
         ...state,
-        pageNo: action.payload,
-      };
+        pageNumber: action.payload,
+        //refreshManageUserData: true,
+      }
     }
-    case manageCorporateMap.STE_PAGE_SIZE: {
+    case manageCorporateMap.SET_PAGE_SIZE: {
       return {
         ...state,
         pageSize: action.payload,
-      };
+        //refreshManageUserData: true,
+        pageNumber: 1
+      }
     }
     default:
       return state;

@@ -1,12 +1,10 @@
 import React from 'react';
 import BootstrapTable from "react-bootstrap-table-next";
 import { useSelector } from "react-redux";
-import { sortCaret } from '../../../../../_metronic/_helpers';
 import ActionFormatter from './ActionFormatter';
 
-const ManageCategoryTable = ({
-    OnAddCategory, onDisplaySubCategory, setSelectedCategory, EditCategory, setSelectedSubCategory
-}) => {
+const ManageCategoryTable = (
+    { OnAddCategory, onDisplaySubCategory, setSelectedCategory, EditCategory, setSelectedSubCategory }) => {
 
     const entities = useSelector(state => state.categoryModal.categoryList);
     const categorySelected = useSelector(state => state.categoryModal.categorySelected);
@@ -24,7 +22,6 @@ const ManageCategoryTable = ({
             dataField: categorySelected === "subcategory" ? "subcategory_name" : "category_name",
             text: "Category Name",
             sort: true,
-            sortCaret: sortCaret,
             align: 'center',
             headerAlign: 'center'
         },
@@ -32,7 +29,6 @@ const ManageCategoryTable = ({
             dataField: "status",
             text: "Status",
             sort: true,
-            sortCaret: sortCaret,
             align: 'center',
             headerAlign: 'center'
         },
@@ -41,7 +37,6 @@ const ManageCategoryTable = ({
             text: "Create Date",
             formatter: (value) => new Date(value).toLocaleString(),
             sort: true,
-            sortCaret: sortCaret,
             align: 'center',
             headerAlign: 'center'
         },
