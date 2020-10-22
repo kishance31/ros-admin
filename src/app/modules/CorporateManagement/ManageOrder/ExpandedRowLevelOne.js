@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { Form } from 'react-bootstrap';
-
 import NewOrder from './NewOrder';
-import PastOrder from './PastOrder';
+// import PastOrder from './PastOrder';
 
 const ExpandedRowLevelOne = ({
 	row,

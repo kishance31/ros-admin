@@ -1,302 +1,42 @@
+import { orderInvoiceMap } from '../actions/orderInvoice.action';
+
 const initialState = {
-  orderInvoiceData: {
-    firstInvoice: [
-      {
-        firstInvoiceId: 1,
-        corporateName: 'Company 1',
-        employeeName: 'Mathew Jorden',
-        orderNo: 325,
-        orderDate: '01/03/2020',
-        orderCost: 435,
-        orderDetails: {
-          invoiceNo: 2441,
-          invoiceDate: '23/01/2020',
-        },
-      },
-      {
-        firstInvoiceId: 2,
-        corporateName: 'Company 2',
-        employeeName: 'john garry',
-        orderNo: 425,
-        orderDate: '05/12/2019',
-        orderCost: 654,
-        orderDetails: {
-          invoiceNo: 3562,
-          invoiceDate: '12/05/2020',
-        },
-      },
-      {
-        firstInvoiceId: 3,
-        corporateName: 'Company 3',
-        employeeName: 'kim joi',
-        orderNo: 589,
-        orderDate: '11/11/2020',
-        orderCost: 584,
-        orderDetails: {
-          invoiceNo: 9856,
-          invoiceDate: '15/12/2020',
-        },
-      },
-      {
-        firstInvoiceId: 4,
-        corporateName: 'Company 4',
-        employeeName: 'siun gon',
-        orderNo: 875,
-        orderDate: '25/11/2019',
-        orderCost: 741,
-        orderDetails: {
-          invoiceNo: 6547,
-          invoiceDate: '28/11/2020',
-        },
-      },
-      {
-        firstInvoiceId: 5,
-        corporateName: 'Company 5',
-        employeeName: 'jin son',
-        orderNo: 879,
-        orderDate: '08/08/2020',
-        orderCost: 990,
-        orderDetails: {
-          invoiceNo: 9632,
-          invoiceDate: '09/08/2020',
-        },
-      },
-    ],
-    recurringInvoice: [
-      {
-        recurringInvoiceId: 1,
-        corporateName: 'company 1',
-        invoiceNo: 1,
-        orderDate: '12/04/2020',
-        invoiceAmount: 325,
-        invoiceDetails: [
-          {
-            invoiceDetailsId: 1,
-            employeeName: 'Mathew Jordan',
-            orderNo: 325,
-            orderDate: '20/05/2020',
-            totalOrderCost: 2356,
-            month: 'sep 2020',
-            monthlyCost: 235,
-          },
-          {
-            invoiceDetailsId: 2,
-            employeeName: 'Mathew Jordan',
-            orderNo: 325,
-            orderDate: '20/05/2020',
-            totalOrderCost: 2356,
-            month: 'sep 2020',
-            monthlyCost: 235,
-          },
-          {
-            invoiceDetailsId: 3,
-            employeeName: 'Mathew Jordan',
-            orderNo: 325,
-            orderDate: '20/05/2020',
-            totalOrderCost: 2356,
-            month: 'sep 2020',
-            monthlyCost: 235,
-          },
-          {
-            invoiceDetailsId: 4,
-            employeeName: 'Mathew Jordan',
-            orderNo: 325,
-            orderDate: '20/05/2020',
-            totalOrderCost: 2356,
-            month: 'sep 2020',
-            monthlyCost: 235,
-          },
-        ],
-      },
-      {
-        recurringInvoiceId: 2,
-        corporateName: 'company 2',
-        invoiceNo: 1,
-        orderDate: '12/04/2020',
-        invoiceAmount: 325,
-        invoiceDetails: [
-          {
-            invoiceDetailsId: 1,
-            employeeName: 'Mathew Jordan',
-            orderNo: 325,
-            orderDate: '20/05/2020',
-            totalOrderCost: 2356,
-            month: 'sep 2020',
-            monthlyCost: 235,
-          },
-          {
-            invoiceDetailsId: 2,
-            employeeName: 'Mathew Jordan',
-            orderNo: 325,
-            orderDate: '20/05/2020',
-            totalOrderCost: 2356,
-            month: 'sep 2020',
-            monthlyCost: 235,
-          },
-          {
-            invoiceDetailsId: 3,
-            employeeName: 'Mathew Jordan',
-            orderNo: 325,
-            orderDate: '20/05/2020',
-            totalOrderCost: 2356,
-            month: 'sep 2020',
-            monthlyCost: 235,
-          },
-          {
-            invoiceDetailsId: 4,
-            employeeName: 'Mathew Jordan',
-            orderNo: 325,
-            orderDate: '20/05/2020',
-            totalOrderCost: 2356,
-            month: 'sep 2020',
-            monthlyCost: 235,
-          },
-        ],
-      },
-      {
-        recurringInvoiceId: 3,
-        corporateName: 'company 3',
-        invoiceNo: 1,
-        orderDate: '12/04/2020',
-        invoiceAmount: 325,
-        invoiceDetails: [
-          {
-            invoiceDetailsId: 1,
-            employeeName: 'Mathew Jordan',
-            orderNo: 325,
-            orderDate: '20/05/2020',
-            totalOrderCost: 2356,
-            month: 'sep 2020',
-            monthlyCost: 235,
-          },
-          {
-            invoiceDetailsId: 2,
-            employeeName: 'Mathew Jordan',
-            orderNo: 325,
-            orderDate: '20/05/2020',
-            totalOrderCost: 2356,
-            month: 'sep 2020',
-            monthlyCost: 235,
-          },
-          {
-            invoiceDetailsId: 3,
-            employeeName: 'Mathew Jordan',
-            orderNo: 325,
-            orderDate: '20/05/2020',
-            totalOrderCost: 2356,
-            month: 'sep 2020',
-            monthlyCost: 235,
-          },
-          {
-            invoiceDetailsId: 4,
-            employeeName: 'Mathew Jordan',
-            orderNo: 325,
-            orderDate: '20/05/2020',
-            totalOrderCost: 2356,
-            month: 'sep 2020',
-            monthlyCost: 235,
-          },
-        ],
-      },
-      {
-        recurringInvoiceId: 4,
-        corporateName: 'company 4',
-        invoiceNo: 1,
-        orderDate: '12/04/2020',
-        invoiceAmount: 325,
-        invoiceDetails: [
-          {
-            invoiceDetailsId: 1,
-            employeeName: 'Mathew Jordan',
-            orderNo: 325,
-            orderDate: '20/05/2020',
-            totalOrderCost: 2356,
-            month: 'sep 2020',
-            monthlyCost: 235,
-          },
-          {
-            invoiceDetailsId: 2,
-            employeeName: 'Mathew Jordan',
-            orderNo: 325,
-            orderDate: '20/05/2020',
-            totalOrderCost: 2356,
-            month: 'sep 2020',
-            monthlyCost: 235,
-          },
-          {
-            invoiceDetailsId: 3,
-            employeeName: 'Mathew Jordan',
-            orderNo: 325,
-            orderDate: '20/05/2020',
-            totalOrderCost: 2356,
-            month: 'sep 2020',
-            monthlyCost: 235,
-          },
-          {
-            invoiceDetailsId: 4,
-            employeeName: 'Mathew Jordan',
-            orderNo: 325,
-            orderDate: '20/05/2020',
-            totalOrderCost: 2356,
-            month: 'sep 2020',
-            monthlyCost: 235,
-          },
-        ],
-      },
-      {
-        recurringInvoiceId: 5,
-        corporateName: 'company 5',
-        invoiceNo: 1,
-        orderDate: '12/04/2020',
-        invoiceAmount: 325,
-        invoiceDetails: [
-          {
-            invoiceDetailsId: 1,
-            employeeName: 'Mathew Jordan',
-            orderNo: 325,
-            orderDate: '20/05/2020',
-            totalOrderCost: 2356,
-            month: 'sep 2020',
-            monthlyCost: 235,
-          },
-          {
-            invoiceDetailsId: 2,
-            employeeName: 'Mathew Jordan',
-            orderNo: 325,
-            orderDate: '20/05/2020',
-            totalOrderCost: 2356,
-            month: 'sep 2020',
-            monthlyCost: 235,
-          },
-          {
-            invoiceDetailsId: 3,
-            employeeName: 'Mathew Jordan',
-            orderNo: 325,
-            orderDate: '20/05/2020',
-            totalOrderCost: 2356,
-            month: 'sep 2020',
-            monthlyCost: 235,
-          },
-          {
-            invoiceDetailsId: 4,
-            employeeName: 'Mathew Jordan',
-            orderNo: 325,
-            orderDate: '20/05/2020',
-            totalOrderCost: 2356,
-            month: 'sep 2020',
-            monthlyCost: 235,
-          },
-        ],
-      },
-    ],
-  },
+	orderInvoiceData: [],
+	totalRecords: 0,
+	pageNumber: 1,
+	pageSize: 5,
+	isLoading: false,
+	refreshOrder: true,
 };
 
 const orderInvoiceReducer = (state = initialState, action) => {
-  switch (action.type) {
+	switch (action.type) {
+
+	case orderInvoiceMap.GET_CORPORATE_ORDER_INVOICE_START: {
+		return {
+			...state,
+			// isLoading: true,
+			refreshOrder: true,
+		}
+	}
+	case orderInvoiceMap.GET_CORPORATE_ORDER_INVOICE_SUCCESS: {
+		return {
+			...state,
+			refreshOrder: false,
+			orderInvoiceData: action.payload.list,
+			totalRecords: action.payload.totalRecords
+		}
+	}
+	case orderInvoiceMap.GET_CORPORATE_ORDER_INVOICE_SUCCESS: {
+		return {
+			...state,
+			refreshOrder: false,
+		}
+	}
+
     default:
-      return state;
-  }
+			return state;
+	}
 };
 
 export default orderInvoiceReducer;

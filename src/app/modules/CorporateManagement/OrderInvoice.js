@@ -1,16 +1,44 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { Button } from 'react-bootstrap';
-
+import React, { useEffect, useState } from 'react';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { Form } from 'react-bootstrap';
 import FirstInvoice from './OrderInvoice/FirstInvoice';
 import RecurringInvoice from './OrderInvoice/RecurringInvoice';
+import { getCorporateOrderInvoiceAsync } from '../../actions/orderInvoice.action';
 
 const OrderInvoice = () => {
-  const [firstRecurringFlag, setFirstRecurringFlag] = useState(true);
-  const orderInvoiceData = useSelector(
-    (state) => state.orderInvoice.orderInvoiceData
-  );
+	const [firstRecurringFlag, setFirstRecurringFlag] = useState("first");
+	const orderInvoiceData = useSelector(
+		(state) => state.orderInvoice.orderInvoiceData, shallowEqual
+	);
 
+	const dispatch = useDispatch();
+
+	useEffect(() => {
+		if (firstRecurringFlag === "first") {
+			dispatch(getCorporateOrderInvoiceAsync(false))
+		} else {
+			dispatch(getCorporateOrderInvoiceAsync(true))
+		}
+	}, [firstRecurringFlag])
+
+	return (
+		<div className='p-4'>
+			<div className='d-flex justify-content-start'>
+				<div className='d-flex justify-content-start' style={{ maxWidth: "fit-content" }}>
+					<Form.Control as="select"
+						value={firstRecurringFlag}
+						onChange={e => setFirstRecurringFlag(e.target.value)}
+					>
+						<option value="first">First Invoice</option>
+						<option value="recurring">Recurring Invoice</option>
+					</Form.Control>
+				</div>
+			</div>
+			<RecurringInvoice
+				recurringInvoiceData={orderInvoiceData}
+				firstRecurringFlag={firstRecurringFlag}
+			/>
+			{/* {firstRecurringFlag ? (
   return (
     <div className='jumbotron p-4'>
       <div className='d-flex justify-content-start nav-tabs'>
@@ -34,12 +62,12 @@ const OrderInvoice = () => {
       {firstRecurringFlag ? (
         <FirstInvoice firstInvoiceData={orderInvoiceData.firstInvoice} />
       ) : (
-        <RecurringInvoice
-          recurringInvoiceData={orderInvoiceData.recurringInvoice}
-        />
-      )}
-    </div>
-  );
+          <RecurringInvoice
+            recurringInvoiceData={orderInvoiceData.recurringInvoice}
+          />
+        )} */}
+		</div>
+	);
 };
 
 export default OrderInvoice;

@@ -10,23 +10,10 @@ const initialState = {
 const manageCorporateReducer = (state = initialState, action) => {
   switch (action.type) {
     case manageCorporateMap.DISPLAY_MANAGE_CORPORATE_DATA_SUCCESS: {
-      let pageNo = action.payload.pageNo;
-      let pageSize = action.payload.pageSize;
-      if (pageNo * pageSize - pageSize >= state.totalCount) {
-        state.pageNo = 1;
-      }
       return {
         ...state,
-        manageCorporateData: action.payload.manageCorporateData.filter(
-          (data, index) => {
-            if (
-              index >= pageNo * pageSize - pageSize &&
-              index <= pageNo * pageSize - 1
-            )
-              return data;
-          }
-        ),
-        totalCount: action.payload.manageCorporateData.length,
+        manageCorporateData: action.payload.manageCorporateData,
+        totalCount: action.payload.totalRecords,
       };
     }
     case manageCorporateMap.DISPLAY_MANAGE_CORPORATE_DATA_ERROR: {

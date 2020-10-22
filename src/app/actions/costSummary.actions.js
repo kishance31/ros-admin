@@ -56,7 +56,6 @@ export const getCostSummaryAsync = () => {
                 url: `${costSymmaryUrl}/getCostSummary`,
                 method: 'GET',
             });
-            console.log(data);
             if (data.response && data.response.responseCode === 200) {
                 return dispatch(CostSummaryActions.getCostSummarySuccess(data.response.data));
                 // return dispatch(showSuccessSnackbar('success', "Cost summary save successfull", 3000));
