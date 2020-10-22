@@ -86,6 +86,7 @@ const RecurringInvoice = ({ recurringInvoiceData }) => {
     <BootstrapTable
       keyField='recurringInvoiceId'
       data={recurringInvoiceData === null ? [] : recurringInvoiceData}
+      classes="center-last-col"
       columns={columns}
       bordered={false}
       noDataIndication='No records found!'

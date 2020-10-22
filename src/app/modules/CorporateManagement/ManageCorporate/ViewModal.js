@@ -155,7 +155,7 @@ const ViewModal = ({ show, handleClose, row, approveRejectAction }) => {
               // className='pdf_scroll overflow-hidden'
               />
               <a
-                className='btn btn-light btn-sm'
+                className='btn btn-light btn-sm mt-5'
                 style={{ width: '100px' }}
                 href={row.corpDoc}
                 target='_blank'

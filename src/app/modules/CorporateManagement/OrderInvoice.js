@@ -13,8 +13,8 @@ const OrderInvoice = () => {
 
   return (
     <div className='jumbotron p-4'>
-      <div className='d-flex justify-content-start'>
-        <Button
+      <div className='d-flex justify-content-start nav-tabs'>
+        <Button className="nav-link"
           variant='link'
           onClick={() => {
             setFirstRecurringFlag(true);
@@ -22,7 +22,7 @@ const OrderInvoice = () => {
         >
           First Invoice
         </Button>
-        <Button
+        <Button className="nav-link"
           variant='link'
           onClick={() => {
             setFirstRecurringFlag(false);
