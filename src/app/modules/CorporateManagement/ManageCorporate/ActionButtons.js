@@ -17,9 +17,9 @@ const ActionButtons = ({ row, approveRejectAction, activeDeactiveAction }) => {
     <>
       <div className="d-flex justify-content-center">
         <Button
-          className='mx-3'
+          className='mx-3 btn-success'
           size='sm'
-          variant='outline-primary'
+          variant=''
           onClick={() => handleShow()}
         >
           View
@@ -31,19 +31,19 @@ const ActionButtons = ({ row, approveRejectAction, activeDeactiveAction }) => {
           approveRejectAction={approveRejectAction}
         />
         <Button
-          className={row.isActive ? 'd-none' : 'mx-3'}
+          className={row.isActive ? 'd-none' : 'mx-3 btn_blue'}
           size='sm'
-          variant='outline-success'
+          variant=''
           onClick={() => activeDeactiveAction(row._id, true)}
         >
           Active
       </Button>
         <Button
-          className={!row.isActive ? 'd-none' : 'mx-3'}
+          className={!row.isActive ? 'd-none' : 'mx-3 btn-danger'}
           size='sm'
-          variant='outline-danger'
+          variant=''
           onClick={() => activeDeactiveAction(row._id, false)}
-        >
+        > 
           Deactive
       </Button>
       </div>

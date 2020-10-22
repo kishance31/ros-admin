@@ -209,7 +209,7 @@ const categoryModalreducer = (state = initialState, action) => {
                 refereshCategoryList: false,
                 categoryList: action.payload,
                 filter: false,
-                refereshVendorList: false,
+                // refereshVendorList: false,
                 selectedCategory: {}
             }
         }

@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { Button } from 'react-bootstrap';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
@@ -36,7 +36,7 @@ const CostSummary = () => {
 				initialValues={{
 					...initValues
 				}}
-				
+
 				enableReinitialize
 
 				validationSchema={CostSummarySchema()}
@@ -57,27 +57,32 @@ const CostSummary = () => {
 				{({ handleSubmit }) => (
 					<>
 						<Form onSubmit={handleSubmit} className="form form-label-right">
-							<div className="form-group row" style={{ maxWidth: "50%" }}>
-								<div className="col-12 mx-10 mt-10">
-									<Field
-										name="firstTimeMonths"
-										component={Input}
-										placeholder="First time payment months"
-										label="First time payment months"
-									/>
+							<div className="row">
+								<div className="col-lg-3 mt-6">
+									<div className="form-group">
+										<Field
+											name="firstTimeMonths"
+											component={Input}
+											placeholder="First time payment months"
+											label="First time payment months"
+										/>
+									</div>
 								</div>
-								<div className="col-12 mx-10 mt-10">
-									<Field
-										name="recurringMonthsNo"
-										component={Input}
-										placeholder="Recurring payment months number"
-										label="Recurring payment months number"
-									/>
+							</div>
+							<div className="row"> 
+								<div className="col-lg-3">
+									<div className="form-group">
+										<Field
+											name="recurringMonthsNo"
+											component={Input}
+											placeholder="Recurring payment months number"
+											label="Recurring payment months number"
+										/>
+									</div>
 								</div>
 							</div>
 							<Button
 								type="submit"
-								className="float-right"
 								variant="primary"
 							>
 								Save

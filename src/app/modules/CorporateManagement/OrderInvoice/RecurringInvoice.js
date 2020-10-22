@@ -70,6 +70,7 @@ const RecurringInvoice = ({ recurringInvoiceData, firstRecurringFlag }) => {
 		<BootstrapTable
 			keyField='_id'
 			data={recurringInvoiceData || []}
+			classes="center-last-col"
 			columns={columns}
 			bordered={false}
 			noDataIndication='No records found!'

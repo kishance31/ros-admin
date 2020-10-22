@@ -4,13 +4,13 @@ import { Button } from 'react-bootstrap';
 const FirstInvoiceActionButtons = () => {
   return (
     <>
-      <Button className='mx-1' size='sm' variant='outline-primary'>
+      <Button className='mx-1 btn_blue' size='sm' variant=''>
         View Invoice
       </Button>
-      <Button className='mx-1' size='sm' variant='outline-success'>
+      <Button className='mx-1 btn-success' size='sm' variant=''>
         Resend Invoice
       </Button>
-      <Button className='mx-1' size='sm' variant='outline-info'>
+      <Button className='mx-1 btn-danger' size='sm' variant=''>
         Download
       </Button>
     </>
