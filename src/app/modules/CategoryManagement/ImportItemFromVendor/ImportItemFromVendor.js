@@ -126,6 +126,10 @@ const ImportItemFromVendor = (props) => {
                             <form onSubmit={handleSubmit} className="form form-label-right">
                                 <div className="form-group row">
                                     <div className="col-lg-2">
+                                        <label className="mb-3">
+                                            <b>Filter</b> by Category Name
+                                        </label>
+
                                         <select
                                             className="form-control"
                                             name="status"
@@ -149,9 +153,6 @@ const ImportItemFromVendor = (props) => {
                                                 ))
                                             }
                                         </select>
-                                        <small className="form-text text-muted">
-                                            <b>Filter</b> by Category Name
-                                        </small>
                                     </div>
                                 </div>
                             </form>

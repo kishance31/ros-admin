@@ -45,14 +45,15 @@
 .example-highlight > pre {
   background: none transparent !important;
   margin: 0 !important;
-  padding-top: 0.5rem; 
-  code { 
-      overflow-y: auto;
-      display: block;
+  padding-top: .5rem;
 
-      span {
-        background: none transparent !important;
-      }
+  code {
+    overflow-y: auto;
+    display: block;
+
+    span {
+      background: none transparent !important;
+    }
   }
 }
 
@@ -78,12 +79,12 @@
 .react-bootstrap-table {
   th {
     outline: none;
-   
-    &.sortable {  
+
+    &.sortable {
       .svg-icon-sort {
         opacity: 0;
       }
-  
+
       &:hover {
         cursor: pointer;
 
@@ -91,18 +92,163 @@
           opacity: 1;
         }
       }
-    }    
+    }
   }
 
   .table.table-head-custom thead tr {
     .sortable-active {
-        color: $primary !important;
+      color: $primary !important;
     }
   }
 }
 
-
-
 // .nav-link:focus {  
 //     outline: none;  
 // }
+
+.dashboard_ros {
+  .box {
+    @include border-radius(0);
+    border-left: 2px solid $blue;
+
+    &:hover {
+      border-left: 2px solid $danger;
+
+      .text-primary {
+        color: $danger !important;
+      }
+    }
+
+    .card-body {
+      padding: 10px 20px;
+    }
+  }
+
+  .card.card-custom {
+    box-shadow: none;
+  }
+}
+
+.brand {
+  padding: 0 10px;
+  height: unset;
+
+  img {
+    height: 70px;
+  }
+}
+
+.react-bootstrap-table-pagination {
+  .dropdown-toggle {
+    background: none !important;
+  }
+}
+
+.left-first-col {
+  text-align: center;
+
+  td:first-child(),
+  th:first-child() {
+    text-align: left;
+  }
+}
+
+.center-last-col {
+  td:last-child(),
+  th:last-child() {
+    text-align: center;
+  }
+}
+
+.btn {
+  font-weight: normal !important;
+
+  &.btn_blue {
+    background: #3699FF !important;
+    color: #fff;
+
+    &:active,
+    &:focus,
+    &:hover {
+      background: #187DE4 !important;
+      color: #fff !important;
+    }
+  }
+
+  &.btn_orange {
+    color: #FFFFFF;
+    background-color: #F95B3D;
+    border-color: #F95B3D;
+
+    &:focus,
+    &:hover {
+      background-color: #F95B3D !important;
+      border-color: #F95B3D !important;
+    }
+  }
+
+  &.small {
+    padding: .25rem .6rem;
+  }
+
+}
+
+.btn-group {
+  .btn {
+    border-radius: 5px !important;
+  }
+}
+
+.feedback {
+  display: none;
+}
+
+.form-control {
+  border-radius: .42rem !important;
+}
+
+.btn-back {
+  padding: 8px 10px;
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.sticky-toolbar {
+  display: none;
+}
+
+.nav-tabs {
+  margin-bottom: 20px;
+  border-bottom: none;
+
+  .nav-link {
+    border: none;
+    margin-right: 20px;
+    color: $dark !important;
+
+    &.active {
+      color: $blue !important;
+      border-bottom: 1px solid $blue !important;
+      background: transparent;
+    }
+  }
+}
+
+.corporate_details_modal {
+  @media (min-width: 992px) {
+    .modal-lg {
+      max-width: 950px;
+    }
+  }
+}
+
+.react-bootstrap-table-pagination {
+  flex-direction: row-reverse;
+
+  div:first-child() {
+    text-align: right;
+  }
+}

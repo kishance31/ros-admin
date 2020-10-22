@@ -62,9 +62,8 @@ const AboutUs = () => {
 
                                     <div className="form-group row">
                                         <div className="col-lg-6">
-                                            <h5 >Upload Image</h5>
-                                            <br />
-                                            <div className="form-group row">
+                                            <label className="mb-6">Upload Image</label>
+                                            <div className="form-group">
 
                                                 {
                                                     values.aboutUsImage && values.aboutUsImage.name ?

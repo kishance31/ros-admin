@@ -4,6 +4,8 @@ import { Card, CardBody, CardHeader, CardHeaderToolbar, ModalProgressBar } from 
 import ManageCategoryTable from './ManageCategoryTable/ManageCategoryTable';
 import AddCatergoryForm from './ManageCategoryTable/AddCatergoryForm';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import SVG from 'react-inlinesvg';
+import { toAbsoluteUrl } from '../../../../_metronic/_helpers';
 import {
     CategoryManagementMap,
     CategoryManagementAction,
@@ -56,7 +58,7 @@ const ManageCategory = ({ history }) => {
         dispatch(CategoryManagementAction.toggleAddCategoryModal(CategoryManagementMap.DEACTIVE_CATEGRY))
     }
     const deactiveCategory = () => {
-        if(selectedCategoryitem === "category") {
+        if (selectedCategoryitem === "category") {
             dispatch(DeactiveCategoryAsync(selectedCategory._id))
         } else {
             console.log(selectedSubCategory);
@@ -100,10 +102,11 @@ const ManageCategory = ({ history }) => {
                             selectedCategoryitem !== "category" ? (
                                 <button
                                     type="button"
-                                    className="btn btn-secondary mr-5"
+                                    className="btn btn-secondary btn-back mr-5"
                                     onClick={backToCategory}
+                                    title="Back"
                                 >
-                                    Back
+                                    <i class="fa fa-arrow-left"></i>
                                 </button>
                             ) : null
                         }

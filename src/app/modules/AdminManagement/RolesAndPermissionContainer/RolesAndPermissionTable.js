@@ -75,7 +75,7 @@ const RolesAndPermissionTable = (props) => {
       <BootstrapTable
         wrapperClasses="table-responsive"
         ref={n => tableRef = n}
-        classes="table table-head-custom table-vertical-center"
+        classes="table table-head-custom table-vertical-center left-first-col"
         bootstrap4
         remote
         bordered={false}

@@ -31,7 +31,7 @@ export function AuthPage() {
                   <img
                       alt="Logo"
                       className="max-h-70px"
-                      src={toAbsoluteUrl("/media/logos/ros-logo.png")}
+                      src={toAbsoluteUrl("/media/logos/logo.svg")}
                   />
                 </Link>
                 {/* end:: Aside header */}

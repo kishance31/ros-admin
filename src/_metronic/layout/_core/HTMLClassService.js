@@ -103,7 +103,7 @@ export class HtmlClassService {
     // } else {
     //   return toAbsoluteUrl("/media/logos/logo-light.png");
     // }
-    return toAbsoluteUrl('/media/logos/ros-logo.png');
+    return toAbsoluteUrl('/media/logos/logo.svg');
   }
 
   getLogoTextStyle() {

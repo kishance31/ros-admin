@@ -23,20 +23,20 @@ const ContactUsSchema = (values) => (Yup.object().shape({
 }));
 
 const ContactUs = () => {
-    
+
     useEffect(() => {
         dispatch(dispalayConstactUsDetails())
     }, [AlreadyData])
 
     const dispatch = useDispatch()
     const AlreadyData = useSelector(state => state.cmsSetting.contactUsDetails[0])
-    
+
     const initialValues123 = {
         contact: "",
         email: "",
         address: ""
     }
-    
+
     const getInitFormValues = () => (
         AlreadyData ? AlreadyData : initialValues123
     );
@@ -54,8 +54,8 @@ const ContactUs = () => {
             <Card>
                 <CardBody>
                     <Formik
-                        initialValues={ getInitFormValues()}
-                        
+                        initialValues={getInitFormValues()}
+
                         validationSchema={ContactUsSchema(AlreadyData)}
                         onSubmit={(values) => {
                             addContactUsData(values)
@@ -65,39 +65,40 @@ const ContactUs = () => {
                             <>
 
                                 <Form className="form form-label-right">
-                                    <div className="form-group row">
+                                    <div className="row">
                                         <div className="col-lg-6">
-                                            <Field
-                                                name="contact"
-                                                component={Input}
-                                                placeholder="Mobile Number"
-                                                label="Mobile Number"
-                                            />
+                                            <div className="form-group">
+                                                <Field
+                                                    name="contact"
+                                                    component={Input}
+                                                    placeholder="Mobile Number"
+                                                    label="Mobile Number"
+                                                />
+                                            </div>
                                         </div>
-
                                         <div className="col-lg-6">
-                                            <Field
-                                                name="email"
-                                                component={Input}
-                                                placeholder="Email"
-                                                label="Email"
-                                            />
+                                            <div className="form-group">
+                                                <Field
+                                                    name="email"
+                                                    component={Input}
+                                                    placeholder="Email"
+                                                    label="Email"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col-lg-12">
+                                            <div className="form-group">
+                                                <Field
+                                                    name="address"
+                                                    id="standard-multiline-flexible"
+                                                    component={TextArea}
+                                                    placeholder="Address"
+                                                    label="Address"
+                                                    rows={6}
+                                                />
+                                            </div>
                                         </div>
                                     </div>
-                                    <div className="form-group row">
-                                        <div className="col-lg-9">
-                                            <Field
-                                                name="address"
-                                                id="standard-multiline-flexible"
-                                                component={TextArea}
-                                                placeholder="Address"
-                                                label="Address"
-                                                rows={10}
-                                            />
-                                        </div>
-                                    </div>
-
-
                                 </Form>
                                 <button
                                     type="submit"
