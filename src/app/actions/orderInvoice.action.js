@@ -11,21 +11,21 @@ export const orderInvoiceMap = {
 };
 
 export const orderInvoiceAction = {
-	getCorporateOrderInvoiceStart: () => ({type: orderInvoiceMap.GET_CORPORATE_ORDER_INVOICE_START}),
-	getCorporateOrderInvoiceSuccess: (data) => ({type: orderInvoiceMap.GET_CORPORATE_ORDER_INVOICE_SUCCESS, payload: data}),
-	getCorporateOrderInvoiceError: () => ({type: orderInvoiceMap.GET_CORPORATE_ORDER_INVOICE_ERROR}),
+	getCorporateOrderInvoiceStart: () => ({ type: orderInvoiceMap.GET_CORPORATE_ORDER_INVOICE_START }),
+	getCorporateOrderInvoiceSuccess: (data) => ({ type: orderInvoiceMap.GET_CORPORATE_ORDER_INVOICE_SUCCESS, payload: data }),
+	getCorporateOrderInvoiceError: () => ({ type: orderInvoiceMap.GET_CORPORATE_ORDER_INVOICE_ERROR }),
 };
 
 export const getCorporateOrderInvoiceAsync = (isReccuring) => async (dispatch, getState) => {
 	try {
 		dispatch(orderInvoiceAction.getCorporateOrderInvoiceStart());
-		
+
 		const {
 			pageNumber,
 			pageSize,
 		} = getState().orderInvoice;
 
-		let {data} = await axios({
+		let { data } = await axios({
 			url: `${adminUrl}/getCorporateOrderInvoice/${pageNumber - 1}/${pageSize}`,
 			method: "POST",
 			headers: {
@@ -36,11 +36,17 @@ export const getCorporateOrderInvoiceAsync = (isReccuring) => async (dispatch, g
 			}
 		})
 		console.log(data);
-		if(data.response && data.response.responseCode === 200) {
-			return dispatch(orderInvoiceAction.getCorporateOrderInvoiceSuccess(data.response));
+		if (data.response && data.response.responseCode === 200) {
+			let respData = data.response.list;
+			let list = respData.filter(dt => dt.invoiceDetails.length);
+			return dispatch(orderInvoiceAction.getCorporateOrderInvoiceSuccess({
+				...data.response,
+				list
+			}));
 		}
 		return dispatch(orderInvoiceAction.getCorporateOrderInvoiceError());
 	} catch (error) {
+		console.log(error)
 		dispatch(orderInvoiceAction.getCorporateOrderInvoiceError());
 	}
 }

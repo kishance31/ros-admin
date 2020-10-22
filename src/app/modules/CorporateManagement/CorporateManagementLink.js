@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 const CorporateManagementLink = () => {
   return (
     <div className='d-flex nav-tabs'>
-      <NavLink className="nav-link" to='/corporate-management'>
+      <NavLink exact className="nav-link" to='/corporate-management'>
         <span>Manage Corporate</span>
       </NavLink>
       <NavLink className="nav-link" to='/corporate-management/corporate-manage-license'>

@@ -1,7 +1,7 @@
 import React from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
 
-const ExpandedRecurringInvoice = ({ row }) => {
+const ExpandedRecurringInvoice = ({ invoiceRow, firstRecurringFlag }) => {
   const columns = [
     {
       dataField: '_id',
@@ -10,18 +10,12 @@ const ExpandedRecurringInvoice = ({ row }) => {
       footer: '',
     },
     {
-      dataField: 'employeeDetails',
-      text: 'Emp. Name',
-      footer: '',
-      formatter: cell => `${cell.firstName} ${cell.lastName}`,
-    },
-    {
-      dataField: 'orderId',
-      text: 'Ord. No',
+      dataField: 'invoiceNo',
+      text: 'Invoice. No',
       footer: '',
     },
     {
-      dataField: 'invoiceDetails.invoiceDate',
+      dataField: 'invoiceDate',
       text: 'Ord. Date',
       footer: '',
       formatter: cell => new Date(cell).toLocaleDateString()
@@ -29,29 +23,75 @@ const ExpandedRecurringInvoice = ({ row }) => {
     {
       dataField: 'productDetails',
       text: 'Total Ord. Cost',
-      footer: (columnData, row) => {
-        console.log(columnData);
-        return row.productDetails.reduce((acc, item) => acc + item.ros_cost, 0)
-      },
-      formatter: cell => `$${cell.ros_cost}`
+      footer: '',
+      // footer: () => {
+      //   return invoiceRow.productDetails.reduce((acc, item) => acc + item.ros_cost, 0)
+      // },
+      formatter: (cell, row) => {
+        // if (firstRecurringFlag === "first") {
+        return `$${parseFloat(
+          invoiceRow.productDetails.reduce((acc, prod) => acc + prod.ros_cost, 0))
+          .toFixed(2)
+          }`
+        // } else {
+        // 	return `$${parseFloat((
+        //     (
+        //       (invoiceRow.productDetails.reduce((acc, prod) => acc + prod.ros_cost, 0)) -
+        //       (((invoiceRow.productDetails.reduce((acc, prod) => acc + prod.ros_cost, 0)) / 12)
+        //         * invoiceRow.firstPaymentTerm)) / invoiceRow.recurringMonthsNo
+        //   )).toFixed(2)}`
+        // }
+      }
     },
-    // {
-    //   dataField: 'month',
-    //   text: 'Month',
-    //   footer: '',
-    // },
-    // {
-    //   dataField: 'monthlyCost',
-    //   text: 'Monthly Cost',
-    //   footer: (columnData) => columnData.reduce((acc, item) => acc + item, 0),
-    // },
+    {
+      dataField: 'invoiceDate',
+      text: 'Month',
+      footer: '',
+      formatter: cell => {
+        const dt = new Date(cell);
+        return dt.toLocaleString('default', {month: 'long'}) + " " + dt.getDate() + ", " + dt.getFullYear()
+      }
+    },
+    {
+      dataField: 'monthlyCost',
+      text: firstRecurringFlag === "first" ? "First Time Cost" : `Monthly Cost`,
+      footer: firstRecurringFlag === "first" ? `Total: $${parseFloat((
+        ((invoiceRow.productDetails.reduce((acc, prod) => acc + prod.ros_cost, 0)) / 12)
+        * invoiceRow.firstPaymentTerm))
+        .toFixed(2)
+        }` :
+      `Total: $${parseFloat((
+        (
+          (invoiceRow.productDetails.reduce((acc, prod) => acc + prod.ros_cost, 0)) -
+          (((invoiceRow.productDetails.reduce((acc, prod) => acc + prod.ros_cost, 0)) / 12)
+            * invoiceRow.firstPaymentTerm)) / invoiceRow.recurringMonthsNo
+      ) * invoiceRow.invoiceDetails.length
+      ).toFixed(2)
+        }`,
+      formatter: (cell) => {
+        if (firstRecurringFlag === "first") {
+          return `$${parseFloat((
+						((invoiceRow.productDetails.reduce((acc, prod) => acc + prod.ros_cost, 0)) / 12)
+						* invoiceRow.firstPaymentTerm))
+						.toFixed(2)
+						}`
+          } else {
+          	return `$${parseFloat((
+              (
+                (invoiceRow.productDetails.reduce((acc, prod) => acc + prod.ros_cost, 0)) -
+                (((invoiceRow.productDetails.reduce((acc, prod) => acc + prod.ros_cost, 0)) / 12)
+                  * invoiceRow.firstPaymentTerm)) / invoiceRow.recurringMonthsNo
+            )).toFixed(2)}`
+          }
+      }
+    },
   ];
 
   return (
     <div className='jumbotron bg-light p-4 ml-5'>
       <BootstrapTable
         keyField='_id'
-        data={row || []}
+        data={invoiceRow.invoiceDetails || []}
         columns={columns}
         bordered={false}
         noDataIndication='No records found!'

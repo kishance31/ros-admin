@@ -36,6 +36,7 @@ const OrderInvoice = () => {
 			</div>
 			<RecurringInvoice
 				recurringInvoiceData={orderInvoiceData}
+				firstRecurringFlag={firstRecurringFlag}
 			/>
 			{/* {firstRecurringFlag ? (
         <FirstInvoice firstInvoiceData={orderInvoiceData.firstInvoice} />
