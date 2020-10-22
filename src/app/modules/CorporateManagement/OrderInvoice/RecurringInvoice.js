@@ -1,71 +1,39 @@
 import React from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
-import paginationFactory from 'react-bootstrap-table2-paginator';
-
 import RecurringInvoiceActionButtons from './RecurringInvoiceActionButtons';
 import ExpandedRecurringInvoice from './ExpandedRecurringInvoice';
 
 const RecurringInvoice = ({ recurringInvoiceData }) => {
-  const customTotal = (from, to, size) => (
-    <span className='react-bootstrap-table-pagination-total ml-4'>
-      Showing {from} to {to} of {size} Results
-    </span>
-  );
-
-  const options = {
-    paginationSize: 4,
-    pageStartIndex: 1,
-    firstPageText: '<<',
-    prePageText: '<',
-    nextPageText: '>',
-    lastPageText: '>>',
-    nextPageTitle: 'First page',
-    prePageTitle: 'Pre page',
-    firstPageTitle: 'Next page',
-    lastPageTitle: 'Last page',
-    showTotal: true,
-    paginationTotalRenderer: customTotal,
-    disablePageTitle: true,
-    sizePerPageList: [
-      {
-        text: '3',
-        value: 3,
-      },
-      {
-        text: '5',
-        value: 5,
-      },
-      {
-        text: '10',
-        value: 10,
-      },
-      {
-        text: 'All',
-        value: recurringInvoiceData.length,
-      },
-    ],
-  };
 
   const columns = [
     {
-      dataField: 'recurringInvoiceId',
-      text: 'Sr no.',
+      dataField: 'invoiceDetails.invoiceNo',
+      text: 'id',
+      hidden: true,
     },
     {
-      dataField: 'corporateName',
+      dataField: 'corporateDetails.companyName',
       text: 'Corporate Name',
     },
     {
-      dataField: 'invoiceNo',
+      dataField: 'invoiceDetails.invoiceNo',
       text: 'Invoice. No',
     },
     {
-      dataField: 'orderDate',
-      text: 'Ord. Date',
+      dataField: 'invoiceDetails.invoiceDate',
+      text: 'Invoice Date',
+      formatter: cell => new Date(cell).toLocaleDateString()
     },
     {
-      dataField: 'invoiceAmount',
+      dataField: 'invoiceDetails',
       text: 'Invoice Amt.',
+      formatter: (cell, row) => `
+      $${parseFloat((
+        ((row.productDetails.reduce((acc, prod) => acc + prod.ros_cost, 0)) / 12)
+        * row.firstPaymentTerm))
+          .toFixed(2)
+        }
+      `
     },
     {
       dataField: 'action',
@@ -76,7 +44,7 @@ const RecurringInvoice = ({ recurringInvoiceData }) => {
 
   const expandRow = {
     renderer: (row) => (
-      <ExpandedRecurringInvoice invoiceDetails={row.invoiceDetails} />
+      <ExpandedRecurringInvoice row={row} />
     ),
     showExpandColumn: true,
     expandByColumnOnly: true,
@@ -84,13 +52,12 @@ const RecurringInvoice = ({ recurringInvoiceData }) => {
 
   return (
     <BootstrapTable
-      keyField='recurringInvoiceId'
+      keyField='invoiceDetails.invoiceNo'
       data={recurringInvoiceData === null ? [] : recurringInvoiceData}
       columns={columns}
       bordered={false}
       noDataIndication='No records found!'
-      expandRow={expandRow}
-      pagination={paginationFactory(options)}
+    expandRow={expandRow}
     />
   );
 };

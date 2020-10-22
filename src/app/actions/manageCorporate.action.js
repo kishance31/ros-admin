@@ -105,22 +105,20 @@ export const displayManageCorporateDataAsync = (pageNo, pageSize, tokens) => {
       dispatch({
         type: manageCorporateMap.DISPLAY_MANAGE_CORPORATE_DATA_START,
       });
-      let manageCorporateAdminListResponse = await axios({
-        url: `${adminUrl}/getCorporateAdmins`,
+      let {data} = await axios({
+        url: `${adminUrl}/getCorporateAdmins/0/5`,
         method: 'GET',
         headers: {
           tokens,
           'Content-Type': 'application/json',
         },
       });
-      if (manageCorporateAdminListResponse.data.response.responseCode === 200) {
+      if (data.response && data.response.responseCode === 200) {
         dispatch({
           type: manageCorporateMap.DISPLAY_MANAGE_CORPORATE_DATA_SUCCESS,
           payload: {
-            manageCorporateData:
-              manageCorporateAdminListResponse.data.response.data[0].list,
-            pageNo: pageNo,
-            pageSize: pageSize,
+            manageCorporateData: data.response.list,
+            totalRecords: data.response.totalRecords,
           },
         });
       }
