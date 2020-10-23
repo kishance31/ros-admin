@@ -6,6 +6,9 @@ import {
 	displayCorporateManageLicenseDataAsync,
 } from '../../actions/corporateManageLicense.action';
 import ViewModal from './LicenceOrder/ViewModal';
+import {
+	NoRecordsFoundMessage,
+} from "../../../_metronic/_helpers";
 
 const LicenceOrder = () => {
 
@@ -70,6 +73,12 @@ const LicenceOrder = () => {
 		},
 	];
 
+	const noDataIndication = () => {
+		return (
+			<NoRecordsFoundMessage />
+		)
+	}
+
 	return (
 		<>
 			<BootstrapTable
@@ -77,7 +86,7 @@ const LicenceOrder = () => {
 				data={corporateManageLicenseData}
 				columns={columns}
 				bordered={false}
-				noDataIndication='No records found!'
+				noDataIndication={noDataIndication}
 			/>
 			<ViewModal
 				show={show}

@@ -380,12 +380,15 @@ export const addVendorItemAsync = (product) => {
             })
             if (data.response && data.response.responseCode === 200) {
                 dispatch({ type: CategoryManagementMap.ADD_PRODUCT_SUCCESS })
+                dispatch(showSuccessSnackbar('success', 'Add product success', 3000))
             }
             else {
                 dispatch({ type: CategoryManagementMap.ADD_PRODUCT_ERROR });
+                dispatch(showSuccessSnackbar('error', 'Error while adding product', 3000))
             }
         } catch (error) {
             dispatch({ type: CategoryManagementMap.ADD_PRODUCT_ERROR });
+            dispatch(showSuccessSnackbar('error', 'Error while adding product', 3000))
         }
     }
 }

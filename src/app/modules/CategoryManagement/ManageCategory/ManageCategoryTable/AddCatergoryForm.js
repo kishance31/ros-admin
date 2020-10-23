@@ -86,7 +86,7 @@ const AddCatergoryForm = ({ onHideModal }) => {
                                 variant="primary"
                                 onClick={() => handleSubmit()}
                             >
-                                CREATE
+                                Save
                                 </Button>
                         </Modal.Footer>
                     </>
