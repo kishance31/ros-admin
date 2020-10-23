@@ -55,7 +55,9 @@ const AddItemFromVendorForm = (props) => {
             data.append('product_image', values.product_image)
         }
         data.set("category_id", values.category_id)
-        data.set("sub_category_id", values.sub_category_id)
+        if(values.sub_category_id) {
+            data.set("sub_category_id", values.sub_category_id)
+        }
         data.set("license_id", values.license_id._id ? values.license_id._id : values.license_id)
         data.set("product_name", values.product_name)
         data.set("product_cost", parseFloat(values.product_cost))
@@ -63,7 +65,6 @@ const AddItemFromVendorForm = (props) => {
         data.set("product_description", values.product_description)
         data.set("product_code", values.product_code)
         data.set("ros_cost", parseFloat(values.ros_cost))
-        console.log(values);
         if (selectedVendorItem.product_name) {
             return dispatch(EditProductAsync(data, values._id))
         } else {
@@ -269,6 +270,7 @@ const AddItemFromVendorForm = (props) => {
                                             setFieldValue
                                         )
                                     }
+                                    accept="image/*"
                                 />
                             </div>
 

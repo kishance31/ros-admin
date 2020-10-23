@@ -3,6 +3,9 @@ import BootstrapTable from "react-bootstrap-table-next";
 import { useSelector } from "react-redux";
 import { sortCaret } from '../../../../../_metronic/_helpers';
 import ActionFormatter from './ActionFormatter';
+import {
+    NoRecordsFoundMessage,
+  } from "../../../../../_metronic/_helpers";
 
 const ManageCategoryTable = ({
     OnAddCategory, onDisplaySubCategory, setSelectedCategory, EditCategory, setSelectedSubCategory
@@ -16,23 +19,18 @@ const ManageCategoryTable = ({
         {
             dataField: "_id",
             text: "ID",
-            sort: true,
             align: 'center',
             hidden: true
         },
         {
             dataField: categorySelected === "subcategory" ? "subcategory_name" : "category_name",
             text: "Category Name",
-            sort: true,
-            sortCaret: sortCaret,
             align: 'center',
             headerAlign: 'center'
         },
         {
             dataField: "status",
             text: "Status",
-            sort: true,
-            sortCaret: sortCaret,
             align: 'center',
             headerAlign: 'center'
         },
@@ -40,8 +38,6 @@ const ManageCategoryTable = ({
             dataField: "createdAt",
             text: "Create Date",
             formatter: (value) => new Date(value).toLocaleString(),
-            sort: true,
-            sortCaret: sortCaret,
             align: 'center',
             headerAlign: 'center'
         },
@@ -61,6 +57,13 @@ const ManageCategoryTable = ({
             }
         },
     ];
+
+    const noDataIndication = () => {
+        return (
+            <NoRecordsFoundMessage />
+        )
+    }
+
     return (
         <>
             <BootstrapTable
@@ -73,7 +76,7 @@ const ManageCategoryTable = ({
                 keyField="_id"
                 data={categorySelected === "category" ? entities : categorySelected === "subcategory" ? subcategoryData : []}
                 columns={columns}
-                noDataIndication="Table is Empty"
+                noDataIndication={noDataIndication}
             >
             </BootstrapTable>
         </>
