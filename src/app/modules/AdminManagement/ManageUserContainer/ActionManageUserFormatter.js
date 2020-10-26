@@ -27,14 +27,19 @@ export function ActionManageUserFormatter(cellContent, row, rowIndex,
     return (
         <>
             <ButtonGroup>
-                <Button onClick={() => onEditUser(row)} className="btn btn-success font-weight-bolder font-size-sm mr-3">Edit</Button>&nbsp;&nbsp;
-                <Button className="btn btn-danger font-weight-bolder font-size-sm mr-3" onClick={() => onDeleteUser()}>Delete</Button>&nbsp;&nbsp;
+                <Button onClick={() => onEditUser(row)} className="btn btn-icon btn-light btn-sm mx-3">
+                <span className="svg-icon svg-icon-md svg-icon-primary">
+                    <i class="fa fa-edit" title="Edit" title="Edit"></i>
+                </span>
+
+                    </Button>&nbsp;&nbsp;
+                <Button className="btn btn-icon btn-light btn-sm mx-3" onClick={() => onDeleteUser()}>Delete</Button>&nbsp;&nbsp;
                 {
                     row.isActive ? (
-                        <Button className="btn btn-danger font-weight-bolder font-size-sm mr-3" onClick={() => deactiveUser()}>Deactive</Button>
+                        <Button className="btn btn-icon btn-light btn-sm mx-3" onClick={() => deactiveUser()}>Deactive</Button>
                     ) : (
-                        <Button className="btn btn-blue font-weight-bolder font-size-sm mr-3" onClick={() => activeUser()}>Active</Button>
-                    )
+                            <Button className="btn btn-blue font-weight-bolder font-size-sm mr-3" onClick={() => activeUser()}>Active</Button>
+                        )
                 }
             </ButtonGroup>
         </>

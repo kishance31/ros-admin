@@ -254,13 +254,27 @@
   }
 }
 
-.expand-cell-header,
-.expand-cell {
+.expand-cell,
+.expand-cell-header {
   cursor: pointer;
 }
 
 .jumbotron {
   .react-bootstrap-table-pagination .dropdown-toggle {
     background: #f9f9f9 !important;
+  }
+}
+
+.btn-group-sm > .btn i,
+.btn.btn-sm i {
+  font-size: 1.1rem !important;
+}
+
+.MuiSnackbar-anchorOriginTopCenter {
+  @media (min-width: 600px) {
+    top: 10px !important;
+    left: unset !important;
+    right: 10px !important;
+    transform: translateX(0) !important;
   }
 }

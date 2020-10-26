@@ -17,13 +17,13 @@ const ActionButtons = ({ row, approveRejectAction, activeDeactiveAction }) => {
     <>
       <div className="d-flex justify-content-center">
         <Button
-          className='mx-3 btn-success'
+          className='mx-3 btn btn-icon btn-light btn-sm mx-3'
           size='sm'
           variant=''
           onClick={() => handleShow()}
         >
-          View
-      </Button>
+          <i class="fa fa-eye" title="View"></i>
+        </Button>
         <ViewModal
           show={show}
           handleClose={handleClose}
@@ -31,21 +31,23 @@ const ActionButtons = ({ row, approveRejectAction, activeDeactiveAction }) => {
           approveRejectAction={approveRejectAction}
         />
         <Button
-          className={row.isActive ? 'd-none' : 'mx-3 btn_blue'}
+          className={row.isActive ? 'd-none' : 'mx-3 btn btn-icon btn-light btn-sm mx-3'}
           size='sm'
           variant=''
           onClick={() => activeDeactiveAction(row._id, true)}
         >
-          Active
-      </Button>
+          <i class="fa fa-toggle-on" title="Acitve"></i>
+
+        </Button>
         <Button
-          className={!row.isActive ? 'd-none' : 'mx-3 btn-danger'}
+          className={!row.isActive ? 'd-none' : 'mx-3 btn btn-icon btn-light btn-sm mx-3'}
           size='sm'
           variant=''
           onClick={() => activeDeactiveAction(row._id, false)}
-        > 
-          Deactive
-      </Button>
+        >
+          <i class="fa fa-toggle-off" title="Deactive"></i>
+
+        </Button>
       </div>
     </>
   );

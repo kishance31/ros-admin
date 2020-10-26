@@ -75,6 +75,7 @@ const LicenceOrder = () => {
 			<BootstrapTable
 				keyField='_id'
 				data={corporateManageLicenseData}
+				classes="center-last-col"
 				columns={columns}
 				bordered={false}
 				noDataIndication='No records found!'

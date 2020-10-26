@@ -105,7 +105,7 @@ const ImportItemFromVendorTable = (props) => {
                         >
                             <BootstrapTable
                                 wrapperClasses="table-responsive"
-                                classes="table table-head-custom table-vertical-center"
+                                classes="table table-head-custom table-vertical-center center-last-col"
                                 bootstrap4
                                 bordered={false}
                                 remote

@@ -13,8 +13,16 @@ export const RoleAndPermisionFormatter = (cellContent, row, rowIndex, props) => 
         <>
             <div className="text-center">
                 <ButtonGroup>
-                    <Button className="btn btn-success font-weight-bolder font-size-sm mr-3" onClick={editBtnClick}>Edit</Button>&nbsp;&nbsp;
-                <Button className="btn btn-danger font-weight-bolder font-size-sm mr-3" onClick={deleteBtnClick}>Delete</Button>
+                    <Button className="btn btn-icon btn-light btn-sm mx-3" onClick={editBtnClick}>
+                        <span className="svg-icon svg-icon-md svg-icon-primary">
+                            <i class="fa fa-edit" title="Edit"></i>
+                        </span>
+                    </Button>&nbsp;&nbsp;
+                <Button className="btn btn-icon btn-light btn-sm" onClick={deleteBtnClick}>
+                        <span className="svg-icon svg-icon-md svg-icon-danger">
+                            <i class="fa fa-trash" title="Delete"></i>
+                        </span>
+                    </Button>
                 </ButtonGroup>
             </div>
         </>

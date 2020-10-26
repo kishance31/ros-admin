@@ -60,7 +60,7 @@ const AboutUs = () => {
                                 <Form className="form form-label-right">
 
                                     <div className="form-group row">
-                                        <div className="col-lg-8">
+                                        <div className="col-lg-12">
                                             <label className="mb-6">Upload Image</label>
                                             <div className="form-group">
                                                 {

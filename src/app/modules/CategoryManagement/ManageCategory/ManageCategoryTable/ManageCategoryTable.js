@@ -65,11 +65,11 @@ const ManageCategoryTable = ({
         <>
             <BootstrapTable
                 wrapperClasses="table-responsive"
-                classes="table table-head-custom table-vertical-center"
+                classes="table table-head-custom table-vertical-center center-last-col"
                 bootstrap4
                 bordered={false}
                 remote
-                hover
+                // hover
                 keyField="_id"
                 data={categorySelected === "category" ? entities : categorySelected === "subcategory" ? subcategoryData : []}
                 columns={columns}
