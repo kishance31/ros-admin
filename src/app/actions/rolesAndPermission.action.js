@@ -66,7 +66,7 @@ export const addRoleAsync = (roleName) => async (dispatch, getState) => {
     });
     if (data.response && data.response.responseCode === 200) {
       dispatch(RolesAndPermissionAction.addRoleSuccess());
-      dispatch(showSuccessSnackbar('success', "Role Added Successfully", 30000000));
+      dispatch(showSuccessSnackbar('success', "Role Added Successfully", 3000));
     } else {
       dispatch(showSuccessSnackbar('error', "Not able to create", 3000));
       dispatch(RolesAndPermissionAction.addRoleError());
