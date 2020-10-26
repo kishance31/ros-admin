@@ -12,7 +12,7 @@ const AboutUsSchema = () => (
         aboutUsImage: Yup.string().required('templateName is required'),
         description: Yup.string()
             .min(3, 'Minimum 3 symbols')
-            .max(50, 'Maximum 50 symbols')
+            .max(1000, 'Maximum 50 symbols')
             .required('description is required'),
 
     }));

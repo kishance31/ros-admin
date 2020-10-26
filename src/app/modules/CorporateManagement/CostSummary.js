@@ -42,7 +42,6 @@ const CostSummary = () => {
 				validationSchema={CostSummarySchema()}
 
 				onSubmit={(values) => {
-					console.log(values);
 					let {
 						firstTimeMonths,
 						recurringMonthsNo

@@ -110,9 +110,9 @@ export const displayManageUserDataAsync = () => {
                 },
             });
             if (data.response && data.response.responseCode === 200) {
-                dispatch({
+                return dispatch({
                     type: ManageUserMap.DISPLAY_MANAGEUSER_DATA_SUCCESS,
-                    payload: data.response.data[0]
+                    payload: data.response,
                 })
             }
         } catch (error) {
