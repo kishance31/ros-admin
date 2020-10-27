@@ -25,7 +25,7 @@ export const VendorTableActionButtons = (cellContent,
 
         <>
             <a
-                className="btn btn-icon btn-light btn-sm mx-3"
+                className="btn btn-icon btn-light btn-sm"
                 onClick={() => onClickVendorItemEdit(row)} >
                 <span className="svg-icon svg-icon-md svg-icon-primary">
                     <i class="fa fa-edit" title="Edit"></i>

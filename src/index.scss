@@ -265,9 +265,13 @@
   }
 }
 
-.btn-group-sm > .btn i,
-.btn.btn-sm i {
+.svg-icon i {
   font-size: 1.1rem !important;
+
+  &.fa-toggle-on,
+  &.fa-toggle-off {
+    font-size: 1.4rem !important;
+  }
 }
 
 .MuiSnackbar-anchorOriginTopCenter {

@@ -35,7 +35,7 @@ const ActionFormatter = (cellContent,
             {
                 categorySelected === "category" ? (
                     <a
-                        className="btn btn-icon btn-light btn-sm mx-3"
+                        className="btn btn-icon btn-light btn-sm"
                         disabled="disabled"
                         onClick={() => onClickSubCategory(row)}>
                         <span className="svg-icon svg-icon-md svg-icon-primary">
@@ -54,18 +54,18 @@ const ActionFormatter = (cellContent,
                 </span>
             </a>
             <a
-                className={`btn btn-${row.status ? 'btn btn-icon btn-light btn-sm mx-3' : 'btn btn-icon btn-light btn-sm mx-3'} `}
+                className={`btn btn-${row.status ? 'btn btn-icon btn-light btn-sm' : 'btn btn-icon btn-light btn-sm'} `}
                 onClick={() => ClickDeleteCategoryAsync(row)}
             >
                 {row.status ?
                     (<span className="svg-icon svg-icon-md svg-icon-primary">
-                        <i class="fa fa-toggle-off" title="Deactive"></i>
-                    </span>)
-                    :
-                    (<span className="svg-icon svg-icon-md svg-icon-primary">
                         <i class="fa fa-toggle-on" title="Acitve"></i>
                     </span>
                     )
+                    :
+                    (<span className="svg-icon svg-icon-md svg-icon-primary">
+                        <i class="fa fa-toggle-off" title="Deactive"></i>
+                    </span>)
 
                 }
 

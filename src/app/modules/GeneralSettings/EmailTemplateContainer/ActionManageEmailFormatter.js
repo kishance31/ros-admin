@@ -25,7 +25,7 @@ export function ActionManageEmailFormatter(
     <>
       <a
         title="Edit customer"
-        className="btn btn-icon btn-light btn-sm mx-3"
+        className="btn btn-icon btn-light btn-sm"
         onClick={() => onEditUser(row, rowIndex)}
       >
         <span className="svg-icon svg-icon-md svg-icon-primary">
