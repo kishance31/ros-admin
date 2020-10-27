@@ -80,7 +80,7 @@ const ManageEmailTable = ({ onOpenModal, setSelectedUser, onOpenDialog }) => {
     <div className='container'>
       <BootstrapTable
         wrapperClasses='table-responsive'
-        hover
+        // hover
         classes='table table-head-custom table-vertical-center center-last-col'
         bootstrap4
         bordered={false}

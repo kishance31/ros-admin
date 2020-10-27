@@ -9,12 +9,11 @@ import * as Yup from 'yup';
 
 const AboutUsSchema = () => (
     Yup.object().shape({
-        aboutUsImage: Yup.string().required('templateName is required'),
+        aboutUsImage: Yup.string().required('Template Name is required'),
         description: Yup.string()
             .min(3, 'Minimum 3 symbols')
             .max(1000, 'Maximum 50 symbols')
-            .required('description is required'),
-
+            .required('Description is required'),
     }));
 
 
@@ -60,7 +59,7 @@ const AboutUs = () => {
                                 <Form className="form form-label-right">
 
                                     <div className="form-group row">
-                                        <div className="col-lg-8">
+                                        <div className="col-lg-12">
                                             <label className="mb-6">Upload Image</label>
                                             <div className="form-group">
                                                 {

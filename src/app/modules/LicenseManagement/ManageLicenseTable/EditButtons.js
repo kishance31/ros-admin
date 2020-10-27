@@ -9,10 +9,10 @@ export const EditButtons = (cellContent,
         setSelectedLicense,
         ToggleButton
     }
-    ) => {
+) => {
     const onClickEdit = (row) => {
-       openModal()
-       setSelectedLicense(row)        
+        openModal()
+        setSelectedLicense(row)
     }
 
     const ClickDeleteCategoryAsync = (row) => {
@@ -20,24 +20,36 @@ export const EditButtons = (cellContent,
         ToggleButton()
     }
     return (
-        
+
         <>
-        <a
-            className="btn btn-success font-weight-bolder font-size-sm mr-3"
-            onClick={() => onClickEdit(row)}
-        >
-            EDIT
-        </a>
-        
-        <a
-                className={row.status ? "btn btn-danger font-weight-bolder font-size-sm mr-3" : "btn btn_blue font-weight-bolder font-size-sm mr-3"}
+            <a
+                className="btn btn-icon btn-light btn-sm mx-3"
+                onClick={() => onClickEdit(row)}
+            >
+                <span className="svg-icon svg-icon-md svg-icon-primary">
+                    <i class="fa fa-edit" title="Edit"></i>
+                </span>
+            </a>
+
+            <a
+                className={row.status ? "btn btn-icon btn-light btn-sm mx-3" : "btn btn-icon btn-light btn-sm mx-3"}
                 onClick={() => ClickDeleteCategoryAsync(row)}
             >
-                {!row.active ? "ACTIVE": "DEACTIVE"}
-                  
-              
-                </a>
-    </> 
+                {!row.active ?
+                    (<span className="svg-icon svg-icon-md svg-icon-primary">
+                        <i class="fa fa-toggle-on" title="Acitve"></i>
+                    </span>
+                    )
+                    :
+                    (<span className="svg-icon svg-icon-md svg-icon-primary">
+                        <i class="fa fa-toggle-off" title="Deactive"></i>
+                    </span>)
+
+                }
+
+
+            </a>
+        </>
     )
 }
 

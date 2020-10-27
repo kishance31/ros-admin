@@ -6,7 +6,10 @@ import { Input } from '../../../../_metronic/_partials/controls'
 import { addLicenseDataAsync, licenseManagementActions, licenseManagementMap, editLicenseDataAsync } from '../../../actions/licenseManagement.action'
 import * as Yup from "yup";
 const LicenseSchema = Yup.object().shape({
-    type: Yup.string().required('License Type is required'),
+    type: Yup.string()
+        .required('License Type is required')
+        .min(3, 'Minimum 3 symbols')
+        .max(60, 'Maximum 60 symbols'),
     price: Yup.number()
         .moreThan(0, "Price must be a number greater than zero")
         .required('Price is required')

@@ -10,15 +10,15 @@ const ManageEmailSchema = (user) => (Yup.object().shape({
   title: Yup.string()
     .min(3, 'Minimum 3 symbols')
     .max(50, 'Maximum 50 symbols')
-    .required('title is required'),
+    .required('Title is required'),
   subject: Yup.string()
     .min(3, 'Minimum 3 symbols')
     .max(50, 'Maximum 50 symbols')
-    .required('subject is required'),
+    .required('Subject is required'),
   description: Yup.string()
     .min(3, 'Minimum 3 symbols')
-    .max(50, 'Maximum 50 symbols')
-    .required('description is required'),
+    .max(500, 'Maximum 500 symbols')
+    .required('Description is required'),
 
 }));
 

@@ -10,7 +10,7 @@ const CmsSetting = () => {
     return (
         <>
             <div className="row">
-                <div className="col-lg">
+                <div className="col-lg-6">
                     <Card>
                         <div className="card-body pb-5">
                             <div className='d-flex align-items-center nav-tabs mb-0'>
