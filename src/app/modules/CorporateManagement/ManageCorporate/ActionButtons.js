@@ -17,13 +17,15 @@ const ActionButtons = ({ row, approveRejectAction, activeDeactiveAction }) => {
     <>
       <div className="d-flex justify-content-center">
         <Button
-          className='mx-3 btn-success'
+          className='mx-3 btn btn-icon btn-light btn-sm mx-3'
           size='sm'
           variant=''
           onClick={() => handleShow()}
         >
-          View
-      </Button>
+          <span className="svg-icon svg-icon-md svg-icon-primary">
+            <i class="fa fa-eye" title="View"></i>
+          </span>
+        </Button>
         <ViewModal
           show={show}
           handleClose={handleClose}
@@ -31,21 +33,25 @@ const ActionButtons = ({ row, approveRejectAction, activeDeactiveAction }) => {
           approveRejectAction={approveRejectAction}
         />
         <Button
-          className={row.isActive ? 'd-none' : 'mx-3 btn_blue'}
+          className={row.isActive ? 'd-none' : 'btn btn-icon btn-light btn-sm'}
           size='sm'
           variant=''
           onClick={() => activeDeactiveAction(row._id, true)}
         >
-          Active
-      </Button>
+          <span className="svg-icon svg-icon-md svg-icon-primary">
+            <i class="fa fa-toggle-on" title="Acitve"></i>
+          </span>
+        </Button>
         <Button
-          className={!row.isActive ? 'd-none' : 'mx-3 btn-danger'}
+          className={!row.isActive ? 'd-none' : 'btn btn-icon btn-light btn-sm'}
           size='sm'
           variant=''
           onClick={() => activeDeactiveAction(row._id, false)}
-        > 
-          Deactive
-      </Button>
+        >
+          <span className="svg-icon svg-icon-md svg-icon-primary">
+            <i class="fa fa-toggle-off" title="Deactive"></i>
+          </span>
+        </Button>
       </div>
     </>
   );

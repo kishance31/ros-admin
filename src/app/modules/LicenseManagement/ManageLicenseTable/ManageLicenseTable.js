@@ -63,7 +63,7 @@ const ManageLicenseTable = ({openModal, setSelectedLicense, ToggleButton}) => {
     <div>
         <BootstrapTable
           wrapperClasses='table-responsive'
-          hover
+          // hover
           classes='table table-head-custom table-vertical-center'
           bootstrap4
           remote
