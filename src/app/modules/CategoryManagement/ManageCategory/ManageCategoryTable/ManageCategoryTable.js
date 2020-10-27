@@ -24,7 +24,7 @@ const ManageCategoryTable = ({
         },
         {
             dataField: categorySelected === "subcategory" ? "subcategory_name" : "category_name",
-            text: "Category Name",
+            text: `${categorySelected === "category" ? "Category Name" : "Sub-Category Name"}`,
             align: 'center',
             headerAlign: 'center'
         },

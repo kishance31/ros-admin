@@ -7,7 +7,7 @@ import {
 } from '../../actions/corporateManageLicense.action';
 import ViewModal from './LicenceOrder/ViewModal';
 import {
-	NoRecordsFoundMessage,
+	NoRecordsFoundMessage, generateLicensePDF
 } from "../../../_metronic/_helpers";
 
 const LicenceOrder = () => {
@@ -37,6 +37,10 @@ const LicenceOrder = () => {
 	useEffect(() => {
 		dispatch(displayCorporateManageLicenseDataAsync());
 	}, [dispatch]);
+
+	const onDownloadPdf = (row) => {
+		generateLicensePDF({data: row, corporate: row.corporateDetails})
+	}
 
 	const columns = [
 		{
@@ -68,7 +72,8 @@ const LicenceOrder = () => {
 			text: 'Action',
 			formatter: ActionButtons,
 			formatExtraData: {
-				handleShow
+				handleShow,
+				onDownloadPdf
 			}
 		},
 	];
@@ -78,6 +83,8 @@ const LicenceOrder = () => {
 			<NoRecordsFoundMessage />
 		)
 	}
+
+	
 
 	return (
 		<>
