@@ -7,13 +7,12 @@ import { addContactUsAsync, dispalayConstactUsDetails } from '../../../actions/c
 import * as Yup from 'yup';
 
 const ContactUsSchema = () => (Yup.object().shape({
-    contact: Yup.string()
+    contact: Yup.number()
         .min(7, 'Minimum 7 symbols')
         .max(12, 'Maximum 12 symbols')
         .required('Contact Number is required'),
     email: Yup.string()
-        .min(3, 'Minimum 3 symbols')
-        .max(50, 'Maximum 50 symbols')
+        .email("Invalid email format")
         .required('email is required'),
     address: Yup.string()
         .min(10, 'Minimum 10 symbols')
