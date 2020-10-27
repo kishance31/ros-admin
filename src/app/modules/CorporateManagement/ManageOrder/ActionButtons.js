@@ -25,24 +25,27 @@ const ActionButtons = ({ row, orderId, confirmNewOrder, manageOrderDispatchUpdat
     setshowVendor(true);
   };
 
-  const confirmOrder = () => {
-    let today = moment(new Date()).format('DD/MM/YYYY');
-    confirmNewOrder(orderId, row.newOrderId, true, today);
+  const confirmOrder = (row) => {
+    confirmNewOrder(row);
   };
 
   return (
     <>
-      <Button
-        className={row.orderConfirm ? 'd-none' : 'mx-1'}
-        size='sm'
-        variant='outline-primary'
-        onClick={() => confirmOrder()}
-      >
-        Confirm
-      </Button>
+      {
+        row.status === "pending" ?
+          <Button
+            className={'mx-1'}
+            size='sm'
+            variant='outline-primary'
+            onClick={() => confirmOrder(row)}
+          >
+            Confirm
+      </Button> :
+          null
+      }
 
       <Button
-        className={!row.orderConfirm ? 'd-none' : 'mx-1'}
+        className={'mx-1'}
         size='sm'
         variant='outline-success'
         onClick={() => handleShow()}
@@ -57,17 +60,20 @@ const ActionButtons = ({ row, orderId, confirmNewOrder, manageOrderDispatchUpdat
         manageOrderDispatchUpdate={manageOrderDispatchUpdate}
       />
 
-      <Button
-        className='mx-1'
-        size='sm'
-        variant='outline-info'
-        onClick={() => handleShowVendor()}
-      >
-        Send order to vender
+      { row.deliveryStatus === "pending" &&
+        <Button
+          className='mx-1'
+          size='sm'
+          variant='outline-info'
+          onClick={() => handleShowVendor()}
+        >
+          Send order to vender
       </Button>
+      }
       <SendOrderToVendorBox
         show={showVendor}
         handleClose={handleCloseVendor}
+        row={row}
       />
     </>
   );

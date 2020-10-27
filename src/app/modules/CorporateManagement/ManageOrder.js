@@ -5,7 +5,7 @@ import {
 	NoRecordsFoundMessage,
 } from "../../../_metronic/_helpers";
 import ExpandedRowLevelOne from './ManageOrder/ExpandedRowLevelOne';
-import { getCorporateOrdersAsync } from '../../actions/manageOrder.action';
+import { getCorporateOrdersAsync, updateOrderDispatchDateAsync, confirmCorporateOrderAsync } from '../../actions/manageOrder.action';
 
 const ManageOrder = () => {
 	const dispatch = useDispatch();
@@ -13,15 +13,28 @@ const ManageOrder = () => {
 		state => state.manageOrder.manageOrderData,
 		shallowEqual
 	);
+	const refreshOrderData = useSelector(
+		state => state.manageOrder.refreshOrderData,
+		shallowEqual
+	);
 
 	useEffect(() => {
-		dispatch(getCorporateOrdersAsync())
-	}, [])
+		if(refreshOrderData) {
+			dispatch(getCorporateOrdersAsync())
+		}
+	}, [refreshOrderData])
 
-	const confirmNewOrder = () => {
+	const confirmNewOrder = (row) => {
+		dispatch(confirmCorporateOrderAsync(row._id));
 	};
 
-	const manageOrderDispatchUpdate = () => {
+	const manageOrderDispatchUpdate = (
+		id,
+		deliveryStatus,
+		dispatchDate,
+		deliveryDate
+	) => {
+		dispatch(updateOrderDispatchDateAsync(id, {deliveryStatus, dispatchDate, deliveryDate}));
 	};
 
 	const columns = [

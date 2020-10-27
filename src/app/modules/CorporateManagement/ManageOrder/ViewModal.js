@@ -4,101 +4,99 @@ import DatePicker from 'react-datepicker';
 import moment from 'moment';
 
 const ViewModal = ({
-  show,
-  handleClose,
-  row,
-  orderId,
-  manageOrderDispatchUpdate,
+	show,
+	handleClose,
+	row,
+	orderId,
+	manageOrderDispatchUpdate,
 }) => {
-  const [dispatchDate, setDispatchDate] = useState(row.dispatchDate);
-  const [deliveryDate, setDeliveryDate] = useState(row.deliveryDate);
-  const [dispatchStatus, setDispatchStatus] = useState(
-    row.dispatchStatus ? 'Yes' : 'No'
-  );
-  const [errorMsg, setErrorMsg] = useState('');
 
-  const saveAction = () => {
-    if (
-      dispatchDate === '' ||
-      dispatchDate === null ||
-      deliveryDate === '' ||
-      deliveryDate === null ||
-      dispatchStatus === 'No'
-    ) {
-      setErrorMsg('Not valid dispatch status / Date');
-    } else if (moment(dispatchDate).isAfter(deliveryDate)) {
-      setErrorMsg('Not valid dispatch Date');
-    } else {
-      setErrorMsg('');
-      manageOrderDispatchUpdate(
-        orderId,
-        row.newOrderId,
-        dispatchStatus,
-        dispatchDate,
-        deliveryDate
-      );
-      handleClose();
-    }
-  };
+	const [dispatchDate, setDispatchDate] = useState(row.dispatchDate ? new Date(row.dispatchDate) : "");
+	const [deliveryDate, setDeliveryDate] = useState(row.deliveryDate ? new Date(row.deliveryDate) : "");
+	const [deliveryStatus, setDispatchStatus] = useState(
+		row.deliveryStatus
+	);
 
-  return (
-    <Modal show={show} onHide={handleClose}>
-      <Modal.Header closeButton>
-        <Modal.Title>Order Details</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <div className='h4 mb-5'>
-          Order confirmation date: {row.orderConfirmDate}
-        </div>
-        <Form className='container mt-5'>
-          <Form.Group className='row'>
-            <Form.Label>Dispatch Status:</Form.Label>
-            <Form.Control
-              as='select'
-              value={dispatchStatus}
-              onChange={(e) => setDispatchStatus(e.target.value)}
-            >
-              <option>No</option>
-              <option>Yes</option>
-            </Form.Control>
-          </Form.Group>
-          <Form.Group className='row'>
-            <Form.Group className='col-6 pl-0'>
-              <Form.Label>Dispatch Date</Form.Label>
-              <DatePicker
-                className='form-control'
-                selected={dispatchDate}
-                onChange={(date) => setDispatchDate(date)}
-                dateFormat='dd/MM/yyyy'
-              />
-            </Form.Group>
-            <Form.Group className='col-6 pr-0'>
-              <Form.Label>Delivery Date</Form.Label>
-              <DatePicker
-                className='form-control'
-                selected={deliveryDate}
-                onChange={(date) => setDeliveryDate(date)}
-                dateFormat='dd/MM/yyyy'
-              />
-            </Form.Group>
-          </Form.Group>
-          <Form.Label className='row text-danger'>{errorMsg}</Form.Label>
-        </Form>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button
-          className={row.status === 'approved' ? 'd-none' : ''}
-          variant='success'
-          onClick={saveAction}
-        >
-          Save
+	const [errorMsg, setErrorMsg] = useState('');
+
+	const saveAction = () => {
+		if (deliveryStatus !== "pending" && !dispatchDate) {
+			setErrorMsg('Select delivery or dispatch date.');
+		} else if(dispatchDate && deliveryStatus === "pending") {
+			setErrorMsg('Change the order status to dispatched/delivered.');
+		} else if (moment(dispatchDate).isAfter(deliveryDate)) {
+			setErrorMsg('Delivery date must be after dispatch date');
+		} else {
+			setErrorMsg('');
+			manageOrderDispatchUpdate(
+				row._id,
+				deliveryStatus,
+				dispatchDate,
+				deliveryDate
+			);
+			handleClose();
+		}
+	};
+
+	return (
+		<Modal show={show} onHide={handleClose}>
+			<Modal.Header closeButton>
+				<Modal.Title>Order Details</Modal.Title>
+			</Modal.Header>
+			<Modal.Body>
+				<div className='h4 mb-5'>
+					Order confirmation date: {new Date(row.orderDate).toLocaleDateString()}
+				</div>
+				<Form className='container mt-5'>
+					<Form.Group className='row'>
+						<Form.Label>Order Status:</Form.Label>
+						<Form.Control
+							as='select'
+							value={deliveryStatus}
+							onChange={(e) => setDispatchStatus(e.target.value)}
+						>
+							<option value="pending">Pending</option>
+							<option value="dispatched">Dispatched</option>
+							<option value="delivered">Delivered</option>
+						</Form.Control>
+					</Form.Group>
+					<Form.Group className='row'>
+						<Form.Group className='col-6 pl-0'>
+							<Form.Label>Dispatch Date (MM/DD/YYYY)</Form.Label>
+							<DatePicker
+								className='form-control'
+								selected={dispatchDate}
+								onChange={(date) => setDispatchDate(date)}
+								dateFormat='MM/dd/yyyy'
+							/>
+						</Form.Group>
+						<Form.Group className='col-6 pr-0'>
+							<Form.Label>Delivery Date (MM/DD/YYYY)</Form.Label>
+							<DatePicker
+								className='form-control'
+								selected={deliveryDate}
+								onChange={(date) => setDeliveryDate(date)}
+								dateFormat='MM/dd/yyyy'
+							/>
+						</Form.Group>
+					</Form.Group>
+					<Form.Label className='row text-danger'>{errorMsg}</Form.Label>
+				</Form>
+			</Modal.Body>
+			<Modal.Footer>
+				<Button variant='primary' onClick={() => handleClose()} className="mr-10">
+					Close
         </Button>
-        <Button variant='primary' onClick={() => handleClose()}>
-          Close
+				<Button
+					className={row.status === 'approved' ? 'd-none' : ''}
+					variant='success'
+					onClick={saveAction}
+				>
+					Save
         </Button>
-      </Modal.Footer>
-    </Modal>
-  );
+			</Modal.Footer>
+		</Modal>
+	);
 };
 
 export default ViewModal;

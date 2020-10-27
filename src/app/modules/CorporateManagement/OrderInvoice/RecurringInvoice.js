@@ -1,9 +1,14 @@
 import React from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
-import RecurringInvoiceActionButtons from './RecurringInvoiceActionButtons';
+import { RecurringInvoiceActionButtons } from './RecurringInvoiceActionButtons';
 import ExpandedRecurringInvoice from './ExpandedRecurringInvoice';
+import { generateInvoicePDF } from '../../../../_metronic/_helpers';
 
 const RecurringInvoice = ({ recurringInvoiceData, firstRecurringFlag }) => {
+
+	const onDownloadPdf = (row) => {
+		generateInvoicePDF({data: row, isRecurring: firstRecurringFlag === "first" ? true : false, corporate: row.corporateDetails})
+	}
 
 	const columns = [
 		{
@@ -55,6 +60,9 @@ const RecurringInvoice = ({ recurringInvoiceData, firstRecurringFlag }) => {
 			dataField: 'action',
 			text: 'Action',
 			formatter: RecurringInvoiceActionButtons,
+			formatExtraData: {
+				onDownloadPdf,
+			}
 		},
 	];
 

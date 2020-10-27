@@ -1,10 +1,13 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
+import BootstrapTable from 'react-bootstrap-table-next';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { Input } from '../../../../_metronic/_partials/controls';
 import getServerCore from '../../../../utils/apiUtils'
+import {showSuccessSnackbar} from '../../../actions/snackbar.action';
 
 const { serverUrls } = getServerCore();
 
@@ -18,9 +21,24 @@ const vendorSchema = () => (Yup.object().shape({
         .required('Vendor Email is required'),
 }));
 
-const SendOrderToVendorBox = ({ actionsLoading, show, handleClose }) => {
+const SendOrderToVendorBox = ({ actionsLoading, show, handleClose, row }) => {
+
+    const dispatch = useDispatch();
+
+    const columns = [
+        {
+            dataField: '_id',
+            text: 'Id',
+            hidden: true,
+        },
+        {
+            dataField: 'product_name',
+            text: 'Product Name',
+        },
+    ]
 
     const sendOrder = async (details) => {
+        console.log(row)
         let { data } = await axios({
             url: `${serverUrls.getCorporateUrl()}/sendOrderToVendor`,
             method: 'POST',
@@ -29,11 +47,17 @@ const SendOrderToVendorBox = ({ actionsLoading, show, handleClose }) => {
             },
             data: {
                 ...details,
-                orderDetails: [{ productName: "Dummy Product" }]
+                orderDetails: row.productDetails,
+                address: row.address,
             }
         });
+        console.log(data)
 
-        // if(data.)
+        if(data.response.responseCode === 200) {
+            handleClose();
+            return dispatch(showSuccessSnackbar("success", "Order sent to vendor successfull.", 3000));
+        }
+        return dispatch(showSuccessSnackbar("error", "Error sending order to vendor.", 3000));
     }
 
     return (
@@ -41,7 +65,16 @@ const SendOrderToVendorBox = ({ actionsLoading, show, handleClose }) => {
             <Modal.Header>
                 <Modal.Title>Vendor Details</Modal.Title>
             </Modal.Header>
-            <div className="mt-10">
+            <div className="mx-10 mt-10">
+                <BootstrapTable
+                    keyField='_id'
+                    data={row.productDetails}
+                    columns={columns}
+                    bordered={false}
+                    noDataIndication='No records found!'
+                />
+            </div>
+            <div>
                 <Formik
                     initialValues={{
                         vendorName: "",
@@ -65,7 +98,7 @@ const SendOrderToVendorBox = ({ actionsLoading, show, handleClose }) => {
                                 )}
                                 <Form className="form form-label-right">
                                     <div className="form-group row" style={{ maxWidth: "50%" }}>
-                                        <div className="col-12 mx-10 mt-10">
+                                        <div className="col-12 mx-10">
                                             <Field
                                                 name="vendorName"
                                                 component={Input}

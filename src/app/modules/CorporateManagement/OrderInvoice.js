@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { Form } from 'react-bootstrap';
-import FirstInvoice from './OrderInvoice/FirstInvoice';
 import RecurringInvoice from './OrderInvoice/RecurringInvoice';
 import { getCorporateOrderInvoiceAsync } from '../../actions/orderInvoice.action';
 
@@ -38,34 +37,6 @@ const OrderInvoice = () => {
 				recurringInvoiceData={orderInvoiceData}
 				firstRecurringFlag={firstRecurringFlag}
 			/>
-			{/* {firstRecurringFlag ? (
-  return (
-    <div className='jumbotron p-4'>
-      <div className='d-flex justify-content-start nav-tabs'>
-        <Button className="nav-link"
-          variant='link'
-          onClick={() => {
-            setFirstRecurringFlag(true);
-          }}
-        >
-          First Invoice
-        </Button>
-        <Button className="nav-link"
-          variant='link'
-          onClick={() => {
-            setFirstRecurringFlag(false);
-          }}
-        >
-          Recurring Invoice
-        </Button>
-      </div>
-      {firstRecurringFlag ? (
-        <FirstInvoice firstInvoiceData={orderInvoiceData.firstInvoice} />
-      ) : (
-          <RecurringInvoice
-            recurringInvoiceData={orderInvoiceData.recurringInvoice}
-          />
-        )} */}
 		</div>
 	);
 };
