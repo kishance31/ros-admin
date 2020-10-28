@@ -21,9 +21,10 @@ const CorporateManageLicense = () => {
 	const dispatch = useDispatch();
 	const {
 		corporateManageLicenseData,
+		isLoading,
 		totalCount,
 		pageSize,
-		pageNo,
+		pageNumber,
 	} = useSelector((state) => state.corporateManageLicense, shallowEqual);
 
 	const activeDeactiveAction = (orderId, isActive) => {
@@ -53,8 +54,7 @@ const CorporateManageLicense = () => {
 
 	const paginationOptions = {
 		custom: true,
-		//totalSize: totalCount,
-		totalSize: 10,
+		totalSize: totalCount,
 		sizePerPageList: [
 			{ text: "3", value: 3 },
 			{ text: "5", value: 5 },
@@ -122,22 +122,6 @@ const CorporateManageLicense = () => {
 		},
 	];
 
-	const onTableChange = (type, newState) => {
-		if (type === 'pagination') {
-			if (
-				(newState.page && newState.page !== pageNo) ||
-				newState.sizePerPage !== pageSize
-			) {
-				dispatch(
-					displayCorporateManageLicenseDataAsync(
-						newState.page,
-						newState.sizePerPage
-					)
-				);
-			}
-		}
-	};
-
 	const noDataIndication = () => {
 		return (
 			<NoRecordsFoundMessage />
@@ -146,7 +130,7 @@ const CorporateManageLicense = () => {
 
 	return (
 		<>
-			<PaginationProvider pagination={paginationFactory(paginationOption)}>
+			<PaginationProvider pagination={paginationFactory(paginationOptions)}>
 				{({ paginationProps, paginationTableProps }) => {
 					return (
 						<Pagination isLoading={isLoading} paginationProps={paginationProps}>
