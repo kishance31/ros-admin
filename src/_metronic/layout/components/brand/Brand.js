@@ -31,7 +31,7 @@ export function Brand() {
       >
         {/* begin::Logo */}
         <Link to='' className='brand-logo'>
-          <a className="brand-logo" href="/"><img alt="logo" src="/media/logos/logo.svg" /></a>
+        <p className="brand-logo"><img alt="logo" src="/media/logos/logo.svg" /></p>
           {/* <h3 style={layoutProps.logoStyle}>R O S</h3> */}
         </Link>
         {/* end::Logo */}

@@ -6,14 +6,21 @@ import { Input } from '../../../../_metronic/_partials/controls'
 import { addLicenseDataAsync, licenseManagementActions, licenseManagementMap, editLicenseDataAsync } from '../../../actions/licenseManagement.action'
 import * as Yup from "yup";
 const LicenseSchema = Yup.object().shape({
-    price: Yup.number().required('price is required '),
-  });
+    type: Yup.string()
+        .required('License Type is required')
+        .min(3, 'Minimum 3 symbols')
+        .max(60, 'Maximum 60 symbols'),
+    price: Yup.number()
+        .moreThan(0, "Price must be a number greater than zero")
+        .required('Price is required')
+        .typeError("Price must be a number greater than zero"),
+});
 
 const AddLicenseForm = ({ openModalVendor, closModalClose }) => {
     const openModal = useSelector(state => state.licenceManagement.licenseModal);
 
     const closeModal = () => {
-        dispatch(licenseManagementActions.toggleLicenseModal({type:licenseManagementMap.CLOSE_LICENSE_MODAL}))
+        dispatch(licenseManagementActions.toggleLicenseModal({ type: licenseManagementMap.CLOSE_LICENSE_MODAL }))
     }
     const initialValues = {
         type: "",
@@ -24,14 +31,14 @@ const AddLicenseForm = ({ openModalVendor, closModalClose }) => {
     const addLicenseData = (values) => {
         const Data = {
             ...values,
-            price: parseInt(values.price)   
+            price: parseInt(values.price)
         }
         if (!selectedLicense) {
-          return dispatch(addLicenseDataAsync(Data));
+            return dispatch(addLicenseDataAsync(Data));
         }
         if (selectedLicense) {
-          return dispatch(editLicenseDataAsync(Data));
-    }
+            return dispatch(editLicenseDataAsync(Data));
+        }
     }
     return (
         <>
@@ -45,7 +52,7 @@ const AddLicenseForm = ({ openModalVendor, closModalClose }) => {
                 </Modal.Header>
                 <Modal.Body>
                     <Formik
-                        initialValues={ selectedLicense ?  selectedLicense : initialValues }
+                        initialValues={selectedLicense ? selectedLicense : initialValues}
                         validationSchema={LicenseSchema}
                         onSubmit={(values) => {
                             addLicenseData(values)

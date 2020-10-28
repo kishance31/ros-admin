@@ -99,12 +99,9 @@ export function PleaseWaitMessage({ entities }) {
 }
 
 export function NoRecordsFoundMessage({ entities }) {
-  const customersList = entities === null ? [] : entities;
   return (
     <>
-      {customersList.length === 0 && entities !== null && (
-        <div>No records found</div>
-      )}
+        <div className="text-center">No records found</div>
     </>
   );
 }

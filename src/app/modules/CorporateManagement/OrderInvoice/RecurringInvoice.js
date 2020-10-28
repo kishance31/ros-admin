@@ -1,11 +1,11 @@
 import React from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
-import RecurringInvoiceActionButtons from './RecurringInvoiceActionButtons';
+import { RecurringInvoiceActionButtons } from './RecurringInvoiceActionButtons';
 import ExpandedRecurringInvoice from './ExpandedRecurringInvoice';
 import paginationFactory, { PaginationProvider } from 'react-bootstrap-table2-paginator';
 import { useSelector, useDispatch } from 'react-redux';
 import { orderInvoiceAction } from '../../../actions/orderInvoice.action'
-import { NoRecordsFoundMessage, PleaseWaitMessage } from "../../../../_metronic/_helpers";
+import { generateInvoicePDF, NoRecordsFoundMessage } from "../../../../_metronic/_helpers";
 import { Pagination } from "../../../../_metronic/_partials/controls";
 
 const RecurringInvoice = ({ recurringInvoiceData, firstRecurringFlag }) => {
@@ -17,6 +17,10 @@ const RecurringInvoice = ({ recurringInvoiceData, firstRecurringFlag }) => {
 		totalRecords,
 		pageNumber,
 		pageSize } = useSelector(state => state.orderInvoice)
+
+	const onDownloadPdf = (row) => {
+		generateInvoicePDF({ data: row, isRecurring: firstRecurringFlag === "first" ? true : false, corporate: row.corporateDetails })
+	}
 
 	const columns = [
 		{
@@ -68,6 +72,9 @@ const RecurringInvoice = ({ recurringInvoiceData, firstRecurringFlag }) => {
 			dataField: 'action',
 			text: 'Action',
 			formatter: RecurringInvoiceActionButtons,
+			formatExtraData: {
+				onDownloadPdf,
+			}
 		},
 	];
 
@@ -94,15 +101,7 @@ const RecurringInvoice = ({ recurringInvoiceData, firstRecurringFlag }) => {
 
 	const noDataIndication = () => {
 		return (
-			<>
-				{
-					isLoading ? (
-						<PleaseWaitMessage entities={null} />
-					) : (
-							<NoRecordsFoundMessage entities={recurringInvoiceData} />
-						)
-				}
-			</>
+			<NoRecordsFoundMessage entities={recurringInvoiceData} />
 		)
 	}
 

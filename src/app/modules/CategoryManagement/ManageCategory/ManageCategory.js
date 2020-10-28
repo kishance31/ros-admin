@@ -1,18 +1,15 @@
 import React, { useEffect } from 'react';
-import { Modal, Button, Form } from 'react-bootstrap'
-import { Card, CardBody, CardHeader, CardHeaderToolbar, ModalProgressBar } from '../../../../_metronic/_partials/controls';
+import { Modal } from 'react-bootstrap'
+import { Card, CardBody, CardHeader, CardHeaderToolbar } from '../../../../_metronic/_partials/controls';
 import ManageCategoryTable from './ManageCategoryTable/ManageCategoryTable';
 import AddCatergoryForm from './ManageCategoryTable/AddCatergoryForm';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-import SVG from 'react-inlinesvg';
-import { toAbsoluteUrl } from '../../../../_metronic/_helpers';
 import {
     CategoryManagementMap,
     CategoryManagementAction,
     DisplayCategoryListAsync,
     DisplaySubCategoryListAsync,
     DeactiveCategoryAsync,
-    EditCategoryAsync,
 } from '../../../actions/categoryManagementModal.action';
 
 const ManageCategory = ({ history }) => {
@@ -30,9 +27,6 @@ const ManageCategory = ({ history }) => {
     const onDisplaySubCategory = () => {
         dispatch(DisplaySubCategoryListAsync())
     }
-    // if(selectedCategory && selectedCategoryitem === "category" && categoryModal) {
-    //     dispatch(EditCategoryAsync())
-    // }
 
     useEffect(() => {
         if (refereshCategoryList && selectedCategoryitem === "category") {
@@ -72,25 +66,14 @@ const ManageCategory = ({ history }) => {
             <Card>
                 <CardHeader title="Category Management">
                     <CardHeaderToolbar>
-                        {/* <form> */}
-                        <div className="mr-10">
+                        {/* <div className="mr-10">
                             <input
                                 type="text"
                                 className="form-control"
                                 name="searchText"
                                 placeholder="Search . . ."
-                                //   onBlur={handleBlur}
-                                //   value={values.searchText}
-                                onChange={(e) => {
-                                    // setFieldValue("searchText", e.target.value);
-                                    // handleSubmit();
-                                }}
                             />
-                            {/* <small className="form-text text-muted">
-                                    <b>Search</b> in all fields
-                    </small> */}
-                        </div>
-                        {/* </form> */}
+                        </div> */}
                         <button
                             type="button"
                             className="btn btn-primary mr-5"

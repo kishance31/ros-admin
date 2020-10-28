@@ -12,6 +12,7 @@ const initialState = {
 const manageOrderReducer = (state = initialState, action) => {
 	switch (action.type) {
 
+		case manageOrderMap.UPDATE_ORDER_DISPATCH_DATE_SUCCESS:
 		case manageOrderMap.GET_CORPORATE_ORDERS_START: {
 			return {
 				...state,

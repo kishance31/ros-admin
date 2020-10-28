@@ -89,7 +89,7 @@ const ManageUserTable = (props) => {
           isLoading ? (
             <PleaseWaitMessage entities={null} />
           ) : (
-              <NoRecordsFoundMessage entities={displaylist} />
+              <NoRecordsFoundMessage />
             )
         }
       </>

@@ -28,7 +28,6 @@ const ImportItemFromVendor = (props) => {
     const { pageNumber, pageSize, productCount, isLoading } = useSelector(state => state.categoryModal)
 
     const onClickVendorItemAddButton = () => {
-        // dispatch(DisplayVendorItemAsync())
         dispatch(CategoryManagementAction.toggleAddCategoryModal(CategoryManagementMap.OPEN_VENDOR_ITEM_MODAL))
     }
 
@@ -79,23 +78,14 @@ const ImportItemFromVendor = (props) => {
         <Card>
             <CardHeader title="Products Management">
                 <CardHeaderToolbar>
-                    <div className="mr-10">
+                    {/* <div className="mr-10">
                         <input
                             type="text"
                             className="form-control"
                             name="searchText"
                             placeholder="Search . . ."
-                            //   onBlur={handleBlur}
-                            //   value={values.searchText}
-                            onChange={(e) => {
-                                // setFieldValue("searchText", e.target.value);
-                                // handleSubmit();
-                            }}
                         />
-                        {/* <small className="form-text text-muted">
-                                <b>Search</b> in all fields
-                    </small> */}
-                    </div>
+                    </div> */}
                     <button
                         type="button"
                         className="btn btn-primary"
@@ -113,17 +103,13 @@ const ImportItemFromVendor = (props) => {
                         type: "",
                         searchText: "",
                     }}
-                    onSubmit={(values) => {
-                        //   applyFilter(values);
-                    }}
                 >
                     {({
                         values,
-                        handleSubmit,
                         handleBlur,
                         setFieldValue,
                     }) => (
-                            <form onSubmit={handleSubmit} className="form form-label-right">
+                            <form className="form form-label-right">
                                 <div className="form-group row">
                                     <div className="col-lg-2">
                                         <label className="mb-3">
@@ -141,7 +127,6 @@ const ImportItemFromVendor = (props) => {
                                                     selectedCategory(e.target.value)
                                                 }
                                                 setFieldValue("status", e.target.value);
-                                                handleSubmit();
                                             }}
                                             onBlur={handleBlur}
                                             value={values.status}
@@ -158,9 +143,6 @@ const ImportItemFromVendor = (props) => {
                             </form>
                         )}
                 </Formik>
-
-
-
                 <Modal
                     show={openDeleteModal}
                     onHide={closeModal}

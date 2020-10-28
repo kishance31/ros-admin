@@ -2,10 +2,11 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import BootstrapTable from 'react-bootstrap-table-next';
 import ExpandedRowLevelOne from './ManageOrder/ExpandedRowLevelOne';
-import { manageOrderAction, getCorporateOrdersAsync } from '../../actions/manageOrder.action';
-import { NoRecordsFoundMessage, PleaseWaitMessage } from "../../../_metronic/_helpers";
+import { NoRecordsFoundMessage } from "../../../_metronic/_helpers";
 import paginationFactory, { PaginationProvider } from 'react-bootstrap-table2-paginator';
 import { Pagination } from '../../../_metronic/_partials/controls';
+import { getCorporateOrdersAsync, manageOrderAction, updateOrderDispatchDateAsync, confirmCorporateOrderAsync }
+	from '../../actions/manageOrder.action';
 
 const ManageOrder = () => {
 
@@ -24,10 +25,17 @@ const ManageOrder = () => {
 		}
 	}, [refreshOrderData])
 
-	const confirmNewOrder = () => {
+	const confirmNewOrder = (row) => {
+		dispatch(confirmCorporateOrderAsync(row._id));
 	};
 
-	const manageOrderDispatchUpdate = () => {
+	const manageOrderDispatchUpdate = (
+		id,
+		deliveryStatus,
+		dispatchDate,
+		deliveryDate
+	) => {
+		dispatch(updateOrderDispatchDateAsync(id, { deliveryStatus, dispatchDate, deliveryDate }));
 	};
 
 	const columns = [
@@ -64,8 +72,7 @@ const ManageOrder = () => {
 
 	const paginationOptions = {
 		custom: true,
-		totalSize: 10,
-		//totalSize: totalCount,
+		totalSize: totalCount,
 		sizePerPageList: [
 			{ text: "3", value: 3 },
 			{ text: "5", value: 5 },
@@ -77,15 +84,7 @@ const ManageOrder = () => {
 
 	const noDataIndication = () => {
 		return (
-			<>
-				{
-					isLoading ? (
-						<PleaseWaitMessage entities={null} />
-					) : (
-							<NoRecordsFoundMessage entities={manageOrderData} />
-						)
-				}
-			</>
+			<NoRecordsFoundMessage entities={manageOrderData} />
 		)
 	}
 

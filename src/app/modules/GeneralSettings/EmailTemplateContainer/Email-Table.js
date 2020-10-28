@@ -51,15 +51,7 @@ const ManageEmailTable = (props) => {
   };
   const noDataIndication = () => {
     return (
-      <>
-        {
-          isLoading ? (
-            <PleaseWaitMessage entities={null} />
-          ) : (
-              <NoRecordsFoundMessage entities={displaylist} />
-            )
-        }
-      </>
+      <NoRecordsFoundMessage entities={displaylist} />
     )
   }
   const onTableChange = (type, newState) => {

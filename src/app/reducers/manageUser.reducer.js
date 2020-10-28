@@ -80,7 +80,7 @@ const manageUserReducer = (state = initialState, action) => {
             return {
                 ...state,
                 displaylist: action.payload.list,
-                totalCount: action.payload.total.length ? action.payload.total[0].count : 0,
+                totalCount: action.payload.totalRecords,
                 refreshManageUserData: false,
                 isLoading: false,
             }

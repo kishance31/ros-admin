@@ -1,4 +1,5 @@
 import React from 'react';
+
 const ActionFormatter = (cellContent,
     row,
     rowIndex,
@@ -9,7 +10,7 @@ const ActionFormatter = (cellContent,
 
     const OnEditButtonClick = (row) => {
         OnAddCategory();
-        if(categorySelected === "category") {
+        if (categorySelected === "category") {
             setSelectedCategory(row)
         } else {
             setSelectedSubCategory(row);
@@ -22,7 +23,7 @@ const ActionFormatter = (cellContent,
     }
 
     const ClickDeleteCategoryAsync = (row) => {
-        if(categorySelected === "category") {
+        if (categorySelected === "category") {
             setSelectedCategory(row)
         } else {
             setSelectedSubCategory(row);
@@ -34,25 +35,39 @@ const ActionFormatter = (cellContent,
             {
                 categorySelected === "category" ? (
                     <a
-                        className="btn btn_blue font-weight-bolder font-size-sm mr-3"
+                        className="btn btn-icon btn-light btn-sm"
                         disabled="disabled"
-                        onClick={() => onClickSubCategory(row)}
-                    >
-                        VIEW SUBCATEGORY
+                        onClick={() => onClickSubCategory(row)}>
+                        <span className="svg-icon svg-icon-md svg-icon-primary">
+                            <i class="fa fa-eye" title="View Subcategory"></i>
+                        </span>
+
                     </a>
                 ) : null
             }
             <a
-                className="btn btn-success font-weight-bolder font-size-sm mr-3"
+                className="btn btn-icon btn-light btn-sm mx-3"
                 onClick={() => OnEditButtonClick(row)}
             >
-                EDIT
-                </a>
+                <span className="svg-icon svg-icon-md svg-icon-primary">
+                    <i class="fa fa-edit" title="Edit" title="Edit"></i>
+                </span>
+            </a>
             <a
-                className={`btn btn-${row.status ? 'danger' : 'primary'} font-weight-bolder font-size-sm mr-3`}
+                className={`btn btn-${row.status ? 'btn btn-icon btn-light btn-sm' : 'btn btn-icon btn-light btn-sm'} `}
                 onClick={() => ClickDeleteCategoryAsync(row)}
             >
-                {row.status ? "DEACTIVE" : "ACTIVE"}
+                {row.status ?
+                    (<span className="svg-icon svg-icon-md svg-icon-primary">
+                        <i class="fa fa-toggle-on" title="Acitve"></i>
+                    </span>
+                    )
+                    :
+                    (<span className="svg-icon svg-icon-md svg-icon-primary">
+                        <i class="fa fa-toggle-off" title="Deactive"></i>
+                    </span>)
+
+                }
 
             </a>
 

@@ -1,6 +1,4 @@
 import React from "react";
-import SVG from "react-inlinesvg";
-import { toAbsoluteUrl } from "../../../../_metronic/_helpers";
 
 export function ActionManageEmailFormatter(
   cellContent,
@@ -22,19 +20,24 @@ export function ActionManageEmailFormatter(
     <>
       <a
         title="Edit customer"
-        className="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+        className="btn btn-icon btn-light btn-sm"
         onClick={() => onEditUser(row, rowIndex)}
       >
-        Edit
+        <span className="svg-icon svg-icon-md svg-icon-primary">
+          <i class="fa fa-edit" title="Edit"></i>
+        </span>
       </a>
       <> </>
 
       <a
         title="Delete customer"
-        className="btn btn-icon btn-light btn-hover-danger btn-sm"
+        className="btn btn-icon btn-light btn-sm mx-3"
         onClick={() => onDeleteUser(row, rowIndex)}
       >
-        Delete      </a>
+        <span className="svg-icon svg-icon-md svg-icon-danger">
+          <i class="fa fa-trash" title="Delete"></i>
+        </span>
+      </a>
     </>
   );
 }

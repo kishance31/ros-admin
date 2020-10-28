@@ -7,9 +7,9 @@ import {
 	displayCorporateManageLicenseDataAsync
 } from '../../actions/corporateManageLicense.action';
 import ViewModal from './LicenceOrder/ViewModal';
-import { NoRecordsFoundMessage, PleaseWaitMessage } from "../../../_metronic/_helpers";
 import paginationFactory, { PaginationProvider } from 'react-bootstrap-table2-paginator';
 import { Pagination } from '../../../_metronic/_partials/controls';
+import { NoRecordsFoundMessage, generateLicensePDF } from "../../../_metronic/_helpers";
 
 const LicenceOrder = () => {
 
@@ -40,6 +40,10 @@ const LicenceOrder = () => {
 		dispatch(displayCorporateManageLicenseDataAsync());
 	}, []);
 
+	const onDownloadPdf = (row) => {
+		generateLicensePDF({ data: row, corporate: row.corporateDetails })
+	}
+
 	const columns = [
 		{
 			dataField: '_id',
@@ -69,13 +73,15 @@ const LicenceOrder = () => {
 			dataField: 'action',
 			text: 'Action',
 			formatter: ActionButtons,
-			formatExtraData: { handleShow }
+			formatExtraData: {
+				handleShow,
+				onDownloadPdf
+			}
 		},
 	];
 	const paginationOptions = {
 		custom: true,
-		//totalSize: totalCount,
-		totalSize: 10,
+		totalSize: totalCount,
 		sizePerPageList: [
 			{ text: "3", value: 3 },
 			{ text: "5", value: 5 },
@@ -87,15 +93,7 @@ const LicenceOrder = () => {
 
 	const noDataIndication = () => {
 		return (
-			<>
-				{
-					isLoading ? (
-						<PleaseWaitMessage entities={null} />
-					) : (
-							<NoRecordsFoundMessage entities={corporateManageLicenseData} />
-						)
-				}
-			</>
+			<NoRecordsFoundMessage />
 		)
 	}
 
@@ -109,6 +107,7 @@ const LicenceOrder = () => {
 			}
 		}
 	}
+
 	return (
 		<PaginationProvider pagination={paginationFactory(paginationOptions)}>
 			{({ paginationProps, paginationTableProps }) => {
