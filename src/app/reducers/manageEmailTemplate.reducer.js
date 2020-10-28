@@ -9,7 +9,7 @@ const initialState = {
     emailTemplateUpdated: false,
     emailAddedSuccessfully: false,
     emailTemplateDeleted: false,
-    totalCount: 0,
+    totalCount:10,
     selectedEmailTemplate: null,
     refreshEmailTemplateData: true,
     pageNumber: 1,

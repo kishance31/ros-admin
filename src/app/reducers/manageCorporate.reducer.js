@@ -5,6 +5,7 @@ const initialState = {
   pageNumber: 1,
   pageSize: 5,
   totalCount: 0,
+  refreshManageCorporateData: true,
 };
 
 const manageCorporateReducer = (state = initialState, action) => {
@@ -14,6 +15,8 @@ const manageCorporateReducer = (state = initialState, action) => {
         ...state,
         manageCorporateData: action.payload.manageCorporateData,
         totalCount: action.payload.totalRecords,
+        //totalCount: action.payload.total.length ? action.payload.total[0].count : 0,
+        refreshManageCorporateData: false,
       };
     }
     case manageCorporateMap.DISPLAY_MANAGE_CORPORATE_DATA_ERROR: {
@@ -61,14 +64,12 @@ const manageCorporateReducer = (state = initialState, action) => {
       return {
         ...state,
         pageNumber: action.payload,
-        //refreshManageUserData: true,
       }
     }
     case manageCorporateMap.SET_PAGE_SIZE: {
       return {
         ...state,
         pageSize: action.payload,
-        //refreshManageUserData: true,
         pageNumber: 1
       }
     }

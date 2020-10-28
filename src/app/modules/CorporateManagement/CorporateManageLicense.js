@@ -13,14 +13,17 @@ import {
   corporateManageLicenseAction,
   displayCorporateManageLicenseDataAsync,
 } from '../../actions/corporateManageLicense.action';
+import { NoRecordsFoundMessage, PleaseWaitMessage } from "../../../_metronic/_helpers";
 
 const CorporateManageLicense = () => {
   const dispatch = useDispatch();
   const {
     corporateManageLicenseData,
     totalCount,
+    pageNumber,
     pageSize,
-    pageNo,
+    isLoading,
+    refreshCorporateManageLicenseData
   } = useSelector((state) => state.corporateManageLicense, shallowEqual);
 
   const activeDeactiveAction = (orderId, isActive) => {
@@ -33,8 +36,10 @@ const CorporateManageLicense = () => {
   };
 
   useEffect(() => {
-    dispatch(displayCorporateManageLicenseDataAsync());
-  }, [dispatch]);
+    if (refreshCorporateManageLicenseData) {
+      dispatch(displayCorporateManageLicenseDataAsync());
+    }
+  }, [refreshCorporateManageLicenseData]);
 
   const formatedDate = (cell, row) => {
     return moment(cell).format('DD/MM/YYYY');
@@ -52,17 +57,6 @@ const CorporateManageLicense = () => {
     return totalLicenseCost;
   };
 
-  const paginationOption = {
-    custom: true,
-    totalSize: totalCount,
-    sizePerPageList: [
-      { text: '3', value: 3 },
-      { text: '5', value: 5 },
-      { text: '10', value: 10 },
-    ],
-    sizePerPage: pageSize,
-    page: pageNo,
-  };
 
   const columns = [
     {
@@ -94,13 +88,11 @@ const CorporateManageLicense = () => {
       text: 'License Cost (USD)',
       formatter: calculateTotalLicenceCost,
     },
-
     //commented as status field is not coming from API.
     // {
     //   dataField: 'status',
     //   text: 'Status',
     // },
-
     {
       dataField: 'action',
       text: 'Action',
@@ -111,48 +103,69 @@ const CorporateManageLicense = () => {
     },
   ];
 
-  const onTableChange = (type, newState) => {
-    if (type === 'pagination') {
-      if (
-        (newState.page && newState.page !== pageNo) ||
-        newState.sizePerPage !== pageSize
-      ) {
-        dispatch(
-          displayCorporateManageLicenseDataAsync(
-            newState.page,
-            newState.sizePerPage
-          )
-        );
-      }
-    }
+  const paginationOptions = {
+    custom: true,
+    //totalSize: totalCount,
+    totalSize: 10,
+    sizePerPageList: [
+      { text: "3", value: 3 },
+      { text: "5", value: 5 },
+      { text: "10", value: 10 }
+    ],
+    sizePerPage: pageSize,
+    page: pageNumber,
   };
 
+  const noDataIndication = () => {
+    return (
+      <>
+        {
+          isLoading ? (
+            <PleaseWaitMessage entities={null} />
+          ) : (
+              <NoRecordsFoundMessage entities={corporateManageLicenseData} />
+            )
+        }
+      </>
+    )
+  }
+
+  const onTableChange = (type, newState) => {
+    if (type === "pagination") {
+      if (newState.page && newState.page !== pageNumber) {
+        dispatch(corporateManageLicenseAction.setPage(newState.page));
+      }
+      if (newState.sizePerPage !== pageSize) {
+        dispatch(corporateManageLicenseAction.setPageSize(newState.sizePerPage));
+      }
+    }
+  }
+
   return (
-    <>
-      <PaginationProvider pagination={paginationFactory(paginationOption)}>
-        {({ paginationProps, paginationTableProps }) => {
-          return (
-            <Pagination paginationProps={paginationProps}>
-              <BootstrapTable
-                keyField='orderId'
-                bordered={false}
-                data={
-                  corporateManageLicenseData === null
-                    ? []
-                    : corporateManageLicenseData
-                }
-                columns={columns}
-                remote
-                noDataIndication='No records found!'
-                {...paginationTableProps}
-                onTableChange={onTableChange}
-              />
-            </Pagination>
-          );
-        }}
-      </PaginationProvider>
-    </>
+    <PaginationProvider pagination={paginationFactory(paginationOptions)}>
+      {({ paginationProps, paginationTableProps }) => {
+        return (
+          <Pagination
+            isLoading={isLoading}
+            paginationProps={paginationProps}
+          >
+            <BootstrapTable
+              keyField='orderId'
+              bordered={false}
+              data={corporateManageLicenseData === null ? [] : corporateManageLicenseData}
+              columns={columns}
+              remote
+              {...paginationTableProps}
+              noDataIndication={noDataIndication}
+              onTableChange={onTableChange}
+            >
+            </BootstrapTable>
+          </Pagination>
+        );
+      }}
+    </PaginationProvider>
   );
 };
+
 
 export default CorporateManageLicense;

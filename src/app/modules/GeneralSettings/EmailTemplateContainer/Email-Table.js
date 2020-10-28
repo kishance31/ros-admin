@@ -40,7 +40,7 @@ const ManageEmailTable = (props) => {
   ]
   const paginationOptions = {
     custom: true,
-    totalSize: totalCount,
+    totalSize: 10,
     sizePerPageList: [
       { text: "3", value: 3 },
       { text: "5", value: 5 },

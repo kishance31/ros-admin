@@ -11,19 +11,24 @@ export const manageOrderMap = {
 	GET_CORPORATE_ORDERS_START: 'GET_CORPORATE_ORDERS_START',
 	GET_CORPORATE_ORDERS_SUCCESS: 'GET_CORPORATE_ORDERS_SUCCESS',
 	GET_CORPORATE_ORDERS_ERROR: 'GET_CORPORATE_ORDERS_ERROR',
+	SET_PAGE: "SET_PAGE",
+	SET_PAGE_SIZE: "SET_PAGE_SIZE",
 };
 
 export const manageOrderAction = {
 	getOrderStart: () => ({ type: manageOrderMap.GET_CORPORATE_ORDERS_START }),
 	getOrderSuccess: (data) => ({ type: manageOrderMap.GET_CORPORATE_ORDERS_SUCCESS, payload: data }),
 	getOrderError: () => ({ type: manageOrderMap.GET_CORPORATE_ORDERS_ERROR }),
+	setPage: (num) => ({ type: manageOrderMap.SET_PAGE, payload: num }),
+	setPageSize: (num) => ({ type: manageOrderMap.SET_PAGE_SIZE, payload: num }),
 };
 
 export const getCorporateOrdersAsync = () => async (dispatch, getState) => {
 	try {
 		dispatch(manageOrderAction.getOrderStart());
+		const { pageNumber, pageSize } = getState().manageUser
 		const { data } = await axios({
-			url: `${adminsUrl}/getEmpOrderDetailsByCorporate`,
+			url: `${adminsUrl}/getEmpOrderDetailsByCorporate/${pageNumber - 1}/${pageSize}`,
 			method: "GET",
 		});
 		if (data.response && data.response.responseCode === 200) {
@@ -60,7 +65,7 @@ export const getCorporateOrdersAsync = () => async (dispatch, getState) => {
 							{ ...order }
 						]
 					}
-					finalData.push({...data})
+					finalData.push({ ...data })
 				}
 			});
 			return dispatch(manageOrderAction.getOrderSuccess(finalData));

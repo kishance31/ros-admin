@@ -12,11 +12,20 @@ const ManageCorporate = () => {
 
   const dispatch = useDispatch();
 
-  const { manageCorporateData, totalCount, isLoading, pageNumber, pageSize } = useSelector(state => state.manageCorporate, shallowEqual);
+  const {
+    manageCorporateData,
+    totalCount,
+    isLoading,
+    pageNumber,
+    pageSize,
+    refreshManageCorporateData
+  } = useSelector(state => state.manageCorporate, shallowEqual);
 
   useEffect(() => {
-    dispatch(displayManageCorporateDataAsync());
-  }, []);
+    if (refreshManageCorporateData) {
+      dispatch(displayManageCorporateDataAsync());
+    }
+  }, [refreshManageCorporateData]);
 
   const approveRejectAction = (_id, status) => {
     dispatch(
@@ -78,7 +87,7 @@ const ManageCorporate = () => {
 
   const paginationOptions = {
     custom: true,
-    totalSize: totalCount,
+    totalSize: 10,
     sizePerPageList: [
       { text: "3", value: 3 },
       { text: "5", value: 5 },

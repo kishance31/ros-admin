@@ -84,14 +84,15 @@ export const manageCorporateAction = {
   setPageSize: (num) => ({ type: manageCorporateMap.SET_PAGE_SIZE, payload: num }),
 };
 
-export const displayManageCorporateDataAsync = (pageNo, pageSize, tokens) => {
-  return async (dispatch) => {
+export const displayManageCorporateDataAsync = (tokens) => {
+  return async (dispatch, getState) => {
     try {
       dispatch({
         type: manageCorporateMap.DISPLAY_MANAGE_CORPORATE_DATA_START,
       });
-      let {data} = await axios({
-        url: `${adminUrl}/getCorporateAdmins/0/5`,
+      const { pageNumber, pageSize } = getState().manageCorporate
+      let { data } = await axios({
+        url: `${adminUrl}/getCorporateAdmins/${pageNumber - 1}/${pageSize}`,
         method: 'GET',
         headers: {
           tokens,

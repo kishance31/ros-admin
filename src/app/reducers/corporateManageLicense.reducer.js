@@ -5,6 +5,7 @@ const initialState = {
   pageNo: 1,
   pageSize: 5,
   totalCount: 0,
+  refreshCorporateManageLicenseData: true
 };
 
 const corporateManageLicenseReducer = (state = initialState, action) => {
@@ -33,8 +34,22 @@ const corporateManageLicenseReducer = (state = initialState, action) => {
         corporateManageLicenseData: tempCorporateManageLicenseData,
       };
     }
-    default:
-      return state;
+    case corporateManageLicenseMap.SET_PAGE: {
+      return {
+        ...state,
+        pageNumber: action.payload,
+        refreshCorporateManageLicenseData: true,
+      }
+    }
+    case corporateManageLicenseMap.SET_PAGE_SIZE: {
+      return {
+        ...state,
+        pageSize: action.payload,
+        refreshCorporateManageLicenseData: true,
+        pageNumber: 1
+      }
+    }
+    default: return { ...state }
   }
 };
 
