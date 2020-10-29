@@ -1,56 +1,18 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import BootstrapTable from 'react-bootstrap-table-next';
-import paginationFactory from 'react-bootstrap-table2-paginator';
+import paginationFactory, { PaginationProvider } from "react-bootstrap-table2-paginator";
+import { Pagination } from "../../../../_metronic/_partials/controls";
+import { NoRecordsFoundMessage, PleaseWaitMessage, } from "../../../../_metronic/_helpers";
 import { ActionManageEmailFormatter } from '../EmailTemplateContainer/ActionManageEmailFormatter';
+import { ManageEmailTemplateAction } from '../../../actions/manageEmailTemplate.action'
 
-const ManageEmailTable = ({ onOpenModal, setSelectedUser, onOpenDialog }) => {
+const ManageEmailTable = (props) => {
 
+  const { onOpenModal, setSelectedUser, onOpenDialog, isLoading, totalCount, pageNumber, pageSize } = props
+  const { displaylist } = useSelector((state) => state.emailTemplate);
+  const dispatch = useDispatch();
 
-  const  {displaylist}  = useSelector(
-    (state) => state.emailTemplate
-  );
-
-
-  const customTotal = (from, to, size) => (
-    <span className='react-bootstrap-table-pagination-total ml-4'>
-      Showing {from} to {to} of {size} Results
-    </span>
-  );
-
-  const options = {
-    paginationSize: 4,
-    pageStartIndex: 1,
-    firstPageText: '<<',
-    prePageText: '<',
-    nextPageText: '>',
-    lastPageText: '>>',
-    nextPageTitle: 'First page',
-    prePageTitle: 'Pre page',
-    firstPageTitle: 'Next page',
-    lastPageTitle: 'Last page',
-    showTotal: true,
-    paginationTotalRenderer: customTotal,
-    disablePageTitle: true,
-    sizePerPageList: [
-      {
-        text: '3',
-        value: 3,
-      },
-      {
-        text: '5',
-        value: 5,
-      },
-      {
-        text: '10',
-        value: 10,
-      },
-      {
-        text: 'All',
-        value: displaylist.length,
-      },
-    ],
-  };
   const columns = [
     {
       dataField: 'title',
@@ -59,7 +21,7 @@ const ManageEmailTable = ({ onOpenModal, setSelectedUser, onOpenDialog }) => {
     {
       dataField: 'subject',
       text: 'Subject',
-    },    
+    },
     {
       dataField: 'description',
       text: 'Description',
@@ -76,21 +38,57 @@ const ManageEmailTable = ({ onOpenModal, setSelectedUser, onOpenDialog }) => {
       },
     }
   ]
+  const paginationOptions = {
+    custom: true,
+    totalSize: 10,
+    sizePerPageList: [
+      { text: "3", value: 3 },
+      { text: "5", value: 5 },
+      { text: "10", value: 10 }
+    ],
+    sizePerPage: pageSize,
+    page: pageNumber,
+  };
+  const noDataIndication = () => {
+    return (
+      <NoRecordsFoundMessage entities={displaylist} />
+    )
+  }
+  const onTableChange = (type, newState) => {
+    if (type === "pagination") {
+      if (newState.page && newState.page !== pageNumber) {
+        dispatch(ManageEmailTemplateAction.setPage(newState.page));
+      }
+      if (newState.sizePerPage !== pageSize) {
+        dispatch(ManageEmailTemplateAction.setPageSize(newState.sizePerPage));
+      }
+    }
+  }
   return (
-    <div className='container'>
-      <BootstrapTable
-        wrapperClasses='table-responsive'
-        // hover
-        classes='table table-head-custom table-vertical-center center-last-col'
-        bootstrap4
-        bordered={false}
-        keyField='email'
-        data={displaylist}
-        noDataIndication='No records found!'
-        columns={columns}
-        pagination={paginationFactory(options)}
-      />
-    </div>
+    <PaginationProvider pagination={paginationFactory(paginationOptions)}>
+      {({ paginationProps, paginationTableProps }) => {
+        return (
+          <Pagination
+            isLoading={isLoading}
+            paginationProps={paginationProps}
+          >
+            <BootstrapTable
+              wrapperClasses='table-responsive'
+              hover
+              classes='table table-head-custom table-vertical-center'
+              bootstrap4
+              bordered={false}
+              keyField='email'
+              data={displaylist}
+              columns={columns}
+              {...paginationTableProps}
+              noDataIndication={noDataIndication}
+              onTableChange={onTableChange}
+            />
+          </Pagination>
+        );
+      }}
+    </PaginationProvider>
   );
 };
 

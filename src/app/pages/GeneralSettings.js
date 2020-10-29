@@ -3,8 +3,6 @@ import { Switch } from 'react-router-dom';
 import { ContentRoute } from "../../_metronic/layout";
 import ManageEmail from '../modules/GeneralSettings/Manage-Email';
 import CmsSetting from "../modules/GeneralSettings/CmsSetting";
-// import RolesAndPermission from '../modules/AdminManagement/RolesAndPermission';
-// import Permission from '../modules/AdminManagement/Permission';
 
 const GeneralSettings = () => {
     return (

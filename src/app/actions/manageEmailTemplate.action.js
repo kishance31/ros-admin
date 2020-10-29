@@ -1,5 +1,6 @@
 import axios from 'axios';
 import getServerCore from '../../utils/apiUtils';
+
 export const ManageEmailTemplateMap = {
     OPEN_MODAL: 'OPEN_MODAL',
     CLOSE_MODAL: 'CLOSE_MODAL',
@@ -22,6 +23,8 @@ export const ManageEmailTemplateMap = {
     UPDATE_ADMIN_STATUS_ERROR: 'UPDATE_ADMIN_STATUS_ERROR',
     REFRESH_EMAIL_TEMPLATE_DATA: 'EMAIL_TEMPLATE_DATA',
     SET_SELECTED_EMAIL_TEMPLATE: 'SET_SELECTED_EMAIL_TEMPLATE',
+    SET_PAGE: "SET_PAGE",
+    SET_PAGE_SIZE: "SET_PAGE_SIZE",
 }
 
 export const ManageEmailTemplateAction = {
@@ -55,42 +58,46 @@ export const ManageEmailTemplateAction = {
             type: ManageEmailTemplateMap.SET_SELECTED_EMAIL_TEMPLATE,
             payload: row
         }
-    }
+    },
+    setPage: (num) => ({ type: ManageEmailTemplateMap.SET_PAGE, payload: num }),
+    setPageSize: (num) => ({ type: ManageEmailTemplateMap.SET_PAGE_SIZE, payload: num }),
 }
 
 const { serverUrls } = getServerCore();
 const emailTemplate = serverUrls.getEmailTemplate()
 
 export const displayEmailTemplateDataAsync = (tokens) => {
-    return async (dispatch) => {
-      try {
-        dispatch({
-            type: ManageEmailTemplateMap.DISPLAY_EMAIL_TEMPLATE_DATA_START,
-        })
-        let ManageEmailTemplateResponse = await axios({
-          url: `${emailTemplate}/getEmailTemplateList`,
-          method: 'GET',
-          headers: {
-            tokens,
-            'Content-Type': 'application/json',
-          },
-        });
-        if (ManageEmailTemplateResponse.data.response.responseCode === 200) {
-          dispatch({
-            type: ManageEmailTemplateMap.DISPLAY_EMAIL_TEMPLATE_DATA_SUCCESS,
-            payload: ManageEmailTemplateResponse.data.response.data,
-          });
+    return async (dispatch, getState) => {
+        try {
+            dispatch({
+                type: ManageEmailTemplateMap.DISPLAY_EMAIL_TEMPLATE_DATA_START,
+            });
+            const { pageNumber, pageSize } = getState().emailTemplate
+            let ManageEmailTemplateResponse = await axios({
+                url: `${emailTemplate}/getEmailTemplateList`,
+                //url: `${emailTemplate}/getEmailTemplateList/${pageNumber - 1}/${pageSize}`,
+                method: 'GET',
+                headers: {
+                    tokens,
+                    'Content-Type': 'application/json',
+                },
+            });
+            if (ManageEmailTemplateResponse.data.response.responseCode === 200) {
+                dispatch({
+                    type: ManageEmailTemplateMap.DISPLAY_EMAIL_TEMPLATE_DATA_SUCCESS,
+                    payload: ManageEmailTemplateResponse.data.response.data,
+                });
+            }
+        } catch (error) {
+            dispatch({
+                type: ManageEmailTemplateMap.DISPLAY_EMAIL_TEMPLATE_DATA_ERROR
+            });
         }
-      } catch (error) {
-        dispatch({
-            type: ManageEmailTemplateMap.DISPLAY_EMAIL_TEMPLATE_DATA_ERROR
-        });
-      }
     };
-  };
+};
 
- 
-export const deleteEmailTemplateDataAsync = (row,tokens) => {
+
+export const deleteEmailTemplateDataAsync = (row, tokens) => {
     return async (dispatch) => {
         try {
             dispatch({
@@ -100,15 +107,15 @@ export const deleteEmailTemplateDataAsync = (row,tokens) => {
                 url: `${emailTemplate}/deleteEmailTemplate/${row._id}`,
                 method: 'DELETE',
                 headers: {
-                  tokens
+                    tokens
                 },
-              });
-              if (deleteEmailTemplateResponse.data.response.responseCode === 200) {
+            });
+            if (deleteEmailTemplateResponse.data.response.responseCode === 200) {
                 dispatch({
-                  type: ManageEmailTemplateMap.DELETE_EMAIL_TEMPLATE_DATA_SUCCESS,
-                  payload: deleteEmailTemplateResponse.data.response,
+                    type: ManageEmailTemplateMap.DELETE_EMAIL_TEMPLATE_DATA_SUCCESS,
+                    payload: deleteEmailTemplateResponse.data.response,
                 });
-              }
+            }
         } catch (error) {
             dispatch({
                 type: ManageEmailTemplateMap.DELETE_EMAIL_TEMPLATE_DATA_ERROR
@@ -119,19 +126,19 @@ export const deleteEmailTemplateDataAsync = (row,tokens) => {
 export const addEmailTemplateAsync = (data, tokens) => {
 
     return async (dispatch) => {
-        try { 
+        try {
             dispatch({
                 type: ManageEmailTemplateMap.ADD_EMAIL_TEMPLATE_DATA_START,
             })
             let addEmailTeamplateAsync = await axios({
                 url: `${emailTemplate}/saveEmailTemplate`,
-                method:"POST",
+                method: "POST",
                 data,
                 headers: {
                     tokens
                 }
             })
-            if(addEmailTeamplateAsync.data.response.responseCode === 200) {
+            if (addEmailTeamplateAsync.data.response.responseCode === 200) {
                 dispatch({
                     type: ManageEmailTemplateMap.ADD_EMAIL_TEMPLATE_DATA_SUCCESS,
                     payload: addEmailTeamplateAsync.data.response.data,
@@ -146,28 +153,28 @@ export const addEmailTemplateAsync = (data, tokens) => {
 }
 export const EditEmailTemplateAsync = (data, tokens) => {
     return async (dispatch) => {
-        try { 
+        try {
             dispatch({
                 type: ManageEmailTemplateMap.EDIT_EMAIL_TEMPLATE_DATA_START,
             })
             let updateEmailTemplate = await axios({
                 url: `${emailTemplate}/updateEmailTemplate/${data._id}`,
                 method: 'PUT',
-                data:{
-                    title:data.title,
-                    subject:data.subject,
-                    description:data.description
+                data: {
+                    title: data.title,
+                    subject: data.subject,
+                    description: data.description
                 },
                 headers: {
-                  tokens,
+                    tokens,
                 },
-              });
-              if(updateEmailTemplate.data.response.responseCode === 200) {
+            });
+            if (updateEmailTemplate.data.response.responseCode === 200) {
                 dispatch({
                     type: ManageEmailTemplateMap.ADD_EMAIL_TEMPLATE_DATA_SUCCESS,
                     payload: updateEmailTemplate.data.response.data,
                 })
-            } 
+            }
         } catch (error) {
             dispatch({
                 type: ManageEmailTemplateMap.EDIT_EMAIL_TEMPLATE_DATA_ERROR

@@ -1,50 +1,22 @@
 import React from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
-import paginationFactory from 'react-bootstrap-table2-paginator';
-
+import paginationFactory, { PaginationProvider } from 'react-bootstrap-table2-paginator';
+import { useSelector, useDispatch } from 'react-redux';
 import FirstInvoiceActionButtons from './FirstInvoiceActionButtons';
 import ExpandedFirstInvoice from './ExpandedFirstInvoice';
+import { orderInvoiceAction } from '../../../actions/orderInvoice.action'
+import { NoRecordsFoundMessage, PleaseWaitMessage } from "../../../../_metronic/_helpers";
+import { Pagination } from "../../../../_metronic/_partials/controls";
 
 const FirstInvoice = ({ firstInvoiceData }) => {
-  const customTotal = (from, to, size) => (
-    <span className='react-bootstrap-table-pagination-total ml-4'>
-      Showing {from} to {to} of {size} Results
-    </span>
-  );
 
-  const options = {
-    paginationSize: 4,
-    pageStartIndex: 1,
-    firstPageText: '<<',
-    prePageText: '<',
-    nextPageText: '>',
-    lastPageText: '>>',
-    nextPageTitle: 'First page',
-    prePageTitle: 'Pre page',
-    firstPageTitle: 'Next page',
-    lastPageTitle: 'Last page',
-    showTotal: true,
-    paginationTotalRenderer: customTotal,
-    disablePageTitle: true,
-    sizePerPageList: [
-      {
-        text: '3',
-        value: 3,
-      },
-      {
-        text: '5',
-        value: 5,
-      },
-      {
-        text: '10',
-        value: 10,
-      },
-      {
-        text: 'All',
-        value: firstInvoiceData.length,
-      },
-    ],
-  };
+  const dispatch = useDispatch();
+
+  const {
+    isLoading,
+    totalRecords,
+    pageNumber,
+    pageSize } = useSelector(state => state.orderInvoice)
 
   const columns = [
     {
@@ -84,18 +56,67 @@ const FirstInvoice = ({ firstInvoiceData }) => {
     expandByColumnOnly: true,
   };
 
+  const paginationOptions = {
+    custom: true,
+   // totalSize: totalRecords,
+    totalSize: 10,
+    sizePerPageList: [
+      { text: "3", value: 3 },
+      { text: "5", value: 5 },
+      { text: "10", value: 10 }
+    ],
+    sizePerPage: pageSize,
+    page: pageNumber,
+  };
+
+  const noDataIndication = () => {
+    return (
+      <>
+        {
+          isLoading ? (
+            <PleaseWaitMessage entities={null} />
+          ) : (
+              <NoRecordsFoundMessage entities={firstInvoiceData} />
+            )
+        }
+      </>
+    )
+  }
+
+  const onTableChange = (type, newState) => {
+    if (type === "pagination") {
+      if (newState.page && newState.page !== pageNumber) {
+        dispatch(orderInvoiceAction.setPage(newState.page));
+      }
+      if (newState.sizePerPage !== pageSize) {
+        dispatch(orderInvoiceAction.setPageSize(newState.sizePerPage));
+      }
+    }
+  }
+
   return (
-    <BootstrapTable
-      keyField='firstInvoiceId'
-      data={firstInvoiceData === null ? [] : firstInvoiceData}
-      columns={columns}
-      classes="center-last-col"
-      bordered={false}
-      noDataIndication='No records found!'
-      expandRow={expandRow}
-      pagination={paginationFactory(options)}
-    />
+    <PaginationProvider pagination={paginationFactory(paginationOptions)}>
+      {({ paginationProps, paginationTableProps }) => {
+        return (
+          <Pagination
+            isLoading={isLoading}
+            paginationProps={paginationProps}
+          >
+            <BootstrapTable
+              keyField='firstInvoiceId'
+              data={firstInvoiceData === null ? [] : firstInvoiceData}
+              columns={columns}
+              classes="center-last-col"
+              bordered={false}
+              expandRow={expandRow}
+              {...paginationTableProps}
+              noDataIndication={noDataIndication}
+              onTableChange={onTableChange}
+            />
+          </Pagination>
+        );
+      }}
+    </PaginationProvider>
   );
 };
-
 export default FirstInvoice;

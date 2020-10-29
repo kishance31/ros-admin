@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { shallowEqual, useSelector, useDispatch } from 'react-redux';
 import BootstrapTable from 'react-bootstrap-table-next';
-import {ActionButtons} from './LicenceOrder/ActionButtons';
+import { ActionButtons } from './LicenceOrder/ActionButtons';
 import {
-	displayCorporateManageLicenseDataAsync,
+	corporateManageLicenseAction,
+	displayCorporateManageLicenseDataAsync
 } from '../../actions/corporateManageLicense.action';
 import ViewModal from './LicenceOrder/ViewModal';
-import {
-	NoRecordsFoundMessage, generateLicensePDF
-} from "../../../_metronic/_helpers";
+import paginationFactory, { PaginationProvider } from 'react-bootstrap-table2-paginator';
+import { Pagination } from '../../../_metronic/_partials/controls';
+import { NoRecordsFoundMessage, generateLicensePDF } from "../../../_metronic/_helpers";
 
 const LicenceOrder = () => {
 
@@ -30,16 +31,17 @@ const LicenceOrder = () => {
 	const {
 		corporateManageLicenseData,
 		totalCount,
+		pageNumber,
 		pageSize,
-		pageNo,
+		isLoading,
 	} = useSelector((state) => state.corporateManageLicense, shallowEqual);
 
 	useEffect(() => {
 		dispatch(displayCorporateManageLicenseDataAsync());
-	}, [dispatch]);
+	}, []);
 
 	const onDownloadPdf = (row) => {
-		generateLicensePDF({data: row, corporate: row.corporateDetails})
+		generateLicensePDF({ data: row, corporate: row.corporateDetails })
 	}
 
 	const columns = [
@@ -77,6 +79,17 @@ const LicenceOrder = () => {
 			}
 		},
 	];
+	const paginationOptions = {
+		custom: true,
+		totalSize: totalCount,
+		sizePerPageList: [
+			{ text: "3", value: 3 },
+			{ text: "5", value: 5 },
+			{ text: "10", value: 10 }
+		],
+		sizePerPage: pageSize,
+		page: pageNumber,
+	};
 
 	const noDataIndication = () => {
 		return (
@@ -84,25 +97,43 @@ const LicenceOrder = () => {
 		)
 	}
 
-	
+	const onTableChange = (type, newState) => {
+		if (type === "pagination") {
+			if (newState.page && newState.page !== pageNumber) {
+				dispatch(corporateManageLicenseAction.setPage(newState.page));
+			}
+			if (newState.sizePerPage !== pageSize) {
+				dispatch(corporateManageLicenseAction.setPageSize(newState.sizePerPage));
+			}
+		}
+	}
 
 	return (
-		<>
-			<BootstrapTable
-				keyField='_id'
-				data={corporateManageLicenseData}
-				classes="center-last-col"
-				columns={columns}
-				bordered={false}
-				noDataIndication={noDataIndication}
-			/>
-			<ViewModal
-				show={show}
-				handleClose={handleClose}
-				orderDetails={selectedRow}
-			/>
-		</>
+		<PaginationProvider pagination={paginationFactory(paginationOptions)}>
+			{({ paginationProps, paginationTableProps }) => {
+				return (
+					<Pagination
+						isLoading={isLoading}
+						paginationProps={paginationProps}
+					>
+						<BootstrapTable
+							keyField='_id'
+							data={corporateManageLicenseData}
+							columns={columns}
+							bordered={false}
+							{...paginationTableProps}
+							noDataIndication={noDataIndication}
+							onTableChange={onTableChange}
+						/>
+						<ViewModal
+							show={show}
+							handleClose={handleClose}
+							orderDetails={selectedRow}
+						/>
+					</Pagination>
+				);
+			}}
+		</PaginationProvider>
 	);
 };
-
 export default LicenceOrder;
