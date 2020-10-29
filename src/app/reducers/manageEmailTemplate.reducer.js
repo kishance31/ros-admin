@@ -18,7 +18,7 @@ const initialState = {
 
 const manageEmailTemplateReducer = (state = initialState, action) => {
     switch (action.type) {
-        case ManageEmailTemplateMap.CLOSE_MODAL: {
+        case ManageEmailTemplateMap.CLOSE_EMAIL_MODAL: {
             return {
                 ...state,
                 manageEmailModal: {
@@ -27,7 +27,7 @@ const manageEmailTemplateReducer = (state = initialState, action) => {
                 selectedEmailTemplate: null,
             }
         }
-        case ManageEmailTemplateMap.OPEN_MODAL: {
+        case ManageEmailTemplateMap.OPEN_EMAIL_MODAL: {
             return {
                 ...state,
                 manageEmailModal: {
@@ -35,13 +35,13 @@ const manageEmailTemplateReducer = (state = initialState, action) => {
                 }
             }
         }
-        case ManageEmailTemplateMap.OPEN_DIALOG: {
+        case ManageEmailTemplateMap.OPEN_EMAIL_DELETE_DIALOG: {
             return {
                 ...state,
                 modalDialog: true,
             }
         }
-        case ManageEmailTemplateMap.CLOSE_DIALOG: {
+        case ManageEmailTemplateMap.CLOSE_EMAIL_DELETE_DIALOG: {
             return {
                 ...state,
                 modalDialog: false,
@@ -51,8 +51,8 @@ const manageEmailTemplateReducer = (state = initialState, action) => {
         case ManageEmailTemplateMap.DISPLAY_EMAIL_TEMPLATE_DATA_SUCCESS: {
             return {
                 ...state,
-                displaylist: action.payload,
-                totalCount: state.displaylist.count,
+                displaylist: action.payload.list,
+                totalCount: action.payload.totalCount,
                 refreshEmailTemplateData: false,
                 emailTemplateDeleted:false,
                 emailAddedSuccessfully:false,
@@ -65,14 +65,14 @@ const manageEmailTemplateReducer = (state = initialState, action) => {
                 refreshEmailTemplateData: false
             }
         }
-        case ManageEmailTemplateMap.DELETE_EMAIL_TEMPLATE_DATA_SUCCESS: {
+        case ManageEmailTemplateMap.STATUS_EMAIL_TEMPLATE_DATA_SUCCESS: {
             return {
                 ...state,
                 refreshEmailTemplateData: true,
                 emailTemplateDeleted: true
             }
         }
-        case ManageEmailTemplateMap.DELETE_EMAIL_TEMPLATE_DATA_ERROR: {
+        case ManageEmailTemplateMap.STATUS_EMAIL_TEMPLATE_DATA_ERROR: {
             return {
                 ...state,
                 refreshEmailTemplateData: false,

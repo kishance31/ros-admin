@@ -1,11 +1,10 @@
-import React, { useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, Button } from 'react-bootstrap';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import ManageEmailTable from './EmailTemplateContainer/Email-Table';
 import AddEmailEditForm from './EmailTemplateContainer/Add-Email';
-import {showSuccessSnackbar} from '../../actions/snackbar.action'
-import { ManageEmailTemplateAction, displayEmailTemplateDataAsync,deleteEmailTemplateDataAsync } from '../../actions/manageEmailTemplate.action';
-import { getAllRolesAsync } from '../../actions/rolesAndPermission.action';
+import { showSuccessSnackbar } from '../../actions/snackbar.action'
+import { ManageEmailTemplateAction, displayEmailTemplateDataAsync, statusEmailTemplateDataAsync } from '../../actions/manageEmailTemplate.action';
 import { Card, CardBody, CardHeader, CardHeaderToolbar } from '../../../_metronic/_partials/controls';
 import DeleteModalContainer from "./EmailTemplateContainer/Delete-Modal-Container";
 
@@ -21,7 +20,6 @@ const ManageUsers = () => {
     emailTemplateDeleted,
     refreshEmailTemplateData
   } = useSelector(state => state.emailTemplate, shallowEqual)
-  const { roles, refreshRoles } = useSelector(state => state.rolesAndPermission, shallowEqual);
 
   useEffect(() => {
     if (refreshEmailTemplateData) {
@@ -31,14 +29,14 @@ const ManageUsers = () => {
 
   useEffect(() => {
     if (emailAddedSuccessfully) {
-      dispatch(showSuccessSnackbar('success',"Email template added successfully",2000));
+      dispatch(showSuccessSnackbar('success', "Email template added successfully", 2000));
     } if (emailTemplateUpdated) {
-      dispatch(showSuccessSnackbar('success',"Email template updated successfully",2000));
+      dispatch(showSuccessSnackbar('success', "Email template updated successfully", 2000));
     }
-     if (emailTemplateDeleted) {
-      dispatch(showSuccessSnackbar('success',"Email template deleted successfully",2000));
-     }
-  }, [emailAddedSuccessfully,emailTemplateUpdated,emailTemplateDeleted]);
+    if (emailTemplateDeleted) {
+      dispatch(showSuccessSnackbar('success', "Email template deleted successfully", 2000));
+    }
+  }, [emailAddedSuccessfully, emailTemplateUpdated, emailTemplateDeleted]);
 
 
   const onOpenModal = () => {
@@ -49,7 +47,7 @@ const ManageUsers = () => {
     dispatch(ManageEmailTemplateAction.closeModal());
   };
 
-  const setSelectedUser = (row,rowIndex) => {
+  const setSelectedUser = (row) => {
     dispatch(ManageEmailTemplateAction.setSelectedEmailTemplate(row));
   }
 
@@ -62,8 +60,8 @@ const ManageUsers = () => {
   }
 
   const onDeleteUser = () => {
-dispatch(deleteEmailTemplateDataAsync(selectedEmailTemplate))
-onCloseDialog()
+    dispatch(statusEmailTemplateDataAsync(selectedEmailTemplate))
+    onCloseDialog()
   }
 
   return (
@@ -84,19 +82,18 @@ onCloseDialog()
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <AddEmailEditForm onCloseModal={onCloseModal}  selectedEmail={selectedEmailTemplate}  roles={roles} />
+              <AddEmailEditForm onCloseModal={onCloseModal} selectedEmail={selectedEmailTemplate} />
             </Modal.Body>
           </Modal>
           <DeleteModalContainer
             modalDialog={modalDialog}
-            onOpenDialog={onOpenDialog}
             onCloseDialog={onCloseDialog}
             onDeleteUser={onDeleteUser}
+            selectedEmailTemplate={selectedEmailTemplate}
           />
           <ManageEmailTable
             modalDialog={modalDialog}
             onOpenDialog={onOpenDialog}
-            onCloseDialog={onCloseDialog}
             onOpenModal={onOpenModal}
             setSelectedUser={setSelectedUser}
           />

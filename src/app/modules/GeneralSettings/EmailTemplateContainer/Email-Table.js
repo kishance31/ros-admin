@@ -84,7 +84,7 @@ const ManageEmailTable = ({ onOpenModal, setSelectedUser, onOpenDialog }) => {
         classes='table table-head-custom table-vertical-center center-last-col'
         bootstrap4
         bordered={false}
-        keyField='email'
+        keyField='title'
         data={displaylist}
         noDataIndication='No records found!'
         columns={columns}

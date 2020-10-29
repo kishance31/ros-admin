@@ -22,7 +22,7 @@ const ManageEmailSchema = (user) => (Yup.object().shape({
 
 }));
 
-const AddEmailForm = ({ actionsLoading, selectedEmail, roles, onCloseModal }) => {
+const AddEmailForm = ({ actionsLoading, selectedEmail, onCloseModal }) => {
 
   const dispatch = useDispatch();
   const addEmail = (values) => {
