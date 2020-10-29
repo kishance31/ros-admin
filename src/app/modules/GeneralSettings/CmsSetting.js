@@ -1,16 +1,16 @@
 import React from 'react'
 import { NavLink, Switch } from 'react-router-dom';
-import AboutUs from '../GeneralSettings/CmsSettingContainer/AboutUs';
-import ContactUs from '../GeneralSettings/CmsSettingContainer/ContactUs';
+import AboutUs from './CmsSettingContainer/AboutUs';
+import ContactUs from './CmsSettingContainer/ContactUs';
 import { ContentRoute } from '../../../_metronic/layout'
 import { Card } from '../../../_metronic/_partials/controls';
-
+import ContactUsQueries from './CmsSettingContainer/ContactUsQueries';
 
 const CmsSetting = () => {
     return (
         <>
             <div className="row">
-                <div className="col-lg-6">
+                <div className="col-lg-12">
                     <Card>
                         <div className="card-body pb-5">
                             <div className='d-flex align-items-center nav-tabs mb-0'>
@@ -18,17 +18,15 @@ const CmsSetting = () => {
                                     <span>About Us</span>
                                 </NavLink>
 
-                                <NavLink className="nav-link" to='/general-settings/cms-settings/Contact-us'>
-                                    <span>Contact Us</span>
+                                <NavLink className="nav-link" to='/general-settings/cms-settings/get-in-touch'>
+                                    <span>Get In Touch</span>
                                 </NavLink>
 
-                                {/* <NavLink className="nav-link" to='/general-settings/cms-settings/notifications'>
-                                    <span>Notifications</span>
-                                </NavLink> */}
-
+                                <NavLink className="nav-link" to='/general-settings/cms-settings/contact-us'>
+                                    <span>Contact Us Queries</span>
+                                </NavLink>
                             </div>
                         </div>
-
                         <Switch>
                             <ContentRoute
                                 path='/general-settings/cms-settings/about-us'
@@ -36,9 +34,14 @@ const CmsSetting = () => {
                                 component={AboutUs}
                             />
                             <ContentRoute
-                                path='/general-settings/cms-settings/Contact-us'
+                                path='/general-settings/cms-settings/get-in-touch'
                                 exact
                                 component={ContactUs}
+                            />
+                            <ContentRoute
+                                path='/general-settings/cms-settings/contact-us'
+                                exact
+                                component={ContactUsQueries}
                             />
                         </Switch>
                     </Card>
