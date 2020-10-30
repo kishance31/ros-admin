@@ -222,13 +222,13 @@ export const updateAdminStatusAsync = (id, isActive) => {
                 data: { isActive }
             });
             if (data.response && data.response.responseCode === 200) {
-                dispatch(showSuccessSnackbar('success',"User Deleted Successfully",3000));
+                dispatch(showSuccessSnackbar('success',`User ${isActive ? "Activate" : "Deactivate"} Successfull`,3000));
                 dispatch(ManageUserAction.updateUserSuccess());
             }else{
-                dispatch(showSuccessSnackbar('error',"Not Deleted",3000));
+                dispatch(showSuccessSnackbar('error',"Error updating user status",3000));
             dispatch(ManageUserAction.updateUserError());
         }} catch (error) {
-            dispatch(showSuccessSnackbar('error',"Not Deleted",3000));
+            dispatch(showSuccessSnackbar('error',"Error updating user status",3000));
             dispatch(ManageUserAction.updateUserError());
         }
     }
