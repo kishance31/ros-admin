@@ -3,8 +3,8 @@ import { Modal, Button } from 'react-bootstrap';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch } from 'react-redux';
-import { updateContactUsQueryAsync } from '../../../actions/cmsSetting.action';
-import { Input } from '../../../../_metronic/_partials/controls';
+import { updateContactUsQueryAsync } from '../../../../actions/cmsSetting.action';
+import { Input } from '../../../../../_metronic/_partials/controls';
 
 const ContactUsReplySchema = Yup.object().shape({
     textArea: Yup.string()

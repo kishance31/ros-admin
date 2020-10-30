@@ -23,4 +23,4 @@ const ContactUsQueriesFormatter = (
     )
 }
 
-export default ContactUsQueriesFormatter
+export default ContactUsQueriesFormatter;

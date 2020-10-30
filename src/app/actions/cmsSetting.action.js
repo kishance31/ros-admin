@@ -5,6 +5,8 @@ import { showSuccessSnackbar } from './snackbar.action';
 export const cmsSettingsMap = {
     OPEN_REPLY_MODAL: 'OPEN_REPLY_MODAL',
     CLOSE_REPLY_MODAL: 'CLOSE_REPLY_MODAL',
+    OPEN_FAQ_MODAL: 'OPEN_FAQ_MODAL',
+    CLOSE_FAQ_MODAL: 'CLOSE_FAQ_MODAL',
     SAVE_CONTACT_US_SUCCESSFULLY: 'SAVE_CONTACT_US_SUCCESSFULLY',
     UPDATE_CONTACT_US_SUCCESSFULLY: 'UPDATE_CONTACT_US_SUCCESSFULLY',
     UPDATE_CONTACT_US_FAIL: 'UPDATE_CONTACT_US_FAIL',
@@ -24,16 +26,10 @@ export const cmsSettingsMap = {
 }
 
 export const cmsSettingsAction = {
-    openReplyModal: () => {
-        return {
-            type: cmsSettingsMap.OPEN_REPLY_MODAL
-        }
-    },
-    closeReplyModal: () => {
-        return {
-            type: cmsSettingsMap.CLOSE_REPLY_MODAL
-        }
-    },
+    openReplyModal: () => { return { type: cmsSettingsMap.OPEN_REPLY_MODAL } },
+    closeReplyModal: () => { return { type: cmsSettingsMap.CLOSE_REPLY_MODAL } },
+    openFAQModal: () => { return { type: cmsSettingsMap.OPEN_FAQ_MODAL } },
+    closeFAQModal: () => { return { type: cmsSettingsMap.CLOSE_FAQ_MODAL } },
     addContactUsDetails: (data) => ({ type: cmsSettingsMap.UPDATE_CONTACT_US_SUCCESSFULLY, payload: data }),
     addAboutUsDetails: (data) => ({ type: cmsSettingsMap.SAVE_ABOUT_US_SUCCESSFULLY, payload: data }),
     setPage: (num) => ({ type: cmsSettingsMap.SET_PAGE, payload: num }),

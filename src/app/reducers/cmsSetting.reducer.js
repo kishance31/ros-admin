@@ -1,6 +1,9 @@
 import { cmsSettingsMap } from '../actions/cmsSetting.action';
 
 const initialCmsSettings = {
+    FAQModal: {
+        modalState: false,
+    },
     modalReplyDialog: false,
     contactUs: {
         contact: "",
