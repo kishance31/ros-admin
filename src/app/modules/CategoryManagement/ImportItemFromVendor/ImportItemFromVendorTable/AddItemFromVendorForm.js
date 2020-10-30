@@ -5,10 +5,11 @@ import { Formik, Form, Field } from "formik";
 import {
     Input,
     Select
-
 } from '../../../../../_metronic/_partials/controls';
 import { addVendorItemAsync, displaySubCategoryList, EditProductAsync } from '../../../../actions/categoryManagementModal.action';
 import { useSelector } from 'react-redux';
+const { customAlphabet } = require('nanoid/async');
+const numberNanoId = customAlphabet('1234567890-', 9);
 
 const AddItemFromVendorForm = (props) => {
     const { onHideVendorModal } = props;
@@ -22,11 +23,16 @@ const AddItemFromVendorForm = (props) => {
     const LicenseList = useSelector(state => state.licenceManagement.licenseList);
 
     const [imgSrc, setImgSrc] = useState(selectedVendorItem.product_image ? selectedVendorItem.product_image : "");
+    const [producId, setProductId] = useState("");
 
     useEffect(() => {
         if (selectedVendorItem.category_id) {
             dispatch(displaySubCategoryList(selectedVendorItem.category_id))
         }
+        (async function () {
+            let numberId = await numberNanoId();
+            setProductId(numberId);
+        })()
     }, [])
 
     const categorySelected = (value) => {
@@ -42,7 +48,6 @@ const AddItemFromVendorForm = (props) => {
                     setFieldValue('product_image', input.files[0])
                 }
             };
-
             reader.readAsDataURL(input.files[0]);
         }
     }
@@ -55,7 +60,7 @@ const AddItemFromVendorForm = (props) => {
             data.append('product_image', values.product_image)
         }
         data.set("category_id", values.category_id)
-        if(values.sub_category_id) {
+        if (values.sub_category_id) {
             data.set("sub_category_id", values.sub_category_id)
         }
         data.set("license_id", values.license_id._id ? values.license_id._id : values.license_id)
@@ -72,7 +77,7 @@ const AddItemFromVendorForm = (props) => {
         }
     }
 
-    const initialValues = {
+    const initialValues = selectedVendorItem.product_name ? selectedVendorItem : {
         category_id: "",
         sub_category_id: "",
         license_id: "",
@@ -87,11 +92,12 @@ const AddItemFromVendorForm = (props) => {
 
     return (
         <Formik
-            initialValues={selectedVendorItem.product_name ? selectedVendorItem : initialValues}
+            initialValues={initialValues}
             // validator={() => ({})}
             onSubmit={(values) => {
                 addVendorData(values)
             }}
+            enableReinitialize
         >
             {({ values, handleSubmit, setFieldValue }) => (
                 <>
@@ -148,9 +154,11 @@ const AddItemFromVendorForm = (props) => {
                                         name="license_id"
                                         placeholder="Select License"
                                         onChange={(e) => {
-                                            console.log('SELECTED VALUES3', e.target.value);
                                             setFieldValue("license_id", e.target.value);
-
+                                            if (e.target.value) {
+                                                let licenseType = LicenseList.find(license => license._id === e.target.value);
+                                                setFieldValue("ros_code", licenseType.type.charAt(0).toUpperCase() + "-" + producId);
+                                            }
                                         }}
                                         value={values.license_id ? values.license_id._id : values.license_id}
                                     >
@@ -235,6 +243,7 @@ const AddItemFromVendorForm = (props) => {
                                         placeholder="ROS Code"
                                         label="ROS Code"
                                         value={values.ros_code}
+                                        disabled
                                     />
                                 </div>
 
@@ -284,7 +293,7 @@ const AddItemFromVendorForm = (props) => {
                             className="btn btn-light btn-elevate"
                         >
                             Cancel
-              </button>
+                        </button>
                         <> </>
                         <button
                             type="submit"
@@ -294,7 +303,7 @@ const AddItemFromVendorForm = (props) => {
                         >
                             <span>Save</span>
                             {isLoading && <span className="ml-3 spinner spinner-white"></span>}
-              </button>
+                        </button>
                     </Modal.Footer>
                 </>
             )}

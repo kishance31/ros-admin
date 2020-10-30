@@ -15,12 +15,12 @@ export const RoleAndPermisionFormatter = (cellContent, row, rowIndex, props) => 
                 <ButtonGroup>
                     <Button className="btn btn-icon btn-light btn-sm mx-3" onClick={editBtnClick}>
                         <span className="svg-icon svg-icon-md svg-icon-primary">
-                            <i class="fa fa-edit" title="Edit"></i>
+                            <i className="fa fa-edit" title="Edit"></i>
                         </span>
                     </Button>&nbsp;&nbsp;
                 <Button className="btn btn-icon btn-light btn-sm" onClick={deleteBtnClick}>
                         <span className="svg-icon svg-icon-md svg-icon-danger">
-                            <i class="fa fa-trash" title="Delete"></i>
+                            <i className="fa fa-trash" title="Delete"></i>
                         </span>
                     </Button>
                 </ButtonGroup>

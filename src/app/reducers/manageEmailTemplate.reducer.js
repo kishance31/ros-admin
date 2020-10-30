@@ -9,17 +9,18 @@ const initialState = {
     emailTemplateUpdated: false,
     emailAddedSuccessfully: false,
     emailTemplateDeleted: false,
-    totalCount:10,
+    totalCount: 0,
     selectedEmailTemplate: null,
     refreshEmailTemplateData: true,
     pageNumber: 1,
     pageSize: 5,
+    isLoading: false,
 }
 
 
 const manageEmailTemplateReducer = (state = initialState, action) => {
     switch (action.type) {
-        case ManageEmailTemplateMap.CLOSE_MODAL: {
+        case ManageEmailTemplateMap.CLOSE_EMAIL_MODAL: {
             return {
                 ...state,
                 manageEmailModal: {
@@ -28,7 +29,7 @@ const manageEmailTemplateReducer = (state = initialState, action) => {
                 selectedEmailTemplate: null,
             }
         }
-        case ManageEmailTemplateMap.OPEN_MODAL: {
+        case ManageEmailTemplateMap.OPEN_EMAIL_MODAL: {
             return {
                 ...state,
                 manageEmailModal: {
@@ -36,46 +37,61 @@ const manageEmailTemplateReducer = (state = initialState, action) => {
                 }
             }
         }
-        case ManageEmailTemplateMap.OPEN_DIALOG: {
+        case ManageEmailTemplateMap.OPEN_EMAIL_DELETE_DIALOG: {
             return {
                 ...state,
                 modalDialog: true,
             }
         }
-        case ManageEmailTemplateMap.CLOSE_DIALOG: {
+        case ManageEmailTemplateMap.CLOSE_EMAIL_DELETE_DIALOG: {
             return {
                 ...state,
                 modalDialog: false,
                 selectedEmailTemplate: null,
             }
         }
+
+        case ManageEmailTemplateMap.ADD_EMAIL_TEMPLATE_DATA_START:
+        case ManageEmailTemplateMap.EDIT_EMAIL_TEMPLATE_DATA_START:
+        // case ManageEmailTemplateMap.STATUS_EMAIL_TEMPLATE_DATA_START:
+        case ManageEmailTemplateMap.DISPLAY_EMAIL_TEMPLATE_DATA_START: {
+            return {
+                ...state,
+                isLoading: true,
+            }
+        }
+
         case ManageEmailTemplateMap.DISPLAY_EMAIL_TEMPLATE_DATA_SUCCESS: {
             return {
                 ...state,
-                displaylist: action.payload,
-                totalCount: state.displaylist.count,
+                displaylist: action.payload.list,
+                totalCount: action.payload.totalCount,
                 refreshEmailTemplateData: false,
                 emailTemplateDeleted: false,
                 emailAddedSuccessfully: false,
+                isLoading: false,
             }
         }
         case ManageEmailTemplateMap.DISPLAY_EMAIL_TEMPLATE_DATA_ERROR: {
             return {
                 ...state,
-                refreshEmailTemplateData: false
+                refreshEmailTemplateData: false,
+                isLoading: false,
             }
         }
-        case ManageEmailTemplateMap.DELETE_EMAIL_TEMPLATE_DATA_SUCCESS: {
+        case ManageEmailTemplateMap.STATUS_EMAIL_TEMPLATE_DATA_SUCCESS: {
             return {
                 ...state,
                 refreshEmailTemplateData: true,
-                emailTemplateDeleted: true
+                emailTemplateDeleted: true,
+                isLoading: false,
             }
         }
-        case ManageEmailTemplateMap.DELETE_EMAIL_TEMPLATE_DATA_ERROR: {
+        case ManageEmailTemplateMap.STATUS_EMAIL_TEMPLATE_DATA_ERROR: {
             return {
                 ...state,
                 refreshEmailTemplateData: false,
+                isLoading: false,
             }
         }
         case ManageEmailTemplateMap.ADD_EMAIL_TEMPLATE_DATA_SUCCESS: {
@@ -84,6 +100,7 @@ const manageEmailTemplateReducer = (state = initialState, action) => {
                 displaylist: action.payload,
                 emailAddedSuccessfully: true,
                 refreshEmailTemplateData: true,
+                isLoading: false,
             }
         }
 
@@ -93,6 +110,7 @@ const manageEmailTemplateReducer = (state = initialState, action) => {
                 displaylist: state.displaylist,
                 totalCount: state.displaylist.count,
                 refreshEmailTemplateData: false,
+                isLoading: false,
             }
         }
         case ManageEmailTemplateMap.EDIT_EMAIL_TEMPLATE_DATA_SUCCESS: {
@@ -101,6 +119,7 @@ const manageEmailTemplateReducer = (state = initialState, action) => {
                 displaylist: state.displaylist,
                 emailTemplateUpdated: true,
                 refreshEmailTemplateData: true,
+                isLoading: false,
 
             }
         }
@@ -108,6 +127,7 @@ const manageEmailTemplateReducer = (state = initialState, action) => {
             return {
                 ...state,
                 refreshEmailTemplateData: false,
+                isLoading: false,
             }
         }
         case ManageEmailTemplateMap.REFRESH_EMAIL_TEMPLATE_DATA: {

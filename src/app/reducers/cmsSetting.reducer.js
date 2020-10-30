@@ -109,7 +109,7 @@ const cmsSettingsReducer = (state = initialCmsSettings, action) => {
         case cmsSettingsMap.GET_CONTACT_US_QUERY_SUCCESS: {
             return {
                 ...state,
-                contactQueryList: action.payload.list,
+                contactQueryList: [...action.payload.list],
                 totalCount: action.payload.totalCount,
                 refereshContactUsData: false,
                 isLoading: false,
@@ -140,7 +140,7 @@ const cmsSettingsReducer = (state = initialCmsSettings, action) => {
             return {
                 ...state,
                 isLoading: false,
-                refereshContactUsData: true,
+                refereshContactUsData: false,
             }
         }
         case cmsSettingsMap.SET_PAGE: {

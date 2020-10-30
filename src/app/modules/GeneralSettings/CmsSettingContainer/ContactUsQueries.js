@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Card, CardBody } from '../../../../_metronic/_partials/controls';
 import ContactUsQueriesTable from './ContactUsQueriesContainer/ContactUsQueriesTable';
-import { cmsSettingsAction, getContactUsQueryAsync } from '../../../actions/cmsSetting.action';
+import { cmsSettingsAction, getContactUsQueryAsync, updateContactUsQueryAsync } from '../../../actions/cmsSetting.action';
 import ContactUsReplyContainer from './ContactUsQueriesContainer/ContactUsReplyContainer';
 
 const ContactUsQueries = () => {
@@ -33,7 +33,13 @@ const ContactUsQueries = () => {
 
     const onCloseReplyModal = () => {
         dispatch(cmsSettingsAction.closeReplyModal());
+        setSelectedRow(null);
     };
+
+    const onCommentReply = (values) => {
+        dispatch(updateContactUsQueryAsync({ ...values }, selectedRow._id));
+        onCloseReplyModal();
+    }
 
     return (
         <div>
@@ -54,6 +60,7 @@ const ContactUsQueries = () => {
                         modalReplyDialog={modalReplyDialog}
                         onCloseReplyModal={onCloseReplyModal}
                         selectedRow={selectedRow}
+                        onCommentReply={onCommentReply}
                     />
                 </CardBody>
             </Card>

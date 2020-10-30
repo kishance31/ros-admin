@@ -2,10 +2,10 @@ import axios from 'axios';
 import getServerCore from '../../utils/apiUtils';
 
 export const ManageEmailTemplateMap = {
-    OPEN_MODAL: 'OPEN_MODAL',
-    CLOSE_MODAL: 'CLOSE_MODAL',
-    OPEN_DIALOG: 'OPEN_DIALOG',
-    CLOSE_DIALOG: 'CLOSE_DIALOG',
+    OPEN_EMAIL_MODAL: 'OPEN_EMAIL_MODAL',
+    CLOSE_EMAIL_MODAL: 'CLOSE_EMAIL_MODAL',
+    OPEN_EMAIL_DELETE_DIALOG: 'OPEN_EMAIL_DELETE_DIALOG',
+    CLOSE_EMAIL_DELETE_DIALOG: 'CLOSE_EMAIL_DELETE_DIALOG',
     ADD_EMAIL_TEMPLATE_DATA_START: 'ADD_EMAIL_TEMPLATE_DATA_START',
     ADD_EMAIL_TEMPLATE_DATA_SUCCESS: 'ADD_EMAIL_TEMPLATE_DATA_SUCCESS',
     ADD_EMAIL_TEMPLATE_DATA_ERROR: 'ADD_EMAIL_TEMPLATE_DATA_ERROR',
@@ -15,9 +15,9 @@ export const ManageEmailTemplateMap = {
     EDIT_EMAIL_TEMPLATE_DATA_START: 'EDIT_EMAIL_TEMPLATE_DATA_START',
     EDIT_EMAIL_TEMPLATE_DATA_SUCCESS: 'EDIT_EMAIL_TEMPLATE_DATA_SUCCESS',
     EDIT_EMAIL_TEMPLATE_DATA_ERROR: 'EDIT_EMAIL_TEMPLATE_DATA_ERROR',
-    DELETE_EMAIL_TEMPLATE_DATA_START: 'DELETE_EMAIL_TEMPLATE_DATA_START',
-    DELETE_EMAIL_TEMPLATE_DATA_SUCCESS: 'DELETE_EMAIL_TEMPLATE_DATA_SUCCESS',
-    DELETE_EMAIL_TEMPLATE_DATA_ERROR: 'DELETE_EMAIL_TEMPLATE_DATA_ERROR',
+    STATUS_EMAIL_TEMPLATE_DATA_START: 'STATUS_EMAIL_TEMPLATE_DATA_START',
+    STATUS_EMAIL_TEMPLATE_DATA_SUCCESS: 'STATUS_EMAIL_TEMPLATE_DATA_SUCCESS',
+    STATUS_EMAIL_TEMPLATE_DATA_ERROR: 'STATUS_EMAIL_TEMPLATE_DATA_ERROR',
     UPDATE_ADMIN_STATUS_START: 'UPDATE_ADMIN_STATUS_START',
     UPDATE_ADMIN_STATUS_SUCCESS: 'UPDATE_ADMIN_STATUS_SUCCESS',
     UPDATE_ADMIN_STATUS_ERROR: 'UPDATE_ADMIN_STATUS_ERROR',
@@ -30,22 +30,22 @@ export const ManageEmailTemplateMap = {
 export const ManageEmailTemplateAction = {
     openModal: () => {
         return {
-            type: ManageEmailTemplateMap.OPEN_MODAL
+            type: ManageEmailTemplateMap.OPEN_EMAIL_MODAL
         }
     },
     closeModal: () => {
         return {
-            type: ManageEmailTemplateMap.CLOSE_MODAL
+            type: ManageEmailTemplateMap.CLOSE_EMAIL_MODAL
         }
     },
     openDialog: () => {
         return {
-            type: ManageEmailTemplateMap.OPEN_DIALOG
+            type: ManageEmailTemplateMap.OPEN_EMAIL_DELETE_DIALOG
         }
     },
     closeDialog: () => {
         return {
-            type: ManageEmailTemplateMap.CLOSE_DIALOG
+            type: ManageEmailTemplateMap.CLOSE_EMAIL_DELETE_DIALOG
         }
     },
     refreshManageUserData: () => {
@@ -71,54 +71,56 @@ export const displayEmailTemplateDataAsync = (tokens) => {
         try {
             dispatch({
                 type: ManageEmailTemplateMap.DISPLAY_EMAIL_TEMPLATE_DATA_START,
-            });
-            const { pageNumber, pageSize } = getState().emailTemplate
-            let ManageEmailTemplateResponse = await axios({
-                url: `${emailTemplate}/getEmailTemplateList`,
-                //url: `${emailTemplate}/getEmailTemplateList/${pageNumber - 1}/${pageSize}`,
+            })
+            const { pageSize, pageNumber } = getState().emailTemplate;
+            let { data } = await axios({
+                url: `${emailTemplate}/getEmailTemplateList/${pageNumber - 1}/${pageSize}`,
                 method: 'GET',
                 headers: {
                     tokens,
                     'Content-Type': 'application/json',
                 },
             });
-            if (ManageEmailTemplateResponse.data.response.responseCode === 200) {
+            if (data.response && data.response.responseCode === 200) {
                 dispatch({
                     type: ManageEmailTemplateMap.DISPLAY_EMAIL_TEMPLATE_DATA_SUCCESS,
-                    payload: ManageEmailTemplateResponse.data.response.data,
+                    payload: data.response,
                 });
             }
-        } catch (error) {
+        } catch (err) {
             dispatch({
-                type: ManageEmailTemplateMap.DISPLAY_EMAIL_TEMPLATE_DATA_ERROR
+                type: ManageEmailTemplateMap.DISPLAY_EMAIL_TEMPLATE_DATA_ERROR,
             });
         }
     };
 };
 
 
-export const deleteEmailTemplateDataAsync = (row, tokens) => {
+export const statusEmailTemplateDataAsync = (row, tokens) => {
     return async (dispatch) => {
         try {
             dispatch({
-                type: ManageEmailTemplateMap.DELETE_EMAIL_TEMPLATE_DATA_START,
+                type: ManageEmailTemplateMap.STATUS_EMAIL_TEMPLATE_DATA_START,
             })
-            let deleteEmailTemplateResponse = await axios({
-                url: `${emailTemplate}/deleteEmailTemplate/${row._id}`,
-                method: 'DELETE',
+            let { data } = await axios({
+                url: `${emailTemplate}/updateEmailTemplateStatus/${row._id}`,
+                method: 'POST',
                 headers: {
                     tokens
                 },
+                data: {
+                    isActive: !row.isActive,
+                }
             });
-            if (deleteEmailTemplateResponse.data.response.responseCode === 200) {
+            if (data.response.responseCode === 200) {
                 dispatch({
-                    type: ManageEmailTemplateMap.DELETE_EMAIL_TEMPLATE_DATA_SUCCESS,
-                    payload: deleteEmailTemplateResponse.data.response,
+                    type: ManageEmailTemplateMap.STATUS_EMAIL_TEMPLATE_DATA_SUCCESS,
+                    payload: data.response,
                 });
             }
         } catch (error) {
             dispatch({
-                type: ManageEmailTemplateMap.DELETE_EMAIL_TEMPLATE_DATA_ERROR
+                type: ManageEmailTemplateMap.STATUS_EMAIL_TEMPLATE_DATA_ERROR
             })
         }
     }

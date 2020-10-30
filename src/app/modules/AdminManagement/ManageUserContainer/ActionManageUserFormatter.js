@@ -1,5 +1,8 @@
 import React from "react";
 import { Button, ButtonGroup } from "react-bootstrap";
+import SVG from "react-inlinesvg";
+import { toAbsoluteUrl } from "../../../../_metronic/_helpers";
+import Switch from '@material-ui/core/Switch';
 
 export function ActionManageUserFormatter(cellContent, row, rowIndex,
     { onOpenModal, setSelectedUser, onOpenDialog, onOpenActiveDialog, onOpenDeactiveDialog }) {
@@ -26,7 +29,46 @@ export function ActionManageUserFormatter(cellContent, row, rowIndex,
 
     return (
         <>
-            <ButtonGroup>
+            <a
+                title="Edit user"
+                className="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+                onClick={() => onEditUser(row)}
+            >
+                <span className="svg-icon svg-icon-md svg-icon-primary">
+                    <SVG
+                        src={toAbsoluteUrl("/media/svg/icons/Communication/Write.svg")}
+                    />
+                </span>
+            </a>
+            <a
+                title="Delete customer"
+                className="btn btn-icon btn-light btn-hover-danger btn-sm"
+                onClick={() => onDeleteUser()}
+            >
+                <span className="svg-icon svg-icon-md svg-icon-danger">
+                    <SVG src={toAbsoluteUrl("/media/svg/icons/General/Trash.svg")} />
+                </span>
+            </a>
+            <Switch
+                checked={row.isActive}
+                size="small"
+                className="mt-1"
+                onChange={() => {
+                    if(row.isActive) {
+                        deactiveUser();
+                    } else {
+                        activeUser();
+                    }
+                }}
+                color="secondary"
+                name="userStatus"
+                inputProps={{ 'aria-label': 'primary checkbox' }}
+                title={row.isActive ? "Deactivate" : "Activate"}
+            />
+
+
+
+            {/* <ButtonGroup>
                 <Button onClick={() => onEditUser(row)} className="btn btn-icon btn-light btn-sm">
                     <span className="svg-icon svg-icon-md svg-icon-primary">
                         <i class="fa fa-edit" title="Edit" title="Edit"></i>
@@ -55,7 +97,7 @@ export function ActionManageUserFormatter(cellContent, row, rowIndex,
                             </Button>
                         )
                 }
-            </ButtonGroup>
+            </ButtonGroup> */}
         </>
     );
 }

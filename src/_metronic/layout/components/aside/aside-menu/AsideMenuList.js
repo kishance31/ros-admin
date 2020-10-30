@@ -247,7 +247,7 @@ export function AsideMenuList({ layoutProps }) {
 								aria-haspopup="true"
 								data-menu-toggle="hover"
 							>
-								<NavLink className="menu-link" to="/general-settings/cms-settings/about-us">
+								<NavLink className="menu-link" to="/general-settings/cms-settings/get-in-touch">
 									<i className="menu-bullet menu-bullet-dot">
 										<span />
 									</i>

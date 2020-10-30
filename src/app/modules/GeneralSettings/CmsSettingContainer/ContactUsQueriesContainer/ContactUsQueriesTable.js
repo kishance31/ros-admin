@@ -23,6 +23,11 @@ const ContactUsQueriesTable = (props) => {
 
     const columns = [
         {
+            dataField: '_id',
+            text: 'id',
+            hidden: true,
+        },
+        {
             dataField: 'fullName',
             text: 'Full Name',
         },
@@ -39,6 +44,10 @@ const ContactUsQueriesTable = (props) => {
             text: 'Comment',
         },
         {
+            dataField: 'repliedMessage',
+            text: 'Answer',
+        },
+        {
             dataField: 'button',
             text: 'Actions',
             headerAlign: 'center',
@@ -46,7 +55,7 @@ const ContactUsQueriesTable = (props) => {
             formatExtraData: {
                 onOpenReplyModal: onOpenReplyModal,
                 setSelectedRow: setSelectedRow,
-                selectedRow: selectedRow
+                selectedRow: selectedRow,
             },
         }
     ]

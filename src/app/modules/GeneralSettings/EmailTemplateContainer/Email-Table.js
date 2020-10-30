@@ -40,7 +40,7 @@ const ManageEmailTable = (props) => {
   ]
   const paginationOptions = {
     custom: true,
-    totalSize: 10,
+    totalSize: totalCount,
     sizePerPageList: [
       { text: "3", value: 3 },
       { text: "5", value: 5 },
@@ -74,11 +74,11 @@ const ManageEmailTable = (props) => {
           >
             <BootstrapTable
               wrapperClasses='table-responsive'
-              hover
               classes='table table-head-custom table-vertical-center'
               bootstrap4
+              remote
               bordered={false}
-              keyField='email'
+              keyField='title'
               data={displaylist}
               columns={columns}
               {...paginationTableProps}
