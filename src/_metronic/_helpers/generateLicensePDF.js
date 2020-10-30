@@ -45,8 +45,8 @@ export const generateLicensePDF = ({ data, corporate }) => {
         { content: "Total", styles: { fontStyle: "bold" } },
         "",
         { content: purchasedLicenses.reduce((acc, license) => acc + license.quantity, 0), styles: { fontStyle: "bold" } },
-        { content: licenseDetails.reduce((acc, license) => acc + license.price, 0), styles: { fontStyle: "bold" } },
-        { content: purchasedLicenses.reduce((acc, license) => acc + license.totalPrice, 0), styles: { fontStyle: "bold" } },
+        { content: "$" + licenseDetails.reduce((acc, license) => acc + license.price, 0), styles: { fontStyle: "bold" } },
+        { content: "$" + purchasedLicenses.reduce((acc, license) => acc + license.totalPrice, 0), styles: { fontStyle: "bold" } },
     ]);
 
     doc.autoTable(tableColumn, tableRows, { startY: 80 });

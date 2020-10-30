@@ -43,7 +43,6 @@ const AddCatergoryForm = ({ onHideModal }) => {
                 validationSchema={EditCategorySchema}
 
                 onSubmit={(values) => {
-                    console.log('VALUSES', values);
                     if (modalName === "category" && !categorySel.category_name) {
                         return dispatch(addCategoryDataAsync(values.category_name));
                     } else if (modalName === "category" && categorySel) {
@@ -65,8 +64,8 @@ const AddCatergoryForm = ({ onHideModal }) => {
                                         <Field
                                             name="category_name"
                                             component={Input}
-                                            placeholder="Category Name"
-                                            label="Category Name"
+                                            placeholder={modalName === "category" ? "Category Name" : "Sub-Category Name"}
+                                            label={modalName === "category" ? "Category Name" : "Sub-Category Name"}
                                         />
                                     </div>
                                 </div>

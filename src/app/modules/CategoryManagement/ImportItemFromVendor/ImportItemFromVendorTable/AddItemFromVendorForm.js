@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import * as Yup from "yup";
 import { Modal } from "react-bootstrap";
 import { Formik, Form, Field } from "formik";
 import {
@@ -7,10 +8,28 @@ import {
     Select
 } from '../../../../../_metronic/_partials/controls';
 import { addVendorItemAsync, displaySubCategoryList, EditProductAsync } from '../../../../actions/categoryManagementModal.action';
-import { useSelector } from 'react-redux';
-import { set } from "lodash";
 const { customAlphabet } = require('nanoid/async');
 const numberNanoId = customAlphabet('1234567890-', 9);
+
+const ProductFormSchema = Yup.object().shape({
+    category_id: Yup.string()
+        .required("Select Category"),
+    license_id: Yup.string()
+        .required("Select License"),
+    product_name: Yup.string()
+        .required("Product Name is required"),
+    product_cost: Yup.number()
+        .moreThan(0, "Cost must be greather than zero.")
+        .required("Product Cost is required"),
+    ros_cost: Yup.number()
+        .moreThan(0, "Cost must be greather than zero.")
+        .required("ROS Cost is required"),
+    product_code: Yup.string()
+        .required("Product Code is required"),
+    product_description: Yup.string()
+        .required("Product description is required"),
+
+});
 
 const AddItemFromVendorForm = (props) => {
     const { onHideVendorModal } = props;
@@ -94,7 +113,7 @@ const AddItemFromVendorForm = (props) => {
     return (
         <Formik
             initialValues={initialValues}
-            // validator={() => ({})}
+            validationSchema={ProductFormSchema}
             onSubmit={(values) => {
                 addVendorData(values)
             }}

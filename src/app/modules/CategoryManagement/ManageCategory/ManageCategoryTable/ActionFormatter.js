@@ -1,4 +1,7 @@
 import React from 'react';
+import SVG from "react-inlinesvg";
+import { toAbsoluteUrl } from "../../../../../_metronic/_helpers";
+import Switch from '@material-ui/core/Switch';
 
 const ActionFormatter = (cellContent,
     row,
@@ -35,25 +38,39 @@ const ActionFormatter = (cellContent,
             {
                 categorySelected === "category" ? (
                     <a
-                        className="btn btn-icon btn-light btn-sm"
-                        disabled="disabled"
-                        onClick={() => onClickSubCategory(row)}>
-                        <span className="svg-icon svg-icon-md svg-icon-primary">
-                            <i class="fa fa-eye" title="View Subcategory"></i>
-                        </span>
-
+                        title="View Sub-Category"
+                        className="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+                        onClick={() => onClickSubCategory(row)}
+                    >
+                        <i class="fa fa-eye" style={{ color: "#3699FF" }}></i>
                     </a>
                 ) : null
             }
+
             <a
-                className="btn btn-icon btn-light btn-sm mx-3"
+                title="Edit"
+                className="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
                 onClick={() => OnEditButtonClick(row)}
             >
                 <span className="svg-icon svg-icon-md svg-icon-primary">
-                    <i class="fa fa-edit" title="Edit" title="Edit"></i>
+                    <SVG
+                        src={toAbsoluteUrl("/media/svg/icons/Communication/Write.svg")}
+                    />
                 </span>
             </a>
-            <a
+
+            <Switch
+                checked={row.status}
+                size="small"
+                className="mt-1"
+                onChange={() => ClickDeleteCategoryAsync(row)}
+                color="secondary"
+                name="userStatus"
+                inputProps={{ 'aria-label': 'primary checkbox' }}
+                title={row.status ? "Deactivate" : "Activate"}
+            />
+
+            {/* <a
                 className={`btn btn-${row.status ? 'btn btn-icon btn-light btn-sm' : 'btn btn-icon btn-light btn-sm'} `}
                 onClick={() => ClickDeleteCategoryAsync(row)}
             >
@@ -69,7 +86,7 @@ const ActionFormatter = (cellContent,
 
                 }
 
-            </a>
+            </a> */}
 
         </>
     )

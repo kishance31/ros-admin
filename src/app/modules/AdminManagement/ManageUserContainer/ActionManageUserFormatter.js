@@ -1,5 +1,4 @@
 import React from "react";
-import { Button, ButtonGroup } from "react-bootstrap";
 import SVG from "react-inlinesvg";
 import { toAbsoluteUrl } from "../../../../_metronic/_helpers";
 import Switch from '@material-ui/core/Switch';
