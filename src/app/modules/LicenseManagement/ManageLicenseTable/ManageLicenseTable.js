@@ -8,8 +8,8 @@ import {
 } from "../../../../_metronic/_helpers";
 
 
-const ManageLicenseTable = ({openModal, setSelectedLicense, ToggleButton}) => {
-  const licenseList = useSelector(state => state.licenceManagement.licenseList);
+const ManageLicenseTable = ({openModal, setSelectedLicense, ToggleButton, licenseList}) => {
+  
   
   const columns = [
     {

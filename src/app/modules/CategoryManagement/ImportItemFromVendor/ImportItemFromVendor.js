@@ -10,7 +10,8 @@ import {
     CategoryManagementMap,
     deleteProductAsync,
     DisplayVendorItemAsync,
-    DisplayCategoryListAsync
+    DisplayCategoryListAsync,
+    updateProductStatusAsync
 } from '../../../actions/categoryManagementModal.action'
 import { displayLicenseListAsync } from '../../../actions/licenseManagement.action';
 
@@ -25,7 +26,7 @@ const ImportItemFromVendor = (props) => {
     const openDeleteModal = useSelector(state => state.categoryModal.categoryManagementModal.openConfirmModal)
     const refereshCategoryList = useSelector(state => state.categoryModal.refereshCategoryList);
     const selectedCategoryitem = useSelector(state => state.categoryModal.categorySelected);
-    const { pageNumber, pageSize, productCount, isLoading } = useSelector(state => state.categoryModal)
+    const { pageNumber, pageSize, productCount, isLoading, selectedProduct } = useSelector(state => state.categoryModal)
 
     const onClickVendorItemAddButton = () => {
         dispatch(CategoryManagementAction.toggleAddCategoryModal(CategoryManagementMap.OPEN_VENDOR_ITEM_MODAL))
@@ -33,6 +34,9 @@ const ImportItemFromVendor = (props) => {
 
     const deleteProduct = () => {
         dispatch(deleteProductAsync())
+    }
+    const updateProductStatus = () => {
+        dispatch(updateProductStatusAsync())
     }
     const selectedCategory = (value) => {
         dispatch(DisplayVendorItemAsync({ category_id: value }))
@@ -148,24 +152,22 @@ const ImportItemFromVendor = (props) => {
                     onHide={closeModal}
                     aria-labelledby="example-modal-sizes-title-lg"
                 >
-                    {selectedCategory ?
-                        <>
-                            <Modal.Header closeButton>
-                                <Modal.Title id="example-modal-sizes-title-lg">
-                                    <span> Delete Product!!</span>
-                                </Modal.Title>
-                            </Modal.Header>
-                            <Modal.Body>
-                                <span>Are you sure to Delete Product ?</span>
-                            </Modal.Body>
-                            <Modal.Footer>
-                                <div>
-                                    <button type="button" className="btn btn-light btn-elevate" onClick={closeModal}>Cancel</button>
-                                    <button type="button" className="btn btn-delete btn-primary" onClick={deleteProduct}>Delete</button>
-                                </div>
-                            </Modal.Footer>
-                        </>
-                        : []}
+                    <Modal.Header closeButton>
+                        <Modal.Title id="example-modal-sizes-title-lg">
+                            <span> {selectedProduct.status ? "Deactivate" : "Activate"} Product!!</span>
+                        </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <span>Are you sure to {selectedProduct.status ? "Deactivate" : "Activate"} Product ?</span>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <div>
+                            <button type="button" className="btn btn-light btn-elevate" onClick={closeModal}>Cancel</button>
+                            <button type="button" className="btn btn-delete btn-primary" onClick={updateProductStatus}>
+                                {selectedProduct.status ? "Deactivate" : "Activate"}
+                            </button>
+                        </div>
+                    </Modal.Footer>
                 </Modal>
 
                 <Modal

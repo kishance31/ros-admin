@@ -1,6 +1,7 @@
 import React from 'react';
 import SVG from "react-inlinesvg";
 import { toAbsoluteUrl } from '../../../../../_metronic/_helpers';
+import Switch from '@material-ui/core/Switch';
 
 export const VendorTableActionButtons = (cellContent,
     row,
@@ -25,23 +26,35 @@ export const VendorTableActionButtons = (cellContent,
 
         <>
             <a
-                className="btn btn-icon btn-light btn-sm"
-                onClick={() => onClickVendorItemEdit(row)} >
+                title="Edit user"
+                className="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+                onClick={() => onClickVendorItemEdit(row)}
+            >
                 <span className="svg-icon svg-icon-md svg-icon-primary">
-                    <i class="fa fa-edit" title="Edit"></i>
+                    <SVG
+                        src={toAbsoluteUrl("/media/svg/icons/Communication/Write.svg")}
+                    />
                 </span>
-
             </a>
-
-            <a
-                className="btn btn-icon btn-light btn-sm mx-3"
+            <Switch
+                checked={row.status}
+                size="small"
+                className="mt-1"
+                onChange={() => onClickDeleteData(row)}
+                color="secondary"
+                name="userStatus"
+                inputProps={{ 'aria-label': 'primary checkbox' }}
+                title={row.status ? "Deactivate" : "Activate"}
+            />
+            {/* <a
+                title="Delete customer"
+                className="btn btn-icon btn-light btn-hover-danger btn-sm"
                 onClick={() => onClickDeleteData(row)}
             >
                 <span className="svg-icon svg-icon-md svg-icon-danger">
-                    <i class="fa fa-trash" title="Delete"></i>
+                    <SVG src={toAbsoluteUrl("/media/svg/icons/General/Trash.svg")} />
                 </span>
-
-            </a>
+            </a> */}
         </>
     )
 }

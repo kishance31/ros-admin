@@ -3,51 +3,68 @@ import { Modal, Button } from 'react-bootstrap';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch } from 'react-redux';
-import { updateContactUsQueryAsync } from '../../../actions/cmsSetting.action';
-import { Input } from '../../../../_metronic/_partials/controls';
+import { TextArea } from '../../../../_metronic/_partials/controls';
 
 const ContactUsReplySchema = Yup.object().shape({
-    textArea: Yup.string()
+    repliedMessage: Yup.string()
         .min(3, "Minimum 3 symbols")
         .max(50, "Maximum 100 symbols")
         .required("Text is required")
 });
 
-const ContactUsReplyContainer = ({ modalReplyDialog, onCloseReplyModal, selectedRow }) => {
+const ContactUsReplyContainer = ({ modalReplyDialog, onCloseReplyModal, onCommentReply, selectedRow }) => {
 
     const dispatch = useDispatch();
 
     const contactUsReply = (values) => {
-        if (!selectedRow) {
-            return dispatch(updateContactUsQueryAsync({ ...values }));
-        }
+        onCommentReply(values)
     }
 
     return (
         <>
             <Formik
                 initialValues={{
-                    textArea: ""
+                    repliedMessage: "",
+                    comment: selectedRow ? selectedRow.comment : "",
                 }}
 
                 validationSchema={ContactUsReplySchema}
 
+                enableReinitialize
+
                 onSubmit={(values) => {
-                    contactUsReply(values);
+                    console.log(values)
+                    contactUsReply({ repliedMessage: values.repliedMessage });
                 }}
             >
                 {({ handleSubmit }) => (
                     <>
                         <Modal show={modalReplyDialog} onHide={onCloseReplyModal}>
+                            <Modal.Header >
+                                <Modal.Title>
+                                    <h5 className='float-left'>User Comment</h5>
+                                </Modal.Title>
+                            </Modal.Header>
                             <Modal.Body className="overlay overlay-block">
                                 <Form className="form form-label-right">
                                     <div className="form-group row">
                                         <div className="col-lg-12">
                                             <Field
-                                                name="textArea"
-                                                component={Input}
-                                                placeholder="Text Area"
-                                                label="Text Area"
+                                                name="comment"
+                                                component={TextArea}
+                                                placeholder="Comment"
+                                                label="Comment"
+                                                disabled
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="form-group row">
+                                        <div className="col-lg-12">
+                                            <Field
+                                                name="repliedMessage"
+                                                component={TextArea}
+                                                placeholder="Message"
+                                                label="Enter a message"
                                             />
                                         </div>
                                     </div>
@@ -65,9 +82,9 @@ const ContactUsReplyContainer = ({ modalReplyDialog, onCloseReplyModal, selected
                                 <Button
                                     type="submit"
                                     variant="primary"
-                                    onClick={() => handleSubmit()}
+                                    onClick={handleSubmit}
                                 >
-                                    Save
+                                    Send
                                 </Button>
                             </Modal.Footer>
                         </Modal>

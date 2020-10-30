@@ -6,7 +6,7 @@ import paginationFactory, { PaginationProvider } from "react-bootstrap-table2-pa
 import { Pagination } from "../../../../_metronic/_partials/controls";
 import { NoRecordsFoundMessage } from "../../../../_metronic/_helpers";
 import ContactUsQueriesFormatter from './ContactUsQueriesFormatter';
-import { cmsSettingsAction, getContactUsQueryAsync } from '../../../actions/cmsSetting.action';
+import { cmsSettingsAction, getContactUsQueryAsync, updateContactUsQueryAsync } from '../../../actions/cmsSetting.action';
 import ContactUsReplyContainer from './ContactUsReplyContainer';
 
 const ContactUsQueries = () => {
@@ -37,9 +37,21 @@ const ContactUsQueries = () => {
 
     const onCloseReplyModal = () => {
         dispatch(cmsSettingsAction.closeReplyModal());
+        setSelectedRow(null);
     };
 
+    const onCommentReply = (values) => {
+        console.log(values)
+        dispatch(updateContactUsQueryAsync({ ...values }, selectedRow._id));
+        onCloseReplyModal();
+    }
+
     const columns = [
+        {
+            dataField: '_id',
+            text: 'id',
+            hidden: true,
+        },
         {
             dataField: 'fullName',
             text: 'Full Name',
@@ -57,6 +69,10 @@ const ContactUsQueries = () => {
             text: 'Comment',
         },
         {
+            dataField: 'repliedMessage',
+            text: 'Answer',
+        },
+        {
             dataField: 'button',
             text: 'Actions',
             headerAlign: 'center',
@@ -64,7 +80,7 @@ const ContactUsQueries = () => {
             formatExtraData: {
                 onOpenReplyModal: onOpenReplyModal,
                 setSelectedRow: setSelectedRow,
-                selectedRow:selectedRow
+                selectedRow: selectedRow,
             },
         }
     ]
@@ -116,7 +132,7 @@ const ContactUsQueries = () => {
                                         classes="table table-head-custom table-vertical-center overflow-hidden center-last-col"
                                         bootstrap4
                                         remote
-                                        keyField='fullName'
+                                        keyField='_id'
                                         data={contactQueryList}
                                         columns={columns}
                                         {...paginationTableProps}
@@ -133,6 +149,8 @@ const ContactUsQueries = () => {
             <ContactUsReplyContainer
                 onCloseReplyModal={onCloseReplyModal}
                 modalReplyDialog={modalReplyDialog}
+                onCommentReply={onCommentReply}
+                selectedRow={selectedRow}
             />
         </div>
     )

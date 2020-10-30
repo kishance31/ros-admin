@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
-const ModalContainer = ({modalDialog,onCloseDialog,onDeleteUser}) => {
+const ModalContainer = ({modalDialog,onCloseDialog,onDeleteUser, selectedEmailTemplate}) => {
 
     return (
         <>
@@ -14,14 +14,14 @@ const ModalContainer = ({modalDialog,onCloseDialog,onDeleteUser}) => {
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                   <h5> Are you sure to permanently delete this user?</h5>
+                   <h5> Are you sure to {selectedEmailTemplate && selectedEmailTemplate.isActive ? "Deactive" : "Activate"} this email template ?</h5>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={onCloseDialog}>
                         Close
                     </Button>
-                    <Button variant="danger" onClick={onDeleteUser}>
-                        Delete
+                    <Button variant={selectedEmailTemplate && selectedEmailTemplate.isActive ? "danger" : "primary"} onClick={onDeleteUser}>
+                        {selectedEmailTemplate && selectedEmailTemplate.isActive ? "Deactive" : "Activate"}
                     </Button>
                 </Modal.Footer>
             </Modal>

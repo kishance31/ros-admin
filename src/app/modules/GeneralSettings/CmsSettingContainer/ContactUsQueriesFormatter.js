@@ -7,18 +7,28 @@ const ContactUsQueriesFormatter = (
     rowIndex,
     { onOpenReplyModal, setSelectedRow, selectedRow }) => {
 
-    const onReply = (row) => {
+    const onReply = () => {
         setSelectedRow(row)
         onOpenReplyModal();
     }
 
     return (
         <div>
-            <Button onClick={() => onReply(row)} className="btn btn-icon btn-light btn-sm">
-                <span className="svg-icon svg-icon-md svg-icon-primary">
-                    <i className="fa fa-edit" title="Reply"></i>
-                </span>
-            </Button>
+            {
+                !row.isReplied ? (
+                    <button
+                        className="btn btn-icon btn-sm"
+                        onClick={() => onReply()}
+                    >
+                        <i className="fas fa-edit" style={{ color: "#2f72ef" }} title="Edit"></i>
+                    </button>
+                    // <Button onClick={() => onReply()} className="btn btn-icon btn-light btn-sm">
+                    //     <span className="svg-icon svg-icon-md svg-icon-primary">
+                    //         <i className="fa fa-edit" title="Reply"></i>
+                    //     </span>
+                    // </Button>
+                ) : null
+            }
         </div>
     )
 }

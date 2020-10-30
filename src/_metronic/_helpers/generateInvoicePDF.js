@@ -43,7 +43,7 @@ export const generateInvoicePDF = ({ data, isRecurring, corporate }) => {
     let totalPaymentConst = 0;
 
     // employeeDetails.forEach((emp, idx) => {
-        let cost = isRecurring ?
+        let cost = "$" + isRecurring ?
             parseFloat((
                 ((productDetails.reduce((acc, prod) => acc + prod.ros_cost, 0)) / 12)
                 * data.firstPaymentTerm).toFixed(2))
@@ -59,7 +59,7 @@ export const generateInvoicePDF = ({ data, isRecurring, corporate }) => {
             { content: [employeeDetails.firstName + " " + employeeDetails.lastName], rowSpan: 2 },
             { content: productDetails.map(prod => `${prod.product_name}`), rowSpan: productDetails.length > 2 ? productDetails.length : 2 },
             { content: productDetails.map(prod => `1`), rowSpan: productDetails.length > 2 ? productDetails.length : 2 },
-            { content: productDetails.map(prod => `${prod.ros_cost}`), rowSpan: productDetails.length > 2 ? productDetails.length : 2 },
+            { content: "$" + productDetails.map(prod => `${prod.ros_cost}`), rowSpan: productDetails.length > 2 ? productDetails.length : 2 },
             { content: cost, rowSpan: 2 },
         ];
         tableRows.push(tblData);

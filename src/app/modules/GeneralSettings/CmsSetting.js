@@ -14,9 +14,9 @@ const CmsSetting = () => {
                     <Card>
                         <div className="card-body pb-5">
                             <div className='d-flex align-items-center nav-tabs mb-0'>
-                                <NavLink className="nav-link" to='/general-settings/cms-settings/about-us'>
+                                {/* <NavLink className="nav-link" to='/general-settings/cms-settings/about-us'>
                                     <span>About Us</span>
-                                </NavLink>
+                                </NavLink> */}
 
                                 <NavLink className="nav-link" to='/general-settings/cms-settings/get-in-touch'>
                                     <span>Get In Touch</span>
@@ -28,11 +28,11 @@ const CmsSetting = () => {
                             </div>
                         </div>
                         <Switch>
-                            <ContentRoute
+                            {/* <ContentRoute
                                 path='/general-settings/cms-settings/about-us'
                                 exact
                                 component={AboutUs}
-                            />
+                            /> */}
                             <ContentRoute
                                 path='/general-settings/cms-settings/get-in-touch'
                                 exact

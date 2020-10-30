@@ -171,7 +171,7 @@ export const getContactUsQueryAsync = () => {
     }
 }
 
-export const updateContactUsQueryAsync = (id) => {
+export const updateContactUsQueryAsync = (values, id) => {
     return async (dispatch) => {
         try {
             dispatch({
@@ -183,8 +183,8 @@ export const updateContactUsQueryAsync = (id) => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: {
-                    "repliedMessage": "New reply"
+                data: {
+                    ...values
                 }
             });
             if (data.response && data.response.responseCode === 200) {
