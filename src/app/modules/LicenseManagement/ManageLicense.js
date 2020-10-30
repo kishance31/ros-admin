@@ -7,6 +7,7 @@ import AddLicenseForm from './ManageLicenseTable/addLicenseForm';
 const ManageLicense = () => {
     const dispatch = useDispatch();
     const {refereshLicenseList, selectedLicense} = useSelector(state => state.licenceManagement)
+    const licenseList = useSelector(state => state.licenceManagement.licenseList);
     const openVendorModal = () => {
         dispatch(licenseManagementActions.toggleLicenseModal({type:licenseManagementMap.OPEN_LICENSE_MODAL}))
     }
@@ -39,6 +40,7 @@ const ManageLicense = () => {
                     <ManageLicenseTable openModal={openModal} 
                     setSelectedLicense={setSelectedLicense}
                     ToggleButton={ToggleButton}
+                    licenseList={licenseList}
                     />
                 </CardBody>
             </Card>

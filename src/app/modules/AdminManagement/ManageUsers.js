@@ -21,7 +21,7 @@ const ManageUsers = () => {
     modalActiveDialog,
     modalDeactiveDialog,
     refreshManageUserData,
-    isLoading,
+    isLoading,     
     totalCount,
     pageNumber,
     pageSize

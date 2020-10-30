@@ -25,7 +25,7 @@ const ImportItemFromVendor = (props) => {
     const openDeleteModal = useSelector(state => state.categoryModal.categoryManagementModal.openConfirmModal)
     const refereshCategoryList = useSelector(state => state.categoryModal.refereshCategoryList);
     const selectedCategoryitem = useSelector(state => state.categoryModal.categorySelected);
-    const { pageNumber, pageSize, productCount } = useSelector(state => state.categoryModal)
+    const { pageNumber, pageSize, productCount, isLoading } = useSelector(state => state.categoryModal)
 
     const onClickVendorItemAddButton = () => {
         dispatch(CategoryManagementAction.toggleAddCategoryModal(CategoryManagementMap.OPEN_VENDOR_ITEM_MODAL))
@@ -194,6 +194,7 @@ const ImportItemFromVendor = (props) => {
                     productCount={productCount}
                     pageSize={pageSize}
                     pageNumber={pageNumber}
+                    isLoading={isLoading}
                 />
             </CardBody>
         </Card>
