@@ -5,6 +5,8 @@ import ContactUs from './CmsSettingContainer/ContactUs';
 import { ContentRoute } from '../../../_metronic/layout'
 import { Card } from '../../../_metronic/_partials/controls';
 import ContactUsQueries from './CmsSettingContainer/ContactUsQueries';
+import FAQ from './CmsSettingContainer/FAQ';
+import NewsLetter from './CmsSettingContainer/NewsLetter';
 
 const CmsSetting = () => {
     return (
@@ -25,8 +27,17 @@ const CmsSetting = () => {
                                 <NavLink className="nav-link" to='/general-settings/cms-settings/contact-us'>
                                     <span>Contact Us Queries</span>
                                 </NavLink>
+
+                                <NavLink className="nav-link" to='/general-settings/cms-settings/faq'>
+                                    <span>FAQ</span>
+                                </NavLink>
+
+                                <NavLink className="nav-link" to='/general-settings/cms-settings/news-letter'>
+                                    <span>News Letter</span>
+                                </NavLink>
                             </div>
                         </div>
+
                         <Switch>
                             {/* <ContentRoute
                                 path='/general-settings/cms-settings/about-us'
@@ -42,6 +53,16 @@ const CmsSetting = () => {
                                 path='/general-settings/cms-settings/contact-us'
                                 exact
                                 component={ContactUsQueries}
+                            />
+                            <ContentRoute
+                                path='/general-settings/cms-settings/faq'
+                                exact
+                                component={FAQ}
+                            />
+                            <ContentRoute
+                                path='/general-settings/cms-settings/news-letter'
+                                exact
+                                component={NewsLetter}
                             />
                         </Switch>
                     </Card>
