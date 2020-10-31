@@ -102,7 +102,9 @@ const ManageCategory = ({ history }) => {
                     >
                         <Modal.Header closeButton >
                             <Modal.Title>
-                                <h1 className="float-left">Add Category</h1>
+                                <h1 className="float-left">
+                                    {selectedCategoryitem === "category" ? "Add Category" : "Add Sub-Category"}
+                                </h1>
                             </Modal.Title>
                         </Modal.Header>
                         {/* <Modal.Body> */}

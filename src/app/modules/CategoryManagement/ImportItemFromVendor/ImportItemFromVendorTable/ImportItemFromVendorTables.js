@@ -42,7 +42,7 @@ const ImportItemFromVendorTable = (props) => {
         },
         {
             dataField: 'ros_cost',
-            text: 'ROS Cost'
+            text: 'ROS Cost(USD)'
         },
         {
             dataField: 'license_id.type',
