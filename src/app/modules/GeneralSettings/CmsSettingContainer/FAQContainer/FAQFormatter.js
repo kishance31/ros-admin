@@ -1,32 +1,32 @@
 import React from 'react';
-import { Button, ButtonGroup } from 'react-bootstrap';
 
 const FAQFormatter = (cellContent, row, rowIndex,
-    { onOpenModal, setSelectedUser, onOpenDialog, onOpenDeactiveDialog }) => {
+    { setSelectedFAQ, onOpenFAQModal, onOpenDeleteFAQModal }) => {
 
     const onEditFAQ = (row) => {
-        //setSelectedUser(row);
-        //onOpenModal();
+        setSelectedFAQ(row)
+        onOpenFAQModal();
     }
 
     const onDeleteFAQ = () => {
-        // setSelectedUser(row);
-        //onOpenDialog();
+        setSelectedFAQ(row)
+        onOpenDeleteFAQModal();
     }
+
     return (
         <>
-            <ButtonGroup>
-                <Button onClick={() => onEditFAQ()} className="btn btn-icon btn-light btn-sm">
-                    <span className="svg-icon svg-icon-md svg-icon-primary">
-                        <i className="fa fa-edit" title="Edit"></i>
-                    </span>
-                </Button>
-                <Button className="btn btn-icon btn-light btn-sm mx-3" onClick={() => onDeleteFAQ()}>
-                    <span className="svg-icon svg-icon-md svg-icon-danger">
-                        <i className="fa fa-trash" title="Delete"></i>
-                    </span>
-                </Button>
-            </ButtonGroup>
+            <button
+                className="btn btn-icon btn-sm"
+                onClick={() => onEditFAQ(row)}
+            >
+                <i className="fas fa-edit" style={{ color: "#2f72ef" }} title="Edit"></i>
+            </button>
+            <button
+                className="btn btn-icon btn-sm"
+                onClick={() => onDeleteFAQ()}
+            >
+                <i className="fa fa-trash" style={{ color: "#2f72ef" }} title="Delete"></i>
+            </button>
         </>
     )
 }

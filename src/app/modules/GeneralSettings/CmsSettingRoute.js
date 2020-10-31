@@ -6,6 +6,7 @@ import { ContentRoute } from '../../../_metronic/layout'
 import { Card } from '../../../_metronic/_partials/controls';
 import ContactUsQueries from './CmsSettingContainer/ContactUsQueries';
 import FAQ from './CmsSettingContainer/FAQ';
+import NewsLetter from './CmsSettingContainer/NewsLetter';
 
 const CmsSetting = () => {
     return (
@@ -30,6 +31,10 @@ const CmsSetting = () => {
                                 <NavLink className="nav-link" to='/general-settings/cms-settings/faq'>
                                     <span>FAQ</span>
                                 </NavLink>
+
+                                <NavLink className="nav-link" to='/general-settings/cms-settings/news-letter'>
+                                    <span>News Letter</span>
+                                </NavLink>
                             </div>
                         </div>
 
@@ -53,6 +58,11 @@ const CmsSetting = () => {
                                 path='/general-settings/cms-settings/faq'
                                 exact
                                 component={FAQ}
+                            />
+                            <ContentRoute
+                                path='/general-settings/cms-settings/news-letter'
+                                exact
+                                component={NewsLetter}
                             />
                         </Switch>
                     </Card>

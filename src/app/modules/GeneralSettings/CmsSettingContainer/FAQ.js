@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { Card, CardBody, CardHeader, CardHeaderToolbar } from '../../../../_metronic/_partials/controls';
-import { cmsSettingsAction } from '../../../actions/cmsSetting.action';
+import { cmsSettingsAction, getFAQSAsync, deleteFAQSAsync, saveFAQSAsync, editFAQSAsync } from '../../../actions/cmsSetting.action';
 import FAQTable from './FAQContainer/FAQTable';
 import AddFAQForm from './FAQContainer/AddFAQForm';
+import DeleteFAQ from './FAQContainer/DeleteFAQ';
 
 const FAQ = () => {
 
@@ -18,31 +19,78 @@ const FAQ = () => {
         dispatch(cmsSettingsAction.closeFAQModal());
     };
 
-    const { modalState } = useSelector(state => state.cmsSetting.FAQModal);
+    const onOpenDeleteFAQModal = () => {
+        dispatch(cmsSettingsAction.openFAQDeleteModal());
+    };
+
+    const onCloseDeleteFAQModal = () => {
+        dispatch(cmsSettingsAction.closeFAQDeleteModal());
+    };
+
+    const setSelectedFAQ = (faq) => {
+        dispatch(cmsSettingsAction.setSelectedFAQ(faq));
+    }
+
+    const onDeleteFAQ = () => {
+        dispatch(deleteFAQSAsync(selectedFAQ._id));
+        onCloseDeleteFAQModal()
+    }
+    const onAddFAQ = (values) => {
+        if (!selectedFAQ) {
+            dispatch(saveFAQSAsync({ ...values }));
+            onCloseFAQModal()
+        } else {
+            dispatch(editFAQSAsync({ ...values }));
+            onCloseFAQModal()
+        }
+    }
+
+    const {
+        FAQModal,
+        FAQDeleteDialog,
+        FAQList,
+        refreshFAQData,
+        selectedFAQ
+    } = useSelector(state => state.cmsSetting, shallowEqual)
+
+    useEffect(() => {
+        if (refreshFAQData) {
+            dispatch(getFAQSAsync())
+        }
+    }, [refreshFAQData])
 
 
     return (
         <>
             <Card>
-                <CardHeader title='User Details'>
+                <CardHeader title='FAQ Details'>
                     <CardHeaderToolbar>
                         <Button className='btn btn-primary' onClick={onOpenFAQModal}>
                             Add
-                    </Button>
+                        </Button>
                     </CardHeaderToolbar>
                 </CardHeader>
                 <CardBody>
-                    <Modal size="lg" show={modalState} onHide={onCloseFAQModal}>
-                        <Modal.Header closeButton>
-                            <Modal.Title>
-                                <h5 className='float-left'>FAQ</h5>
-                            </Modal.Title>
-                        </Modal.Header>
+                    <Modal size="lg" show={FAQModal} onHide={onCloseFAQModal}>
                         <Modal.Body>
-                            <AddFAQForm onCloseFAQModal={onCloseFAQModal} />
+                            <AddFAQForm
+                                onCloseFAQModal={onCloseFAQModal}
+                                selectedFAQ={selectedFAQ}
+                                onAddFAQ={onAddFAQ}
+                            />
                         </Modal.Body>
                     </Modal>
-                    <FAQTable />
+                    <FAQTable
+                        FAQList={FAQList}
+                        onOpenFAQModal={onOpenFAQModal}
+                        onOpenDeleteFAQModal={onOpenDeleteFAQModal}
+                        setSelectedFAQ={setSelectedFAQ}
+                    />
+                    <DeleteFAQ
+                        onDeleteFAQ={onDeleteFAQ}
+                        FAQDeleteDialog={FAQDeleteDialog}
+                        onCloseDeleteFAQModal={onCloseDeleteFAQModal}
+                    />
                 </CardBody>
             </Card>
         </>

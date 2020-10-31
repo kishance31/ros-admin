@@ -18,14 +18,14 @@ const ContactUsQueries = () => {
         pageSize,
         isLoading,
         totalCount,
-        refereshContactUsData
+        refreshContactUsData
     } = useSelector(state => state.cmsSetting);
 
     useEffect(() => {
-        if (refereshContactUsData) {
+        if (refreshContactUsData) {
             dispatch(getContactUsQueryAsync());
         }
-    }, [refereshContactUsData]);
+    }, [refreshContactUsData]);
 
     const onOpenReplyModal = () => {
         dispatch(cmsSettingsAction.openReplyModal());

@@ -1,32 +1,35 @@
 import React from 'react';
-// import { useSelector, useDispatch } from 'react-redux';
 import BootstrapTable from 'react-bootstrap-table-next';
 import FAQFormatter from './FAQFormatter';
 
-const FAQTable = () => {
+const FAQTable = (props) => {
 
-    //const dispatch = useDispatch();
-
-    // const { displaylist } = useSelector((state) => state.manageUser);
+    const { FAQList, onOpenFAQModal, onOpenDeleteFAQModal,setSelectedFAQ } = props;
 
     const columns = [
         {
-            dataField: 'firstName',
-            text: 'Firstname',
+            dataField: '_id',
+            text: 'id',
+            hidden: true,
         },
         {
-            dataField: 'lastName',
-            text: 'Lastname',
+            dataField: 'question',
+            text: 'Question',
+        },
+        {
+            dataField: 'answer',
+            text: 'Answer',
         },
         {
             dataField: 'button',
             text: 'Actions',
             headerAlign: 'center',
             formatter: FAQFormatter,
-            //     formatExtraData: {
-            //         onOpenModal: onOpenModal,
-            //         setSelectedUser: setSelectedUser,
-            //     },
+            formatExtraData: {
+                onOpenFAQModal: onOpenFAQModal,
+                onOpenDeleteFAQModal: onOpenDeleteFAQModal,
+                setSelectedFAQ:setSelectedFAQ
+            },
         }
     ]
 
@@ -38,8 +41,8 @@ const FAQTable = () => {
             classes="table table-head-custom table-vertical-center overflow-hidden center-last-col"
             bootstrap4
             remote
-            keyField='email'
-            //data={displaylist}
+            keyField='_id'
+            data={FAQList}
             columns={columns}
         >
         </BootstrapTable>

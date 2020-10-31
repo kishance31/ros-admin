@@ -1,16 +1,15 @@
 import { cmsSettingsMap } from '../actions/cmsSetting.action';
 
 const initialCmsSettings = {
-    FAQModal: {
-        modalState: false,
-    },
+    FAQModal: false,
     modalReplyDialog: false,
+    FAQDeleteDialog: false,
     contactUs: {
         contact: "",
         email: "",
         address: "",
     },
-    refereshContactUsData: true,
+    refreshContactUsData: true,
     contactUsDetails: {},
     aboutUs: {
         aboutUsImage: "",
@@ -20,6 +19,11 @@ const initialCmsSettings = {
     aboutUsDetails: {},
     contactQueryList: [],
     contactUsReply: [],
+    FAQList: [],
+    getNewsLetterList: [],
+    refreshNewsLetterData: true,
+    refreshFAQData: true,
+    selectedFAQ: null,
     totalCount: 0,
     pageNumber: 1,
     pageSize: 5,
@@ -37,6 +41,32 @@ const cmsSettingsReducer = (state = initialCmsSettings, action) => {
             return {
                 ...state,
                 modalReplyDialog: false,
+            }
+        }
+        case cmsSettingsMap.OPEN_FAQ_MODAL: {
+            return {
+                ...state,
+                FAQModal: true,
+            }
+        }
+        case cmsSettingsMap.CLOSE_FAQ_MODAL: {
+            return {
+                ...state,
+                FAQModal: false,
+                selectedFAQ: null,
+            }
+        }
+        case cmsSettingsMap.OPEN_FAQ_DELETE_MODAL: {
+            return {
+                ...state,
+                FAQDeleteDialog: true,
+            }
+        }
+        case cmsSettingsMap.CLOSE_FAQ_DELETE_MODAL: {
+            return {
+                ...state,
+                FAQDeleteDialog: false,
+                selectedFAQ: null,
             }
         }
         case cmsSettingsMap.SAVE_ABOUT_US_START: {
@@ -111,7 +141,7 @@ const cmsSettingsReducer = (state = initialCmsSettings, action) => {
                 ...state,
                 contactQueryList: [...action.payload.list],
                 totalCount: action.payload.totalCount,
-                refereshContactUsData: false,
+                refreshContactUsData: false,
                 isLoading: false,
             }
         }
@@ -119,7 +149,7 @@ const cmsSettingsReducer = (state = initialCmsSettings, action) => {
             return {
                 ...state,
                 isLoading: false,
-                refereshContactUsData: false,
+                refreshContactUsData: false,
             }
         }
         case cmsSettingsMap.UPDATE_CONTACT_US_QUERY_START: {
@@ -133,28 +163,136 @@ const cmsSettingsReducer = (state = initialCmsSettings, action) => {
                 ...state,
                 contactUsReply: action.payload,
                 isLoading: false,
-                refereshContactUsData: true,
+                refreshContactUsData: true,
+                selectedFAQ: null,
             }
         }
         case cmsSettingsMap.UPDATE_CONTACT_US_QUERY_ERROR: {
             return {
                 ...state,
                 isLoading: false,
-                refereshContactUsData: false,
+                refreshContactUsData: false,
+            }
+        }
+        case cmsSettingsMap.GET_FAQS_START: {
+            return {
+                ...state,
+                isLoading: true
+            }
+        }
+        case cmsSettingsMap.GET_FAQS_SUCCESS: {
+            return {
+                ...state,
+                isLoading: false,
+                FAQList: action.payload.list,
+                refreshFAQData: false,
+            }
+        }
+        case cmsSettingsMap.GET_FAQS_ERROR: {
+            return {
+                ...state,
+                isLoading: false
+            }
+        }
+        case cmsSettingsMap.SAVE_FAQS_START: {
+            return {
+                ...state,
+                isLoading: true
+            }
+        }
+        case cmsSettingsMap.SAVE_FAQS_SUCCESS: {
+            return {
+                ...state,
+                isLoading: false,
+                refreshFAQData: true,
+                FAQModal: false
+            }
+        }
+        case cmsSettingsMap.SAVE_FAQS_ERROR: {
+            return {
+                ...state,
+                isLoading: false,
+                refreshFAQData: false
+            }
+        }
+        case cmsSettingsMap.EDIT_FAQS_START: {
+            return {
+                ...state,
+                isLoading: true
+            }
+        }
+        case cmsSettingsMap.EDIT_FAQS_SUCCESS: {
+            return {
+                ...state,
+                isLoading: false,
+                refreshFAQData: true
+            }
+        }
+        case cmsSettingsMap.EDIT_FAQS_ERROR: {
+            return {
+                ...state,
+                isLoading: false,
+                refreshFAQData: false
+            }
+        }
+        case cmsSettingsMap.DELETE_FAQS_START: {
+            return {
+                ...state,
+                isLoading: true
+            }
+        }
+        case cmsSettingsMap.DELETE_FAQS_SUCCESS: {
+            return {
+                ...state,
+                isLoading: false,
+                refreshFAQData: true
+            }
+        }
+        case cmsSettingsMap.DELETE_FAQS_ERROR: {
+            return {
+                ...state,
+                isLoading: false,
+                refreshFAQData: false
+            }
+        }
+        case cmsSettingsMap.GET_NEWSLETTER_START: {
+            return {
+                ...state,
+                isLoading: true
+            }
+        }
+        case cmsSettingsMap.GET_NEWSLETTER_SUCCESS: {
+            return {
+                ...state,
+                isLoading: false,
+                refreshNewsLetterData: false,
+                getNewsLetterList: action.payload.list
+            }
+        }
+        case cmsSettingsMap.GET_NEWSLETTER_ERROR: {
+            return {
+                ...state,
+                isLoading: false
+            }
+        }
+        case cmsSettingsMap.SET_SELECTED_FAQ: {
+            return {
+                ...state,
+                selectedFAQ: action.payload,
             }
         }
         case cmsSettingsMap.SET_PAGE: {
             return {
                 ...state,
                 pageNumber: action.payload,
-                refereshContactUsData: true,
+                refreshContactUsData: true,
             }
         }
         case cmsSettingsMap.SET_PAGE_SIZE: {
             return {
                 ...state,
                 pageSize: action.payload,
-                refereshContactUsData: true,
+                refreshContactUsData: true,
                 pageNumber: 1
             }
         }

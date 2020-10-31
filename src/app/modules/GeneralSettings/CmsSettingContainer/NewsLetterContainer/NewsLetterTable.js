@@ -1,64 +1,16 @@
 import React from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
+import paginationFactory, { PaginationProvider } from 'react-bootstrap-table2-paginator';
+import { Pagination } from '../../../../../_metronic/_partials/controls';
+import { NoRecordsFoundMessage } from '../../../../../_metronic/_helpers';
 import { useDispatch } from 'react-redux';
-import paginationFactory, { PaginationProvider } from "react-bootstrap-table2-paginator";
-import { Pagination } from "../../../../../_metronic/_partials/controls";
-import { NoRecordsFoundMessage } from "../../../../../_metronic/_helpers";
-import ContactUsQueriesFormatter from './ContactUsQueriesFormatter';
-import { cmsSettingsAction } from '../../../../actions/cmsSetting.action';
+import { cmsSettingsAction } from '../../../../actions/cmsSetting.action'
 
-const ContactUsQueriesTable = (props) => {
+const NewsLetterTable = (props) => {
 
-    const {
-        contactQueryList,
-        pageNumber,
-        pageSize,
-        isLoading,
-        totalCount,
-        onOpenReplyModal,
-        setSelectedRow,
-        selectedRow } = props;
+    const { getNewsLetterList, totalCount, pageSize, pageNumber, isLoading } = props;
 
     const dispatch = useDispatch();
-
-    const columns = [
-        {
-            dataField: '_id',
-            text: 'id',
-            hidden: true,
-        },
-        {
-            dataField: 'fullName',
-            text: 'Full Name',
-        },
-        {
-            dataField: 'email',
-            text: 'Email',
-        },
-        {
-            dataField: 'mobileNo',
-            text: 'Mobile No',
-        },
-        {
-            dataField: 'comment',
-            text: 'Comment',
-        },
-        {
-            dataField: 'repliedMessage',
-            text: 'Answer',
-        },
-        {
-            dataField: 'button',
-            text: 'Actions',
-            headerAlign: 'center',
-            formatter: ContactUsQueriesFormatter,
-            formatExtraData: {
-                onOpenReplyModal: onOpenReplyModal,
-                setSelectedRow: setSelectedRow,
-                selectedRow: selectedRow,
-            },
-        }
-    ]
 
     const paginationOptions = {
         custom: true,
@@ -88,6 +40,19 @@ const ContactUsQueriesTable = (props) => {
             }
         }
     }
+
+    const columns = [
+        {
+            dataField: '_id',
+            text: 'id',
+            hidden: true,
+        },
+        {
+            dataField: 'email',
+            text: 'Email',
+        }
+    ]
+
     return (
         <PaginationProvider pagination={paginationFactory(paginationOptions)}>
             {({ paginationProps, paginationTableProps }) => {
@@ -100,11 +65,11 @@ const ContactUsQueriesTable = (props) => {
                             wrapperClasses="table-responsive"
                             hover={false}
                             bordered={false}
-                            classes="table table-head-custom table-vertical-center overflow-hidden center-last-col"
+                            classes="table table-head-custom table-vertical-center overflow-hidden"
                             bootstrap4
                             remote
                             keyField='_id'
-                            data={contactQueryList}
+                            data={getNewsLetterList}
                             columns={columns}
                             {...paginationTableProps}
                             noDataIndication={noDataIndication}
@@ -115,7 +80,7 @@ const ContactUsQueriesTable = (props) => {
                 );
             }}
         </PaginationProvider>
-    )
-}
+    );
+};
 
-export default ContactUsQueriesTable
+export default NewsLetterTable;
