@@ -33,40 +33,18 @@ const RecurringInvoice = ({ recurringInvoiceData, firstRecurringFlag }) => {
 			text: 'Corporate Name',
 		},
 		{
-			dataField: 'employeeDetails',
-			text: 'Employee Name',
-			formatter: cell => `${cell.firstName} ${cell.lastName}`,
+			dataField: 'invoiceNo',
+			text: 'Invoice. No',
 		},
 		{
-			dataField: 'orderId',
-			text: 'Order. No',
-		},
-		{
-			dataField: 'firstInvoiceDate',
-			text: 'Order Date',
+			dataField: 'invoiceDate',
+			text: 'Invoice Date',
 			formatter: cell => new Date(cell).toLocaleDateString()
 		},
 		{
-			dataField: 'invoiceDetails',
-			text: 'Invoice Amt.',
-			formatter: (cell, row) => {
-				if (firstRecurringFlag === "first") {
-					return `$${parseFloat((
-						((row.productDetails.reduce((acc, prod) => acc + prod.ros_cost, 0)) / 12)
-						* row.firstPaymentTerm))
-						.toFixed(2)
-						}`
-				} else {
-					return `$${parseFloat((
-						(
-							(row.productDetails.reduce((acc, prod) => acc + prod.ros_cost, 0)) -
-							(((row.productDetails.reduce((acc, prod) => acc + prod.ros_cost, 0)) / 12)
-								* row.firstPaymentTerm)) / row.recurringMonthsNo
-					) * row.invoiceDetails.length
-					).toFixed(2)
-						}`
-				}
-			}
+			dataField: 'invoiceAmt',
+			text: 'Invoice Amt.(USD)',
+			formatter: (cell, row) => (`$${row.isReccuring ? row.recurringCost.toFixed(2) : row.firstTimeCost.toFixed(2)}`)
 		},
 		{
 			dataField: 'action',
@@ -88,8 +66,7 @@ const RecurringInvoice = ({ recurringInvoiceData, firstRecurringFlag }) => {
 
 	const paginationOptions = {
 		custom: true,
-		// totalSize: totalRecords,
-		totalSize: 10,
+		totalSize: totalRecords,
 		sizePerPageList: [
 			{ text: "3", value: 3 },
 			{ text: "5", value: 5 },

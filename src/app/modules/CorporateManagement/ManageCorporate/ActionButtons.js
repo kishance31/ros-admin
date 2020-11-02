@@ -1,22 +1,41 @@
 import React from 'react';
-import ViewModal from './ViewModal';
-import { Button } from 'react-bootstrap';
 
-const ActionButtons = ({ row, approveRejectAction, activeDeactiveAction }) => {
-  const [show, setShow] = React.useState(false);
+// import { Button } from 'react-bootstrap';
+import Switch from '@material-ui/core/Switch';
 
-  const handleClose = () => {
-    setShow(false);
-  };
-
-  const handleShow = () => {
-    setShow(true);
-  };
+const ActionButtons = (cell, row, rowIndex, { activeDeactiveAction, handleShow }) => {
 
   return (
     <>
-      <div className="d-flex justify-content-center">
-        <Button
+      {/* <div className="d-flex justify-content-center"> */}
+
+        <a
+          title="View Corporate User"
+          className="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+          onClick={() => handleShow(row)}
+        >
+          <i className="fa fa-eye" style={{ color: "#3699FF" }}></i>
+        </a>
+
+        <Switch
+          checked={row.isActive}
+          size="small"
+          className="mt-1"
+          onChange={() => {
+            if (row.isActive) {
+              activeDeactiveAction(row._id, false);
+            } else {
+              activeDeactiveAction(row._id, true);
+            }
+          }}
+          color="secondary"
+          name="userStatus"
+          inputProps={{ 'aria-label': 'primary checkbox' }}
+          title={row.isActive ? "Deactivate" : "Activate"}
+        />
+
+
+        {/* <Button
           className='mx-3 btn btn-icon btn-light btn-sm mx-3'
           size='sm'
           variant=''
@@ -26,12 +45,7 @@ const ActionButtons = ({ row, approveRejectAction, activeDeactiveAction }) => {
             <i class="fa fa-eye" title="View"></i>
           </span>
         </Button>
-        <ViewModal
-          show={show}
-          handleClose={handleClose}
-          row={row}
-          approveRejectAction={approveRejectAction}
-        />
+
         <Button
           className={row.isActive ? 'd-none' : 'btn btn-icon btn-light btn-sm'}
           size='sm'
@@ -51,21 +65,10 @@ const ActionButtons = ({ row, approveRejectAction, activeDeactiveAction }) => {
           <span className="svg-icon svg-icon-md svg-icon-primary">
             <i class="fa fa-toggle-off" title="Deactive"></i>
           </span>
-        </Button>
-      </div>
+        </Button> */}
+      {/* </div> */}
     </>
   );
 };
 
-export default (
-  cell,
-  row,
-  rowIndex,
-  { approveRejectAction, activeDeactiveAction }
-) => (
-    <ActionButtons
-      row={row}
-      approveRejectAction={approveRejectAction}
-      activeDeactiveAction={activeDeactiveAction}
-    />
-  );
+export default ActionButtons;

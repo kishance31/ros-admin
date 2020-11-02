@@ -23,12 +23,9 @@ const ExpandedRowNewOrder = ({ order }) => {
 			formatter: (cell) => `$${cell}`
 		},
 		{
-			dataField: 'firstPaymentTerm',
+			dataField: 'firstTimeCost',
 			text: 'First Time Cost (USD)',
-			formatter: (cell, row) => `$${parseFloat((
-				(row.ros_cost / 12)
-				* order.firstPaymentTerm))
-				.toFixed(2)}`
+			formatter: (cell) => `$${cell.toFixed(2)}`
 		},
 	];
 
@@ -36,7 +33,7 @@ const ExpandedRowNewOrder = ({ order }) => {
 		<div className='jumbotron bg-light p-4'>
 			<BootstrapTable
 				keyField='_id'
-				data={order.productDetails || []}
+				data={order.products || []}
 				columns={columns}
 				bordered={false}
 				noDataIndication='No records found!'

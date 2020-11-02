@@ -19,7 +19,14 @@ const CostSummary = () => {
 
 	const dispatch = useDispatch();
 
-	const { firstTimeMonths, recurringMonthsNo } = useSelector(state => state.costSummary, shallowEqual);
+	const {
+		firstTimeMonths,
+		recurringMonthsNo,
+		firstYearCharge,
+		firstYearTerm,
+		secondYearCharge,
+		secondYearTerm,
+	} = useSelector(state => state.costSummary, shallowEqual);
 
 	useEffect(() => {
 		dispatch(getCostSummaryAsync());
@@ -28,6 +35,10 @@ const CostSummary = () => {
 	const initValues = {
 		firstTimeMonths,
 		recurringMonthsNo,
+		firstYearCharge,
+		firstYearTerm,
+		secondYearCharge,
+		secondYearTerm,
 	}
 
 	return (
@@ -44,11 +55,20 @@ const CostSummary = () => {
 				onSubmit={(values) => {
 					let {
 						firstTimeMonths,
-						recurringMonthsNo
+						recurringMonthsNo,
+						firstYearCharge,
+						firstYearTerm,
+						secondYearCharge,
+						secondYearTerm,
 					} = values;
 					dispatch(saveCostSummaryAsync(
 						{
-							firstTimeMonths: parseInt(firstTimeMonths), recurringMonthsNo: parseInt(recurringMonthsNo)
+							firstTimeMonths: parseInt(firstTimeMonths),
+							recurringMonthsNo: parseInt(recurringMonthsNo),
+							firstYearCharge: parseInt(firstYearCharge),
+							firstYearTerm: parseInt(firstYearTerm),
+							secondYearCharge: parseInt(secondYearCharge),
+							secondYearTerm: parseInt(secondYearTerm),
 						}
 					));
 				}}
@@ -56,8 +76,9 @@ const CostSummary = () => {
 				{({ handleSubmit }) => (
 					<>
 						<Form onSubmit={handleSubmit} className="form form-label-right">
+
 							<div className="row">
-								<div className="col-lg-3 mt-6">
+								<div className="col-lg-4 mt-6">
 									<div className="form-group">
 										<Field
 											name="firstTimeMonths"
@@ -68,14 +89,61 @@ const CostSummary = () => {
 									</div>
 								</div>
 							</div>
-							<div className="row"> 
-								<div className="col-lg-3">
+
+							<div className="row">
+								<div className="col-lg-4">
 									<div className="form-group">
 										<Field
 											name="recurringMonthsNo"
 											component={Input}
 											placeholder="Recurring payment months number"
 											label="Recurring payment months number"
+										/>
+									</div>
+								</div>
+							</div>
+
+							<div className="row">
+								<div className="col-lg-4">
+									<div className="form-group">
+										<Field
+											name="firstYearCharge"
+											component={Input}
+											placeholder="After first year charge"
+											label="After first year charge(%)"
+										/>
+									</div>
+								</div>
+								<div className="col-lg-6">
+									<div className="form-group">
+										<Field
+											name="firstYearTerm"
+											component={Input}
+											placeholder="After first year charge term(months)"
+											label="After first year charge term(months)"
+										/>
+									</div>
+								</div>
+							</div>
+
+							<div className="row">
+							<div className="col-lg-4">
+									<div className="form-group">
+										<Field
+											name="secondYearCharge"
+											component={Input}
+											placeholder="After second year charge"
+											label="After second year charge(%)"
+										/>
+									</div>
+								</div>
+								<div className="col-lg-6">
+									<div className="form-group">
+										<Field
+											name="secondYearTerm"
+											component={Input}
+											placeholder="After second year charge term(months)"
+											label="After second year charge term(months)"
 										/>
 									</div>
 								</div>
