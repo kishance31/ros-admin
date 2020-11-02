@@ -37,11 +37,8 @@ export const getCorporateOrderInvoiceAsync = (isReccuring) => async (dispatch, g
 		})
 		console.log(data);
 		if (data.response && data.response.responseCode === 200) {
-			let respData = data.response.list;
-			let list = respData.filter(dt => dt.invoiceDetails.length);
 			return dispatch(orderInvoiceAction.getCorporateOrderInvoiceSuccess({
 				...data.response,
-				list
 			}));
 		}
 		return dispatch(orderInvoiceAction.getCorporateOrderInvoiceError());

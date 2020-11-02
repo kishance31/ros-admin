@@ -44,22 +44,14 @@ const NewOrder = ({ row, confirmNewOrder, manageOrderDispatchUpdate }) => {
       formatter: (cell) => new Date(cell).toLocaleDateString(),
     },
     {
-      dataField: 'ordercost',
+      dataField: 'totalOrderCost',
       text: 'Ord. Cost',
-      formatter: (cell, row) => `
-      $${row.productDetails.reduce((acc, val) => acc += val.ros_cost, 0)}
-      `
+      formatter: (cell) => `$${cell.toFixed(2)}`
     },
     {
-      dataField: 'productDetails',
+      dataField: 'firstTimeCost',
       text: 'First Time Cost',
-      formatter: (cell, row) => `
-      $${parseFloat((
-        ((cell.reduce((acc, prod) => acc + prod.ros_cost, 0)) / 12)
-        * row.firstPaymentTerm))
-          .toFixed(2)
-        }
-      `
+      formatter: (cell) => `$${cell.toFixed(2)}`
     },
     {
       dataField: 'isFirstTimePayment',
