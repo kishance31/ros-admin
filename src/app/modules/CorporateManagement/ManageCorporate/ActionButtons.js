@@ -23,7 +23,7 @@ const ActionButtons = ({ row, approveRejectAction, activeDeactiveAction }) => {
           onClick={() => handleShow()}
         >
           <span className="svg-icon svg-icon-md svg-icon-primary">
-            <i class="fa fa-eye" title="View"></i>
+            <i className="fa fa-eye" title="View"></i>
           </span>
         </Button>
         <ViewModal
@@ -39,7 +39,7 @@ const ActionButtons = ({ row, approveRejectAction, activeDeactiveAction }) => {
           onClick={() => activeDeactiveAction(row._id, true)}
         >
           <span className="svg-icon svg-icon-md svg-icon-primary">
-            <i class="fa fa-toggle-on" title="Acitve"></i>
+            <i className="fa fa-toggle-on" title="Acitve"></i>
           </span>
         </Button>
         <Button
@@ -49,7 +49,7 @@ const ActionButtons = ({ row, approveRejectAction, activeDeactiveAction }) => {
           onClick={() => activeDeactiveAction(row._id, false)}
         >
           <span className="svg-icon svg-icon-md svg-icon-primary">
-            <i class="fa fa-toggle-off" title="Deactive"></i>
+            <i className="fa fa-toggle-off" title="Deactive"></i>
           </span>
         </Button>
       </div>
