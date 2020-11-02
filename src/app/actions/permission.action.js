@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {  RolesAndPermissionAction } from './rolesAndPermission.action';
 import getServerCore from '../../utils/apiUtils';
+import { showSuccessSnackbar } from './snackbar.action';
 
 export const PermissionMap = {
     MANAGE_PERMISSIONS_START: 'MANAGE_PERMISSIONS_START',
@@ -13,7 +14,7 @@ export const PermissionMap = {
 
 const { serverUrls } = getServerCore();
 const rolesUrl = serverUrls.getRolesAndPermission();
-import { showSuccessSnackbar } from './snackbar.action';
+
 
 export const managePermissionsAsync = (roleData) => {
     return async (dispatch, getState) => {
