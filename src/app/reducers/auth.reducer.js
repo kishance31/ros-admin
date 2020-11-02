@@ -146,6 +146,7 @@ const authReducer = (state = initialAuthState, action) => {
                 isLoading: false,
             }
         }
+        case actionTypes.CHANGE_PASSWORD_SUCCESS:
         case actionTypes.Logout: {
             return {
                 ...state,
@@ -159,12 +160,6 @@ const authReducer = (state = initialAuthState, action) => {
             return {
                 ...state,
                 isLoading: true
-            }
-        }
-        case actionTypes.CHANGE_PASSWORD_SUCCESS: {
-            return {
-                ...state,
-                isLoading: false
             }
         }
         case actionTypes.CHANGE_PASSWORD_ERROR: {
@@ -182,7 +177,11 @@ const authReducer = (state = initialAuthState, action) => {
         case actionTypes.UPDATE_USER_PROFILE_SUCCESS: {
             return {
                 ...state,
-                isLoading: false
+                isLoading: false,
+                user: {
+                    ...state.user,
+                    ...action.payload
+                }
             }
         }
         case actionTypes.UPDATE_USER_PROFILE_ERROR: {

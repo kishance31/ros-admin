@@ -3,49 +3,52 @@ import { Modal } from 'react-bootstrap';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { Input } from '../../../../../_metronic/_partials/controls';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { changePasswordAsync } from '../../../../../app/actions/auth.actions'
+
+const ChangePasswordSchema = () => (
+    Yup.object().shape({
+        password: Yup.string()
+            .min(3, "Minimum 3 symbols")
+            .max(50, "Maximum 50 symbols")
+            .required(
+                "Old Password required"
+            ),
+        newPassword: Yup.string()
+            .min(3, "Minimum 3 symbols")
+            .max(50, "Maximum 50 symbols")
+            .required(
+                "New Password required"
+            ),
+        confirmPassword: Yup.string()
+            .required(
+                "Re Enter New Password required"
+            )
+            .when("newPassword", {
+                is: (val) => (val && val.length > 0 ? true : false),
+                then: Yup.string().oneOf(
+                    [Yup.ref("newPassword")],
+                    "New Password and Confirm Password didn't match."
+                ),
+            }),
+    }));
 
 const ChangePassword = (props) => {
 
-    const { intl, onCloseChangePasswordModal } = props;
+    const { onCloseChangePasswordModal } = props;
+    const dispatch = useDispatch();
+    const user = useSelector(state => state.auth.user, shallowEqual)
 
-    const ChangePasswordSchema = () => (
-        Yup.object().shape({
-            oldPassword: Yup.string()
-                .min(3, "Minimum 3 symbols")
-                .max(50, "Maximum 50 symbols")
-                .required(
-                    intl.formatMessage({
-                        id: "AUTH.VALIDATION.REQUIRED_FIELD",
-                    })
-                ),
-            newPassword: Yup.string()
-                .min(3, "Minimum 3 symbols")
-                .max(50, "Maximum 50 symbols")
-                .required(
-                    intl.formatMessage({
-                        id: "AUTH.VALIDATION.REQUIRED_FIELD",
-                    })
-                ),
-            confirmPassword: Yup.string()
-                .required(
-                    intl.formatMessage({
-                        id: "AUTH.VALIDATION.REQUIRED_FIELD",
-                    })
-                )
-                .when("newPassword", {
-                    is: (val) => (val && val.length > 0 ? true : false),
-                    then: Yup.string().oneOf(
-                        [Yup.ref("newPassword")],
-                        "New Password and Confirm Password didn't match."
-                    ),
-                }),
-        }));
+    const onChangePassword = (values) => {
+        dispatch(changePasswordAsync({ ...values }, user.email));
+        onCloseChangePasswordModal();
+    }
 
     return (
         <>
             <Formik
                 initialValues={{
-                    oldPassword: "",
+                    password: "",
                     newPassword: "",
                     confirmPassword: "",
                 }}
@@ -54,6 +57,7 @@ const ChangePassword = (props) => {
 
                 onSubmit={(values) => {
                     console.log(values);
+                    onChangePassword(values);
                 }}
             >
                 {({ handleSubmit }) => (
@@ -64,7 +68,7 @@ const ChangePassword = (props) => {
                                     <div className="col-lg-8">
                                         <Field
                                             type="password"
-                                            name="oldPassword"
+                                            name="password"
                                             component={Input}
                                             placeholder="Old Password"
                                             label="Old Password"

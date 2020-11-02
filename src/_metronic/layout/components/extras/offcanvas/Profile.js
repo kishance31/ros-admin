@@ -3,7 +3,7 @@ import { Modal } from 'react-bootstrap';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { Input } from '../../../../../_metronic/_partials/controls';
-import { useDispatch } from 'react-redux';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { updateUserProfileAsync } from '../../../../../app/actions/auth.actions'
 
 const UserProfileSchema = () => (
@@ -26,19 +26,22 @@ const UserProfileSchema = () => (
 const Profile = ({ onCloseProfileModal }) => {
 
     const dispatch = useDispatch();
+    const user = useSelector(state => state.auth.user, shallowEqual)
 
     const updateUserProfile = (values) => {
-        dispatch(updateUserProfileAsync({ ...values }));
+        // console.log(values)
+        dispatch(updateUserProfileAsync({ ...values }, user._id));
+        onCloseProfileModal();
     }
 
     return (
         <>
             <Formik
                 initialValues={{
-                    firstName: "",
-                    lastName: "",
-                    email: "",
-                    mobileNo: "",
+                    firstName: user.firstName || "",
+                    lastName: user.lastName || "",
+                    email: user.email || "",
+                    mobileNo: user.mobileNo || "",
                 }}
 
                 validationSchema={UserProfileSchema}
