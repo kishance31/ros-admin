@@ -1,4 +1,4 @@
-import { persistReducer, createTransform } from "redux-persist";
+import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { actionTypes } from '../actions/auth.actions';
 
@@ -17,6 +17,8 @@ const initialAuthState = {
     errors: "",
     message: "",
     redirectLogin: false,
+    modalProfileDialog: false,
+    modalChangePasswordDialog: false,
 };
 
 // const fetchUser = (tokens) => {
@@ -79,8 +81,18 @@ const authReducer = (state = initialAuthState, action) => {
                 isLoading: false
             };
         }
-        case actionTypes.FORGOT_PASSWORD:
-        case actionTypes.RESET_PASSWORD:
+        case actionTypes.FORGOT_PASSWORD: {
+            return {
+                ...state,
+                isLoading: true
+            }
+        }
+        case actionTypes.RESET_PASSWORD: {
+            return {
+                ...state,
+                isLoading: true
+            }
+        }
         case actionTypes.Login_Start: {
             return {
                 ...state,
@@ -89,7 +101,12 @@ const authReducer = (state = initialAuthState, action) => {
                 message: "",
             };
         }
-        case actionTypes.RESET_PASSWORD_SUCCESS:
+        case actionTypes.RESET_PASSWORD_SUCCESS: {
+            return {
+                ...state,
+                isLoading: false
+            }
+        }
         case actionTypes.FORGOT_PASSWORD_SUCCESS: {
             return {
                 ...state,
@@ -99,8 +116,18 @@ const authReducer = (state = initialAuthState, action) => {
                 redirectLogin: true,
             }
         }
-        case actionTypes.RESET_PASSWORD_ERROR:
-        case actionTypes.FORGOT_PASSWORD_ERROR:
+        case actionTypes.RESET_PASSWORD_ERROR: {
+            return {
+                ...state,
+                isLoading: false
+            }
+        }
+        case actionTypes.FORGOT_PASSWORD_ERROR: {
+            return {
+                ...state,
+                isLoading: false
+            }
+        }
         case actionTypes.LoginError: {
             return {
                 ...state,
@@ -128,7 +155,66 @@ const authReducer = (state = initialAuthState, action) => {
                 tokens: null,
             };
         }
-
+        case actionTypes.CHANGE_PASSWORD_START: {
+            return {
+                ...state,
+                isLoading: true
+            }
+        }
+        case actionTypes.CHANGE_PASSWORD_SUCCESS: {
+            return {
+                ...state,
+                isLoading: false
+            }
+        }
+        case actionTypes.CHANGE_PASSWORD_ERROR: {
+            return {
+                ...state,
+                isLoading: false
+            }
+        }
+        case actionTypes.UPDATE_USER_PROFILE_START: {
+            return {
+                ...state,
+                isLoading: true
+            }
+        }
+        case actionTypes.UPDATE_USER_PROFILE_SUCCESS: {
+            return {
+                ...state,
+                isLoading: false
+            }
+        }
+        case actionTypes.UPDATE_USER_PROFILE_ERROR: {
+            return {
+                ...state,
+                isLoading: false
+            }
+        }
+        case actionTypes.OPEN_PROFILE_MODAL: {
+            return {
+                ...state,
+                modalProfileDialog: true,
+            }
+        }
+        case actionTypes.CLOSE_PROFILE_MODAL: {
+            return {
+                ...state,
+                modalProfileDialog: false,
+            }
+        }
+        case actionTypes.OPEN_CHANGE_PASSWORD_MODAL: {
+            return {
+                ...state,
+                modalChangePasswordDialog: true,
+            }
+        }
+        case actionTypes.CLOSE_CHANGE_PASSWORD_MODAL: {
+            return {
+                ...state,
+                modalChangePasswordDialog: false,
+            }
+        }
         default:
             return state;
     }

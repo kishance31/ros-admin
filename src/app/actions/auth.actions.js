@@ -1,5 +1,6 @@
 import axios from 'axios';
 import getServerCore from '../../utils/apiUtils';
+import { showSuccessSnackbar } from './snackbar.action';
 
 export const actionTypes = {
     Login_Start: "Login_Start",
@@ -13,9 +14,23 @@ export const actionTypes = {
     RESET_PASSWORD: "RESET_PASSWORD",
     RESET_PASSWORD_SUCCESS: "RESET_PASSWORD_SUCCESS",
     RESET_PASSWORD_ERROR: "RESET_PASSWORD_ERROR",
+    CHANGE_PASSWORD_START: "CHANGE_PASSWORD_START",
+    CHANGE_PASSWORD_SUCCESS: "CHANGE_PASSWORD_SUCCESS",
+    CHANGE_PASSWORD_ERROR: "CHANGE_PASSWORD_ERROR",
+    UPDATE_USER_PROFILE_START: 'UPDATE_USER_PROFILE_START',
+    UPDATE_USER_PROFILE_SUCCESS: 'UPDATE_USER_PROFILE_SUCCESS',
+    UPDATE_USER_PROFILE_ERROR: 'UPDATE_USER_PROFILE_ERROR',
+    OPEN_PROFILE_MODAL: 'OPEN_PROFILE_MODAL',
+    CLOSE_PROFILE_MODAL: 'CLOSE_PROFILE_MODAL',
+    OPEN_CHANGE_PASSWORD_MODAL: 'OPEN_CHANGE_PASSWORD_MODAL',
+    CLOSE_CHANGE_PASSWORD_MODAL: 'CLOSE_CHANGE_PASSWORD_MODAL',
 };
 
 export const UserActions = {
+    openProfileModal: () => ({ type: actionTypes.OPEN_PROFILE_MODAL }),
+    closeProfileModal: () => ({ type: actionTypes.CLOSE_PROFILE_MODAL }),
+    openChangePasswordModal: () => ({ type: actionTypes.OPEN_CHANGE_PASSWORD_MODAL }),
+    closeChangePasswordModal: () => ({ type: actionTypes.CLOSE_CHANGE_PASSWORD_MODAL }),
     loginStart: () => ({ type: actionTypes.Login_Start }),
     loginSuccess: (user, tokens) => ({ type: actionTypes.Login, payload: { user, tokens } }),
     loginError: (errors) => ({ type: actionTypes.LoginError, payload: errors }),
@@ -114,7 +129,7 @@ export const resetPasswordApi = (payload) => async (dispatch) => {
             method: "POST",
             // url: `http://localhost:4000/api/admin/resetPassword`,
             url: `${adminUrl}/resetPassword`,
-            
+
             data: payload,
             headers: {
                 'Content-Type': "application/json",
@@ -129,3 +144,59 @@ export const resetPasswordApi = (payload) => async (dispatch) => {
         dispatch(UserActions.resetPasswordError(getErrorMsg("Error while reseting password. Please try again after sometime.")));
     }
 }
+
+export const changePasswordAsync = () => {
+    return async (dispatch) => {
+        try {
+            dispatch({
+                type: actionTypes.CHANGE_PASSWORD_START
+            });
+            let { data } = await axios({
+                url: `${adminUrl}/`,
+                method: 'POST',
+            });
+            if (data.response && data.response.responseCode === 200) {
+                dispatch({
+                    type: actionTypes.CHANGE_PASSWORD_SUCCESS,
+                })
+                dispatch(showSuccessSnackbar('success', "Password Updated Successfully", 3000));
+            }
+        } catch (error) {
+            dispatch({
+                type: actionTypes.CHANGE_PASSWORD_ERROR
+            })
+            dispatch(showSuccessSnackbar('error', "Please try once again", 3000));
+        }
+    }
+}
+
+export const updateUserProfileAsync = (user) => {
+    return async (dispatch, getState) => {
+        try {
+            dispatch({
+                type: actionTypes.UPDATE_USER_PROFILE_START
+            });
+            const { tokens } = getState().auth;
+            let { data } = await axios({
+                url: `${adminUrl}/editAdmin/${user._id}`,
+                method: 'POST',
+                headers: {
+                    tokens,
+                    'Content-Type': 'application/json'
+                },
+                data: user,
+            });
+            if (data.response && data.response.responseCode === 200) {
+                dispatch({
+                    type: actionTypes.UPDATE_USER_PROFILE_SUCCESS,
+                })
+                dispatch(showSuccessSnackbar('success', "Updated User Profile Successfully", 3000));
+            }
+        } catch (error) {
+            dispatch({
+                type: actionTypes.UPDATE_USER_PROFILE_ERROR
+            })
+            dispatch(showSuccessSnackbar('error', "Please try once again", 3000));
+        }
+    }
+} 
