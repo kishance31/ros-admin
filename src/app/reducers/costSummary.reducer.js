@@ -3,6 +3,10 @@ import { CostSummaryMap } from '../actions/costSummary.actions';
 const initialState = {
     firstTimeMonths: 0,
     recurringMonthsNo: 0,
+    firstYearCharge: 0,
+    firstYearTerm: 0,
+    secondYearCharge: 0,
+    secondYearTerm: 0,
     isLoading: false,
 }
 
@@ -23,6 +27,10 @@ const costSummaryReducer = (state = initialState, action) => {
                 isLoading: false,
                 firstTimeMonths: action.payload.firstTimeMonths,
                 recurringMonthsNo: action.payload.recurringMonthsNo,
+                firstYearCharge: action.payload.firstYearCharge,
+                firstYearTerm: action.payload.firstYearTerm,
+                secondYearCharge: action.payload.secondYearCharge,
+                secondYearTerm: action.payload.secondYearTerm,
             }
         }
         case CostSummaryMap.SAVE_COSTSUMMARY_ERROR:
@@ -32,7 +40,7 @@ const costSummaryReducer = (state = initialState, action) => {
                 isLoading: false,
             }
         }
-        
+
         default:
             return { ...state }
     }

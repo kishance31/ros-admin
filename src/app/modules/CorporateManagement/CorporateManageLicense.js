@@ -21,9 +21,10 @@ const CorporateManageLicense = () => {
 	const dispatch = useDispatch();
 	const {
 		corporateManageLicenseData,
+		isLoading,
 		totalCount,
 		pageSize,
-		pageNo,
+		pageNumber,
 	} = useSelector((state) => state.corporateManageLicense, shallowEqual);
 
 	const activeDeactiveAction = (orderId, isActive) => {
@@ -39,10 +40,6 @@ const CorporateManageLicense = () => {
 		dispatch(displayCorporateManageLicenseDataAsync());
 	}, [dispatch]);
 
-	const formatedDate = (cell, row) => {
-		return moment(cell).format('DD/MM/YYYY');
-	};
-
 	const indexingSrNo = (cell, row, rowIndex) => {
 		return rowIndex + 1;
 	};
@@ -55,17 +52,28 @@ const CorporateManageLicense = () => {
 		return totalLicenseCost;
 	};
 
-	const paginationOption = {
+	const paginationOptions = {
 		custom: true,
 		totalSize: totalCount,
 		sizePerPageList: [
-			{ text: '3', value: 3 },
-			{ text: '5', value: 5 },
-			{ text: '10', value: 10 },
+			{ text: "3", value: 3 },
+			{ text: "5", value: 5 },
+			{ text: "10", value: 10 }
 		],
 		sizePerPage: pageSize,
-		page: pageNo,
+		page: pageNumber,
 	};
+
+	const onTableChange = (type, newState) => {
+		if (type === "pagination") {
+			if (newState.page && newState.page !== pageNumber) {
+				dispatch(corporateManageLicenseAction.setPage(newState.page));
+			}
+			if (newState.sizePerPage !== pageSize) {
+				dispatch(corporateManageLicenseAction.setPageSize(newState.sizePerPage));
+			}
+		}
+	}
 
 	const columns = [
 		{
@@ -80,7 +88,7 @@ const CorporateManageLicense = () => {
 		{
 			dataField: 'createdAt',
 			text: 'Order Date',
-			formatter: formatedDate,
+			formatter: cell => new Date(cell).toLocaleDateString(),
 		},
 		{
 			dataField: 'purchasedLicenses.type',
@@ -114,22 +122,6 @@ const CorporateManageLicense = () => {
 		},
 	];
 
-	const onTableChange = (type, newState) => {
-		if (type === 'pagination') {
-			if (
-				(newState.page && newState.page !== pageNo) ||
-				newState.sizePerPage !== pageSize
-			) {
-				dispatch(
-					displayCorporateManageLicenseDataAsync(
-						newState.page,
-						newState.sizePerPage
-					)
-				);
-			}
-		}
-	};
-
 	const noDataIndication = () => {
 		return (
 			<NoRecordsFoundMessage />
@@ -138,17 +130,17 @@ const CorporateManageLicense = () => {
 
 	return (
 		<>
-			<PaginationProvider pagination={paginationFactory(paginationOption)}>
+			<PaginationProvider pagination={paginationFactory(paginationOptions)}>
 				{({ paginationProps, paginationTableProps }) => {
 					return (
-						<Pagination paginationProps={paginationProps}>
+						<Pagination isLoading={isLoading} paginationProps={paginationProps}>
 							<BootstrapTable
 								keyField='orderId'
 								bordered={false}
 								data={
-									corporateManageLicenseData === null
-										? []
-										: corporateManageLicenseData
+									corporateManageLicenseData
+										? corporateManageLicenseData
+										: []
 								}
 								columns={columns}
 								remote
@@ -163,5 +155,6 @@ const CorporateManageLicense = () => {
 		</>
 	);
 };
+
 
 export default CorporateManageLicense;

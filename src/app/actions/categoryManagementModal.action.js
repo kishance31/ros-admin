@@ -335,20 +335,23 @@ export const EditProductAsync = (data, _id) => {
             })
             if (editProductRes.data.response.responseCode === 200) {
                 dispatch({ type: CategoryManagementMap.EDIT_PRODUCT_SUCCESSFULLY })
+                return dispatch(showSuccessSnackbar('success', 'Product updated successfully', 3000))
             }
+            dispatch(showSuccessSnackbar('error', 'Error updating product.', 3000))
         } catch (error) {
             dispatch({ type: CategoryManagementMap.EDIT_PRODUCT_FAIL })
+            dispatch(showSuccessSnackbar('error', 'Error updating product.', 3000))
         }
     }
 }
 
 export const DisplayVendorItemAsync = (value) => {
-    return async (dispatch,getState) => {
+    return async (dispatch, getState) => {
         try {
             const { pageNumber, pageSize } = getState().categoryModal
             let options = {
                 url: `${productUrl}/getProductList/${pageNumber - 1}/${pageSize}`,
-                method: 'POST',       
+                method: 'POST',
                 headers: {
                     'Content-type': 'application/json',
                 }
@@ -380,7 +383,7 @@ export const addVendorItemAsync = (product) => {
             })
             if (data.response && data.response.responseCode === 200) {
                 dispatch({ type: CategoryManagementMap.ADD_PRODUCT_SUCCESS })
-                dispatch(showSuccessSnackbar('success', 'Add product success', 3000))
+                dispatch(showSuccessSnackbar('success', 'Product added successfully', 3000))
             }
             else {
                 dispatch({ type: CategoryManagementMap.ADD_PRODUCT_ERROR });
@@ -392,45 +395,6 @@ export const addVendorItemAsync = (product) => {
         }
     }
 }
-
-// export const DisplayProductData = (value) => {
-//     return async (dispatch, getstate) => {
-//         const { auth } = getstate();
-//         const token = auth.tokens;
-//         const Data = {
-//             category_id: value
-//         }
-//         if(!Data)
-//         try {
-//             let responseProductList = await axios({
-//                 url: `http://localhost:4000/api/corporate-admin/product/getProductList`,
-//                 method: "POST",
-//                 headers: {
-//                     'Content-type': 'application/json',
-//                     'tokens': token
-//                 }
-//             })
-//             console.log('PRODUCT LIST DATA MASTER', responseProductList);
-//         } catch (error) {
-
-//         }else{
-//             try {
-//                 let responseProductList = await axios({
-//                     url: `http://localhost:4000/api/corporate-admin/product/getProductList`,
-//                     method: "POST",
-//                     data: Data,
-//                     headers: {
-//                         'Content-type': 'application/json',
-//                         'tokens': token
-//                     }
-//                 })
-//                 console.log('PRODUCT LIST DATA SLAVE', responseProductList);
-//             } catch (error) {
-
-//             }
-//         }
-//     }
-// }
 
 export const displaySubCategoryList = (value) => {
     return async (dispatch, getstate) => {
@@ -455,23 +419,47 @@ export const displaySubCategoryList = (value) => {
 
 export const deleteProductAsync = () => {
     return async (dispatch, getstate) => {
-        const { auth, categoryModal } = getstate()
+        const { categoryModal } = getstate()
         const _id = categoryModal.selectedCategory._id
-        const token = auth.tokens
         try {
             let deleteProductResponse = await axios({
                 url: `${productUrl}/deleteProduct/${_id}`,
                 method: "DELETE",
                 headers: {
                     'Content-type': 'application/json',
-                    'tokens': token
                 }
             })
             if (deleteProductResponse.data.response.responseCode === 200) {
                 dispatch({ type: CategoryManagementMap.ITEM_DELETE_SUCCESSFULLY })
+                return dispatch(showSuccessSnackbar('success', 'Product deleted successfully', 3000))
             }
         } catch (error) {
             dispatch({ type: CategoryManagementMap.ITEM_DELETE_FAIL })
+        }
+    }
+}
+
+export const updateProductStatusAsync = () => {
+    return async (dispatch, getState) => {
+        try {
+            dispatch({ type: CategoryManagementMap.EDIT_PRODUCT });
+            const { status, _id } = getState().categoryModal.selectedProduct;
+            let editProductRes = await axios({
+                url: `${productUrl}/updateProductStatus/${_id}`,
+                method: 'PUT',
+                data: { status: !status },
+                headers: {
+                    'Content-type': 'application/json',
+                }
+            })
+            if (editProductRes.data.response.responseCode === 200) {
+                dispatch({ type: CategoryManagementMap.EDIT_PRODUCT_SUCCESSFULLY })
+                return dispatch(showSuccessSnackbar('success', `Product ${status ? "deactivated" : "activated"} successfully`, 3000))
+            }
+            dispatch(showSuccessSnackbar('error', 'Error updating product.', 3000))
+        } catch (error) {
+            dispatch({ type: CategoryManagementMap.EDIT_PRODUCT_FAIL })
+            dispatch(showSuccessSnackbar('error', 'Error updating product.', 3000))
         }
     }
 }

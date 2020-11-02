@@ -1,15 +1,13 @@
 import React from 'react';
 import BootstrapTable from "react-bootstrap-table-next";
 import { useSelector } from "react-redux";
-import { sortCaret } from '../../../../../_metronic/_helpers';
 import ActionFormatter from './ActionFormatter';
 import {
     NoRecordsFoundMessage,
   } from "../../../../../_metronic/_helpers";
 
-const ManageCategoryTable = ({
-    OnAddCategory, onDisplaySubCategory, setSelectedCategory, EditCategory, setSelectedSubCategory
-}) => {
+const ManageCategoryTable = (
+    { OnAddCategory, onDisplaySubCategory, setSelectedCategory, EditCategory, setSelectedSubCategory }) => {
 
     const entities = useSelector(state => state.categoryModal.categoryList);
     const categorySelected = useSelector(state => state.categoryModal.categorySelected);
@@ -24,7 +22,7 @@ const ManageCategoryTable = ({
         },
         {
             dataField: categorySelected === "subcategory" ? "subcategory_name" : "category_name",
-            text: "Category Name",
+            text: `${categorySelected === "category" ? "Category Name" : "Sub-Category Name"}`,
             align: 'center',
             headerAlign: 'center'
         },

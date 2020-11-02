@@ -1,5 +1,7 @@
 import React from 'react';
-import { ToggleButton } from 'react-bootstrap';
+import SVG from "react-inlinesvg";
+import { toAbsoluteUrl } from '../../../../_metronic/_helpers';
+import Switch from '@material-ui/core/Switch';
 
 export const EditButtons = (cellContent,
     row,
@@ -23,32 +25,27 @@ export const EditButtons = (cellContent,
 
         <>
             <a
-                className="btn btn-icon btn-light btn-sm mx-3"
+                title="Edit user"
+                className="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
                 onClick={() => onClickEdit(row)}
             >
                 <span className="svg-icon svg-icon-md svg-icon-primary">
-                    <i class="fa fa-edit" title="Edit"></i>
+                    <SVG
+                        src={toAbsoluteUrl("/media/svg/icons/Communication/Write.svg")}
+                    />
                 </span>
             </a>
 
-            <a
-                className={row.status ? "btn btn-icon btn-light btn-sm mx-3" : "btn btn-icon btn-light btn-sm mx-3"}
-                onClick={() => ClickDeleteCategoryAsync(row)}
-            >
-                {!row.active ?
-                    (<span className="svg-icon svg-icon-md svg-icon-primary">
-                        <i class="fa fa-toggle-on" title="Acitve"></i>
-                    </span>
-                    )
-                    :
-                    (<span className="svg-icon svg-icon-md svg-icon-primary">
-                        <i class="fa fa-toggle-off" title="Deactive"></i>
-                    </span>)
-
-                }
-
-
-            </a>
+            <Switch
+                checked={row.active}
+                size="small"
+                className="mt-1"
+                onChange={() => ClickDeleteCategoryAsync(row)}
+                color="secondary"
+                name="userStatus"
+                inputProps={{ 'aria-label': 'primary checkbox' }}
+                title={row.active ? "Deactivate" : "Activate"}
+            />
         </>
     )
 }

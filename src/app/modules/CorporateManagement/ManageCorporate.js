@@ -1,30 +1,44 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
-import paginationFactory, {
-  PaginationProvider,
-} from 'react-bootstrap-table2-paginator';
+import paginationFactory, { PaginationProvider } from 'react-bootstrap-table2-paginator';
 import { Pagination } from '../../../_metronic/_partials/controls';
 import { shallowEqual, useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
-import {
-  NoRecordsFoundMessage,
-} from "../../../_metronic/_helpers";
+import { NoRecordsFoundMessage, PleaseWaitMessage } from "../../../_metronic/_helpers";
 import ActionButtons from './ManageCorporate/ActionButtons';
-import {
-  manageCorporateAction,
-  displayManageCorporateDataAsync,
-} from '../../actions/manageCorporate.action';
+import { manageCorporateAction, displayManageCorporateDataAsync } from '../../actions/manageCorporate.action';
+import ViewModal from './ManageCorporate/ViewModal';
 
 const ManageCorporate = () => {
+
   const dispatch = useDispatch();
-  const { manageCorporateData, totalCount, pageSize, pageNo } = useSelector(
-    (state) => state.manageCorporate,
-    shallowEqual
-  );
+  const [show, setShow] = useState(false);
+  const [selectedRow, setSelectedRow] = useState(null);
+
+  const handleClose = () => {
+    setSelectedRow(null);
+    setShow(false);
+  };
+
+  const handleShow = (row) => {
+    setSelectedRow(row);
+    setShow(true);
+  };
+
+  const {
+    manageCorporateData,
+    totalCount,
+    isLoading,
+    pageNumber,
+    pageSize,
+    refreshManageCorporateData
+  } = useSelector(state => state.manageCorporate, shallowEqual);
 
   useEffect(() => {
-    dispatch(displayManageCorporateDataAsync(pageNo, pageSize));
-  }, [dispatch, pageNo, pageSize]);
+    if (refreshManageCorporateData) {
+      dispatch(displayManageCorporateDataAsync());
+    }
+  }, [refreshManageCorporateData]);
 
   const approveRejectAction = (_id, status) => {
     dispatch(
@@ -40,18 +54,6 @@ const ManageCorporate = () => {
 
   const formatedDate = (cell, row) => {
     return moment(cell).format('DD/MM/YYYY');
-  };
-
-  const paginationOption = {
-    custom: true,
-    totalSize: totalCount,
-    sizePerPageList: [
-      { text: '3', value: 3 },
-      { text: '5', value: 5 },
-      { text: '10', value: 10 },
-    ],
-    sizePerPage: pageSize,
-    page: pageNo,
   };
 
   const columns = [
@@ -91,42 +93,63 @@ const ManageCorporate = () => {
       formatExtraData: {
         approveRejectAction: approveRejectAction,
         activeDeactiveAction: activeDeactiveAction,
+        handleShow: handleShow
       },
     },
   ];
 
-  const onTableChange = (type, newState) => {
-    if (type === 'pagination') {
-      if (newState.page && newState.page !== pageNo) {
-        dispatch(manageCorporateAction.setPageNo(newState.page));
-      } else if (newState.sizePerPage && newState.sizePerPage !== pageSize) {
-        dispatch(manageCorporateAction.setPageSize(newState.sizePerPage));
-      }
-    }
+
+  const paginationOptions = {
+    custom: true,
+    totalSize: 10,
+    sizePerPageList: [
+      { text: "3", value: 3 },
+      { text: "5", value: 5 },
+      { text: "10", value: 10 }
+    ],
+    sizePerPage: pageSize,
+    page: pageNumber,
   };
 
   const noDataIndication = () => {
     return (
       <>
-        <NoRecordsFoundMessage entities={manageCorporateData} />
+        {
+          isLoading ? (
+            <PleaseWaitMessage entities={null} />
+          ) : (
+              <NoRecordsFoundMessage entities={manageCorporateData} />
+            )
+        }
       </>
     )
   }
 
+  const onTableChange = (type, newState) => {
+    if (type === "pagination") {
+      if (newState.page && newState.page !== pageNumber) {
+        dispatch(manageCorporateAction.setPage(newState.page));
+      }
+      if (newState.sizePerPage !== pageSize) {
+        dispatch(manageCorporateAction.setPageSize(newState.sizePerPage));
+      }
+    }
+  }
   return (
     <>
-      <PaginationProvider pagination={paginationFactory(paginationOption)}>
+      <PaginationProvider pagination={paginationFactory(paginationOptions)}>
         {({ paginationProps, paginationTableProps }) => {
           return (
-            <Pagination paginationProps={paginationProps}>
+            <Pagination
+              isLoading={isLoading}
+              paginationProps={paginationProps}
+            >
               <BootstrapTable
                 keyField='_id'
                 bordered={false}
                 data={manageCorporateData === null ? [] : manageCorporateData}
-                classes='center-last-col'
                 columns={columns}
                 remote
-                noDataIndication='No records found!'
                 {...paginationTableProps}
                 onTableChange={onTableChange}
                 noDataIndication={noDataIndication}
@@ -135,6 +158,12 @@ const ManageCorporate = () => {
           );
         }}
       </PaginationProvider>
+      <ViewModal
+        show={show}
+        handleClose={handleClose}
+        row={selectedRow}
+        approveRejectAction={approveRejectAction}
+      />
     </>
   );
 };

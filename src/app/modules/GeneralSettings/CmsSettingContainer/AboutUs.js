@@ -9,12 +9,11 @@ import * as Yup from 'yup';
 
 const AboutUsSchema = () => (
     Yup.object().shape({
-        aboutUsImage: Yup.string().required('templateName is required'),
+        aboutUsImage: Yup.string().required('Template Name is required'),
         description: Yup.string()
             .min(3, 'Minimum 3 symbols')
             .max(1000, 'Maximum 50 symbols')
-            .required('description is required'),
-
+            .required('Description is required'),
     }));
 
 

@@ -1,25 +1,26 @@
 import React from 'react';
-import { Button } from 'react-bootstrap';
+// import { Button } from 'react-bootstrap';
+import Switch from '@material-ui/core/Switch';
 
 const ActionButtons = ({ row, activeDeactiveAction }) => {
   return (
     <>
-      <Button
-        className={row.isActive ? 'd-none' : 'mx-3'}
-        size='sm'
-        variant='outline-success'
-        onClick={() => activeDeactiveAction(row.orderId, true)}
-      >
-        Active
-      </Button>
-      <Button
-        className={!row.isActive ? 'd-none' : 'mx-3'}
-        size='sm'
-        variant='outline-danger'
-        onClick={() => activeDeactiveAction(row.orderId, false)}
-      >
-        Deactive
-      </Button>
+      <Switch
+        checked={!row.isActive}
+        size="small"
+        className="mt-1"
+        onChange={() => {
+          if (row.isActive) {
+            activeDeactiveAction(row.orderId, false);
+          } else {
+            activeDeactiveAction(row.orderId, true);
+          }
+        }}
+        color="secondary"
+        name="licenseStatus"
+        inputProps={{ 'aria-label': 'primary checkbox' }}
+        title={row.isActive ? "Deactivate" : "Activate"}
+      />
     </>
   );
 };

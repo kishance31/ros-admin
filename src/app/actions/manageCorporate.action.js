@@ -1,27 +1,22 @@
 import axios from 'axios';
 import getServerCore from '../../utils/apiUtils';
+
 export const manageCorporateMap = {
   DISPLAY_MANAGE_CORPORATE_DATA_START: 'DISPLAY_MANAGE_CORPORATE_DATA_START',
-  DISPLAY_MANAGE_CORPORATE_DATA_SUCCESS:
-    'DISPLAY_MANAGE_CORPORATE_DATA_SUCCESS',
+  DISPLAY_MANAGE_CORPORATE_DATA_SUCCESS: 'DISPLAY_MANAGE_CORPORATE_DATA_SUCCESS',
   DISPLAY_MANAGE_CORPORATE_DATA_ERROR: 'DISPLAY_MANAGE_CORPORATE_DATA_ERROR',
   UPDATE_MANAGE_CORPORATE_STATUS_START: 'UPDATE_MANAGE_CORPORATE_STATUS_START',
-  UPDATE_MANAGE_CORPORATE_STATUS_SUCCESS:
-    'UPDATE_MANAGE_CORPORATE_STATUS_SUCCESS',
+  UPDATE_MANAGE_CORPORATE_STATUS_SUCCESS: 'UPDATE_MANAGE_CORPORATE_STATUS_SUCCESS',
   UPDATE_MANAGE_CORPORATE_STATUS_ERROR: 'UPDATE_MANAGE_CORPORATE_STATUS_ERROR',
-  UPDATE_MANAGE_CORPORATE_ISACTIVE_START:
-    'UPDATE_MANAGE_CORPORATE_ISACTIVE_START',
-  UPDATE_MANAGE_CORPORATE_ISACTIVE_SUCCESS:
-    'UPDATE_MANAGE_CORPORATE_ISACTIVE_SUCCESS',
-  UPDATE_MANAGE_CORPORATE_ISACTIVE_ERROR:
-    'UPDATE_MANAGE_CORPORATE_ISACTIVE_ERROR',
-  SET_PAGE_NO: 'SET_PAGE_NO',
-  STE_PAGE_SIZE: 'STE_PAGE_SIZE',
+  UPDATE_MANAGE_CORPORATE_ISACTIVE_START: 'UPDATE_MANAGE_CORPORATE_ISACTIVE_START',
+  UPDATE_MANAGE_CORPORATE_ISACTIVE_SUCCESS: 'UPDATE_MANAGE_CORPORATE_ISACTIVE_SUCCESS',
+  UPDATE_MANAGE_CORPORATE_ISACTIVE_ERROR: 'UPDATE_MANAGE_CORPORATE_ISACTIVE_ERROR',
+  SET_PAGE: "SET_PAGE",
+  SET_PAGE_SIZE: "SET_PAGE_SIZE",
 };
 
 const { serverUrls } = getServerCore();
 const adminUrl = serverUrls.getAdminUrl()
-const emailTemplate = serverUrls.getEmailTemplate()
 
 export const manageCorporateAction = {
   updateManageCorporateStatusAsync: (_id, status, tokens) => {
@@ -85,28 +80,19 @@ export const manageCorporateAction = {
       }
     };
   },
-  setPageNo: (pageNo) => {
-    return {
-      type: manageCorporateMap.SET_PAGE_NO,
-      payload: pageNo,
-    };
-  },
-  setPageSize: (pageSize) => {
-    return {
-      type: manageCorporateMap.STE_PAGE_SIZE,
-      payload: pageSize,
-    };
-  },
+  setPage: (num) => ({ type: manageCorporateMap.SET_PAGE, payload: num }),
+  setPageSize: (num) => ({ type: manageCorporateMap.SET_PAGE_SIZE, payload: num }),
 };
 
-export const displayManageCorporateDataAsync = (pageNo, pageSize, tokens) => {
-  return async (dispatch) => {
+export const displayManageCorporateDataAsync = (tokens) => {
+  return async (dispatch, getState) => {
     try {
       dispatch({
         type: manageCorporateMap.DISPLAY_MANAGE_CORPORATE_DATA_START,
       });
-      let {data} = await axios({
-        url: `${adminUrl}/getCorporateAdmins/0/5`,
+      const { pageNumber, pageSize } = getState().manageCorporate
+      let { data } = await axios({
+        url: `${adminUrl}/getCorporateAdmins/${pageNumber - 1}/${pageSize}`,
         method: 'GET',
         headers: {
           tokens,

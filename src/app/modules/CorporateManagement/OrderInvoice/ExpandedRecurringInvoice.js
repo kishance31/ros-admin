@@ -10,37 +10,29 @@ const ExpandedRecurringInvoice = ({ invoiceRow, firstRecurringFlag }) => {
       footer: '',
     },
     {
-      dataField: 'invoiceNo',
-      text: 'Invoice. No',
+      dataField: 'employeeDetails',
+      text: 'Employee Name',
+      footer: '',
+      formatter: (cell, row, rowIdx) => `${invoiceRow.employeeDetails[rowIdx].firstName} ${invoiceRow.employeeDetails[rowIdx].lastName}`,
+    },
+    {
+      dataField: 'orderId',
+      text: 'order. No',
       footer: '',
     },
     {
-      dataField: 'invoiceDate',
+      dataField: 'orderDate',
       text: 'Ord. Date',
       footer: '',
       formatter: cell => new Date(cell).toLocaleDateString()
     },
     {
-      dataField: 'productDetails',
+      dataField: 'totalOrderCost',
       text: 'Total Ord. Cost',
       footer: '',
-      // footer: () => {
-      //   return invoiceRow.productDetails.reduce((acc, item) => acc + item.ros_cost, 0)
-      // },
-      formatter: (cell, row) => {
-        // if (firstRecurringFlag === "first") {
-        return `$${parseFloat(
-          invoiceRow.productDetails.reduce((acc, prod) => acc + prod.ros_cost, 0))
-          .toFixed(2)
-          }`
-        // } else {
-        // 	return `$${parseFloat((
-        //     (
-        //       (invoiceRow.productDetails.reduce((acc, prod) => acc + prod.ros_cost, 0)) -
-        //       (((invoiceRow.productDetails.reduce((acc, prod) => acc + prod.ros_cost, 0)) / 12)
-        //         * invoiceRow.firstPaymentTerm)) / invoiceRow.recurringMonthsNo
-        //   )).toFixed(2)}`
-        // }
+      footer: () => `Total: $${invoiceRow.totalOrderCost.toFixed(2)}`,
+      formatter: (cell) => {
+        return `$${cell.toFixed(2)}`
       }
     },
     {
@@ -48,50 +40,31 @@ const ExpandedRecurringInvoice = ({ invoiceRow, firstRecurringFlag }) => {
       text: 'Month',
       footer: '',
       formatter: cell => {
-        const dt = new Date(cell);
-        return dt.toLocaleString('default', {month: 'long'}) + " " + dt.getDate() + ", " + dt.getFullYear()
+        const dt = new Date(invoiceRow.invoiceDate);
+        return dt.toLocaleString('default', { month: 'long' }) + " " + dt.getDate() + ", " + dt.getFullYear()
       }
     },
-    {
-      dataField: 'monthlyCost',
-      text: firstRecurringFlag === "first" ? "First Time Cost" : `Monthly Cost`,
-      footer: firstRecurringFlag === "first" ? `Total: $${parseFloat((
-        ((invoiceRow.productDetails.reduce((acc, prod) => acc + prod.ros_cost, 0)) / 12)
-        * invoiceRow.firstPaymentTerm))
-        .toFixed(2)
-        }` :
-      `Total: $${parseFloat((
-        (
-          (invoiceRow.productDetails.reduce((acc, prod) => acc + prod.ros_cost, 0)) -
-          (((invoiceRow.productDetails.reduce((acc, prod) => acc + prod.ros_cost, 0)) / 12)
-            * invoiceRow.firstPaymentTerm)) / invoiceRow.recurringMonthsNo
-      ) * invoiceRow.invoiceDetails.length
-      ).toFixed(2)
-        }`,
-      formatter: (cell) => {
-        if (firstRecurringFlag === "first") {
-          return `$${parseFloat((
-						((invoiceRow.productDetails.reduce((acc, prod) => acc + prod.ros_cost, 0)) / 12)
-						* invoiceRow.firstPaymentTerm))
-						.toFixed(2)
-						}`
-          } else {
-          	return `$${parseFloat((
-              (
-                (invoiceRow.productDetails.reduce((acc, prod) => acc + prod.ros_cost, 0)) -
-                (((invoiceRow.productDetails.reduce((acc, prod) => acc + prod.ros_cost, 0)) / 12)
-                  * invoiceRow.firstPaymentTerm)) / invoiceRow.recurringMonthsNo
-            )).toFixed(2)}`
-          }
-      }
-    },
+    // {
+    //   dataField: 'monthlyCost',
+    //   text: firstRecurringFlag === "first" ? "First Time Cost" : `Monthly Cost`,
+    //   footer: firstRecurringFlag === "first" ? `Total: $${invoiceRow.firstTimeCost.toFixed(2)}`
+    //     :
+    //     `Total: $${invoiceRow.recurringCost.toFixed(2)}`,
+    //   formatter: (cell, row) => {
+    //     if (firstRecurringFlag === "first") {
+    //       return `$${row.firstTimeCost.toFixed(2)}`
+    //     } else {
+    //       return `$${row.recurringCost.toFixed(2)}`
+    //     }
+    //   }
+    // },
   ];
 
   return (
     <div className='jumbotron bg-light p-4 ml-5'>
       <BootstrapTable
         keyField='_id'
-        data={invoiceRow.invoiceDetails || []}
+        data={invoiceRow.orderDetails || []}
         columns={columns}
         bordered={false}
         noDataIndication='No records found!'
