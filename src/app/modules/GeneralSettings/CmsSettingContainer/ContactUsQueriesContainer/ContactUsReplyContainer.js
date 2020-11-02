@@ -2,8 +2,7 @@ import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
-import { useDispatch } from 'react-redux';
-import { TextArea } from '../../../../_metronic/_partials/controls';
+import { TextArea } from '../../../../../_metronic/_partials/controls';
 
 const ContactUsReplySchema = Yup.object().shape({
     repliedMessage: Yup.string()
@@ -13,8 +12,6 @@ const ContactUsReplySchema = Yup.object().shape({
 });
 
 const ContactUsReplyContainer = ({ modalReplyDialog, onCloseReplyModal, onCommentReply, selectedRow }) => {
-
-    const dispatch = useDispatch();
 
     const contactUsReply = (values) => {
         onCommentReply(values)
