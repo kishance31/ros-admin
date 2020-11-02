@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory, { PaginationProvider } from 'react-bootstrap-table2-paginator';
 import { Pagination } from '../../../_metronic/_partials/controls';
@@ -7,10 +7,23 @@ import moment from 'moment';
 import { NoRecordsFoundMessage, PleaseWaitMessage } from "../../../_metronic/_helpers";
 import ActionButtons from './ManageCorporate/ActionButtons';
 import { manageCorporateAction, displayManageCorporateDataAsync } from '../../actions/manageCorporate.action';
+import ViewModal from './ManageCorporate/ViewModal';
 
 const ManageCorporate = () => {
 
   const dispatch = useDispatch();
+  const [show, setShow] = useState(false);
+  const [selectedRow, setSelectedRow] = useState(null);
+
+  const handleClose = () => {
+    setSelectedRow(null);
+    setShow(false);
+  };
+
+  const handleShow = (row) => {
+    setSelectedRow(row);
+    setShow(true);
+  };
 
   const {
     manageCorporateData,
@@ -80,6 +93,7 @@ const ManageCorporate = () => {
       formatExtraData: {
         approveRejectAction: approveRejectAction,
         activeDeactiveAction: activeDeactiveAction,
+        handleShow: handleShow
       },
     },
   ];
@@ -122,27 +136,35 @@ const ManageCorporate = () => {
     }
   }
   return (
-    <PaginationProvider pagination={paginationFactory(paginationOptions)}>
-      {({ paginationProps, paginationTableProps }) => {
-        return (
-          <Pagination
-            isLoading={isLoading}
-            paginationProps={paginationProps}
-          >
-            <BootstrapTable
-              keyField='_id'
-              bordered={false}
-              data={manageCorporateData === null ? [] : manageCorporateData}
-              columns={columns}
-              remote
-              {...paginationTableProps}
-              onTableChange={onTableChange}
-              noDataIndication={noDataIndication}
-            />
-          </Pagination>
-        );
-      }}
-    </PaginationProvider>
+    <>
+      <PaginationProvider pagination={paginationFactory(paginationOptions)}>
+        {({ paginationProps, paginationTableProps }) => {
+          return (
+            <Pagination
+              isLoading={isLoading}
+              paginationProps={paginationProps}
+            >
+              <BootstrapTable
+                keyField='_id'
+                bordered={false}
+                data={manageCorporateData === null ? [] : manageCorporateData}
+                columns={columns}
+                remote
+                {...paginationTableProps}
+                onTableChange={onTableChange}
+                noDataIndication={noDataIndication}
+              />
+            </Pagination>
+          );
+        }}
+      </PaginationProvider>
+      <ViewModal
+        show={show}
+        handleClose={handleClose}
+        row={selectedRow}
+        approveRejectAction={approveRejectAction}
+      />
+    </>
   );
 };
 

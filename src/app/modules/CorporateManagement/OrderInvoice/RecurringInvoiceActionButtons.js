@@ -2,7 +2,6 @@ import React from 'react';
 import { Button } from 'react-bootstrap';
 
 export const RecurringInvoiceActionButtons = (cell, row, rowIdx, {onDownloadPdf}) => {
-  console.log(row)
   return (
     <>
       {/* <Button className='mx-1 btn_blue' size='sm' variant=''>
