@@ -13,6 +13,7 @@ export const PermissionMap = {
 
 const { serverUrls } = getServerCore();
 const rolesUrl = serverUrls.getRolesAndPermission();
+import { showSuccessSnackbar } from './snackbar.action';
 
 export const managePermissionsAsync = (roleData) => {
     return async (dispatch, getState) => {
@@ -36,12 +37,15 @@ export const managePermissionsAsync = (roleData) => {
                 dispatch({
                     type: PermissionMap.MANAGE_PERMISSIONS_SUCCESS
                 });
-                return dispatch(RolesAndPermissionAction.refreshRoles());
+                dispatch(RolesAndPermissionAction.refreshRoles());
+                return dispatch(showSuccessSnackbar('success', "Permissions update successfull", 3000));
             }
+            return dispatch(showSuccessSnackbar('error', "Permissions update error", 3000));
         } catch (error) {
             dispatch({
                 type: PermissionMap.MANAGE_PERMISSIONS_ERROR
             })
+            return dispatch(showSuccessSnackbar('error', "Permissions update error", 3000));
         }
     }
 }
