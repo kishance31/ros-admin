@@ -145,43 +145,46 @@ export const resetPasswordApi = (payload) => async (dispatch) => {
     }
 }
 
-export const changePasswordAsync = () => {
+export const changePasswordAsync = (pswd, email) => {
     return async (dispatch) => {
         try {
             dispatch({
                 type: actionTypes.CHANGE_PASSWORD_START
             });
             let { data } = await axios({
-                url: `${adminUrl}/`,
+                url: `${adminUrl}/changePassword`,
                 method: 'POST',
+                data: {
+                    ...pswd,
+                    email,
+                }
             });
             if (data.response && data.response.responseCode === 200) {
                 dispatch({
                     type: actionTypes.CHANGE_PASSWORD_SUCCESS,
                 })
-                dispatch(showSuccessSnackbar('success', "Password Updated Successfully", 3000));
+                return dispatch(showSuccessSnackbar('success', "Password Updated Successfully. Login again with new password", 3000));
             }
+            dispatch(showSuccessSnackbar('error', "Incorrect old password", 3000));
         } catch (error) {
             dispatch({
                 type: actionTypes.CHANGE_PASSWORD_ERROR
             })
-            dispatch(showSuccessSnackbar('error', "Please try once again", 3000));
+            dispatch(showSuccessSnackbar('error', "Error changing password. Please try again later", 3000));
         }
     }
 }
 
-export const updateUserProfileAsync = (user) => {
-    return async (dispatch, getState) => {
+export const updateUserProfileAsync = (user, id) => {
+    return async (dispatch) => {
         try {
             dispatch({
                 type: actionTypes.UPDATE_USER_PROFILE_START
             });
-            const { tokens } = getState().auth;
             let { data } = await axios({
-                url: `${adminUrl}/editAdmin/${user._id}`,
-                method: 'POST',
+                url: `${adminUrl}/editAdmin/${id}`,
+                method: 'PUT',
                 headers: {
-                    tokens,
                     'Content-Type': 'application/json'
                 },
                 data: user,
@@ -189,6 +192,7 @@ export const updateUserProfileAsync = (user) => {
             if (data.response && data.response.responseCode === 200) {
                 dispatch({
                     type: actionTypes.UPDATE_USER_PROFILE_SUCCESS,
+                    payload: user,
                 })
                 dispatch(showSuccessSnackbar('success', "Updated User Profile Successfully", 3000));
             }
@@ -196,7 +200,7 @@ export const updateUserProfileAsync = (user) => {
             dispatch({
                 type: actionTypes.UPDATE_USER_PROFILE_ERROR
             })
-            dispatch(showSuccessSnackbar('error', "Please try once again", 3000));
+            dispatch(showSuccessSnackbar('error', "Error while updating profile. Please try again later.", 3000));
         }
     }
 } 
