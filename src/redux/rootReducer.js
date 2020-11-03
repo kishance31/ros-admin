@@ -1,6 +1,4 @@
-// import { all } from 'redux-saga/effects';
 import { combineReducers } from 'redux';
-// import * as auth from '../app/modules/Auth/_redux/authRedux';
 import { customersSlice } from '../app/modules/ECommerce/_redux/customers/customersSlice';
 import { productsSlice } from '../app/modules/ECommerce/_redux/products/productsSlice';
 import { remarksSlice } from '../app/modules/ECommerce/_redux/remarks/remarksSlice';
@@ -20,8 +18,10 @@ import categoryModalreducer from '../app/reducers/categoryManagementModal.reduce
 import licenseManagementReducer from '../app/reducers/licenseManagement.reducer';
 import cmsSettingsReducer from '../app/reducers/cmsSetting.reducer';
 import costSummaryReducer from '../app/reducers/costSummary.reducer';
+import dashboardReducer from '../app/reducers/dashboard.reducer';
 
 export const rootReducer = combineReducers({
+  dashboard: dashboardReducer,
   auth: AuthReducer,
   customers: customersSlice.reducer,
   products: productsSlice.reducer,
@@ -29,7 +29,7 @@ export const rootReducer = combineReducers({
   specifications: specificationsSlice.reducer,
   manageUser: manageUserReducer,
   rolesAndPermission: rolesAndPermissionReducer,
-  permission:permissionReducer,
+  permission: permissionReducer,
   manageCorporate: manageCorporateReducer,
   licenceOrder: licenceOrderReducer,
   corporateManageLicense: corporateManageLicenseReducer,
@@ -42,7 +42,3 @@ export const rootReducer = combineReducers({
   cmsSetting: cmsSettingsReducer,
   costSummary: costSummaryReducer,
 });
-
-// export function* rootSaga() {
-//   yield all([auth.saga()]);
-// }

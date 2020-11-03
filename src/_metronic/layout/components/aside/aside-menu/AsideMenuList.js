@@ -25,7 +25,7 @@ export function AsideMenuList({ layoutProps }) {
 				>
 					<NavLink className="menu-link" to="/dashboard">
 						<span className="svg-icon menu-icon">
-							<i class="flaticon-dashboard"></i>
+							<i className="flaticon-dashboard"></i>
 						</span>
 						<span className="menu-text">Dashboard</span>
 					</NavLink>
@@ -41,7 +41,7 @@ export function AsideMenuList({ layoutProps }) {
 				>
 					<NavLink className="menu-link menu-toggle" to="/admin-management">
 						<span className="svg-icon menu-icon">
-							<i class="m-menu__link-icon flaticon-user-ok"></i>
+							<i className="m-menu__link-icon flaticon-user-ok"></i>
 						</span>
 						<span className="menu-text">Admin Management</span>
 						<i className="menu-arrow" />
@@ -112,7 +112,7 @@ export function AsideMenuList({ layoutProps }) {
 				>
 					<NavLink className="menu-link menu-toggle" to="/category-management">
 						<span className="svg-icon menu-icon">
-							<i class="flaticon-web"></i>
+							<i className="flaticon-web"></i>
 						</span>
 						<span className="menu-text">Category Management</span>
 						<i className="menu-arrow" />
@@ -169,7 +169,7 @@ export function AsideMenuList({ layoutProps }) {
 				>
 					<NavLink className="menu-link menu-toggle" to="/license-management">
 						<span className="svg-icon menu-icon">
-							<i class="fa fa-id-card fs_15"></i>
+							<i className="fa fa-id-card fs_15"></i>
 						</span>
 						<span className="menu-text">License Management</span>
 						<i className="menu-arrow" />
@@ -209,7 +209,7 @@ export function AsideMenuList({ layoutProps }) {
 				>
 					<NavLink className="menu-link" to="/corporate-management">
 						<span className="svg-icon menu-icon">
-							<i class="fa fa-building"></i>
+							<i className="fa fa-building"></i>
 						</span>
 						<span className="menu-text">Corporate Management</span>
 					</NavLink>
@@ -224,7 +224,7 @@ export function AsideMenuList({ layoutProps }) {
 				>
 					<NavLink className="menu-link menu-toggle" to="/general-settings">
 						<span className="svg-icon menu-icon">
-							<i class="m-menu__link-icon flaticon-settings"></i>
+							<i className="m-menu__link-icon flaticon-settings"></i>
 						</span>
 						<span className="menu-text">General Settings</span>
 						<i className="menu-arrow" />
