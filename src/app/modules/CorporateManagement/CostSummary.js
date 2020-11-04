@@ -7,10 +7,10 @@ import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { getCostSummaryAsync, saveCostSummaryAsync } from '../../actions/costSummary.actions';
 
 const CostSummarySchema = () => (Yup.object().shape({
-	firstTimeMonths: Yup.number()
+	firstTimeMonths: Yup.number().trim()
 		.moreThan(0, "Months number must be greater than zero.")
 		.required('First time payment month is required'),
-	recurringMonthsNo: Yup.number()
+	recurringMonthsNo: Yup.number().trim()
 		.moreThan(0, "Months number must be greater than zero.")
 		.required('Recurring months number is required'),
 }));

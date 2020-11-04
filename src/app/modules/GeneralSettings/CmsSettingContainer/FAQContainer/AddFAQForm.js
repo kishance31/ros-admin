@@ -5,12 +5,12 @@ import * as Yup from 'yup';
 import { TextArea } from '../../../../../_metronic/_partials/controls';
 
 const FAQSchema = Yup.object().shape({
-    question: Yup.string()
-        .min(3, "Minimum 3 symbols")
+    question: Yup.string().trim()
+        .min(3, "Please enter valid question")
         .max(50, "Maximum 20000 symbols")
         .required("Question is required"),
-    answer: Yup.string()
-        .min(3, "Minimum 3 symbols")
+    answer: Yup.string().trim()
+        .min(3, "Please enter valid answer")
         .max(50, "Maximum 20000 symbols")
         .required("Answer is required")
 });

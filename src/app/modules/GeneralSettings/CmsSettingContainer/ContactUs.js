@@ -1,24 +1,24 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Formik, Form, Field } from "formik";
-import { Card, CardHeader, CardBody } from '../../../../_metronic/_partials/controls';
+import { Card, CardBody } from '../../../../_metronic/_partials/controls';
 import { Input, TextArea } from '../../../../_metronic/_partials/controls'
 import { addContactUsAsync, dispalayConstactUsDetails } from '../../../actions/cmsSetting.action';
 import * as Yup from 'yup';
 
 const ContactUsSchema = () => (Yup.object().shape({
-    contact: Yup.number()
-        .min(7, 'Minimum 7 symbols')
+    contact: Yup.string().trim()
+        .min(7, 'Please enter valid mobile number')
         .max(12, 'Maximum 12 symbols')
         .required('Contact Number is required'),
-    email: Yup.string()
+    email: Yup.string().trim()
+        .min(7, 'Please enter valid email')
         .email("Invalid email format")
         .required('email is required'),
-    address: Yup.string()
-        .min(10, 'Minimum 10 symbols')
+    address: Yup.string().trim()
+        .min(10, 'Please enter valid address')
         .max(50, 'Maximum 50 symbols')
         .required('Address is required')
-
 }));
 
 const ContactUs = () => {
@@ -49,7 +49,7 @@ const ContactUs = () => {
             <Card>
                 <CardBody>
                     <Formik
-                        initialValues={{...initialValues}}
+                        initialValues={{ ...initialValues }}
                         validationSchema={ContactUsSchema()}
                         onSubmit={(values) => {
                             addContactUsData(values)

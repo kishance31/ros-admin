@@ -22,9 +22,9 @@ const ContactUsQueries = () => {
     } = useSelector(state => state.cmsSetting);
 
     useEffect(() => {
-        if (refreshContactUsData) {
+        // if (refreshContactUsData) {
             dispatch(getContactUsQueryAsync());
-        }
+        // }
     }, [refreshContactUsData]);
 
     const onOpenReplyModal = () => {
