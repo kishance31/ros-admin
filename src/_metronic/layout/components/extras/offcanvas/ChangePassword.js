@@ -8,22 +8,20 @@ import { changePasswordAsync } from '../../../../../app/actions/auth.actions'
 
 const ChangePasswordSchema = () => (
     Yup.object().shape({
-        password: Yup.string()
-            .min(3, "Minimum 3 symbols")
+        password: Yup.string().trim()
+            .min(3, "Please enter valid password")
             .max(50, "Maximum 50 symbols")
             .required(
                 "Old Password required"
             ),
-        newPassword: Yup.string()
-            .min(3, "Minimum 3 symbols")
+        newPassword: Yup.string().trim()
+            .min(3, "Please enter valid password")
             .max(50, "Maximum 50 symbols")
             .required(
                 "New Password required"
             ),
         confirmPassword: Yup.string()
-            .required(
-                "Re Enter New Password required"
-            )
+            .required("Re Enter New Password required")
             .when("newPassword", {
                 is: (val) => (val && val.length > 0 ? true : false),
                 then: Yup.string().oneOf(

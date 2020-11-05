@@ -29,7 +29,6 @@ const ExpandedRecurringInvoice = ({ invoiceRow, firstRecurringFlag }) => {
     {
       dataField: 'totalOrderCost',
       text: 'Total Ord. Cost',
-      footer: '',
       footer: () => `Total: $${invoiceRow.totalOrderCost.toFixed(2)}`,
       formatter: (cell) => {
         return `$${cell.toFixed(2)}`

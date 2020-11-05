@@ -7,16 +7,17 @@ import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { Input } from '../../../../_metronic/_partials/controls';
 import getServerCore from '../../../../utils/apiUtils'
-import {showSuccessSnackbar} from '../../../actions/snackbar.action';
+import { showSuccessSnackbar } from '../../../actions/snackbar.action';
 
 const { serverUrls } = getServerCore();
 
 const vendorSchema = () => (Yup.object().shape({
-    vendorName: Yup.string()
-        .min(3, 'Minimum 3 symbols')
+    vendorName: Yup.string().trim()
+        .min(3, 'Please enter valid vendor name')
         .max(50, 'Maximum 50 symbols')
         .required('Vendor Name is required'),
-    vendorEmail: Yup.string()
+    vendorEmail: Yup.string().trim()
+        .min(7, 'Please enter valid email')
         .email('Invalid email')
         .required('Vendor Email is required'),
 }));
@@ -53,7 +54,7 @@ const SendOrderToVendorBox = ({ actionsLoading, show, handleClose, row }) => {
         });
         console.log(data)
 
-        if(data.response.responseCode === 200) {
+        if (data.response.responseCode === 200) {
             handleClose();
             return dispatch(showSuccessSnackbar("success", "Order sent to vendor successfull.", 3000));
         }

@@ -173,7 +173,7 @@ export const EditEmailTemplateAsync = (data, tokens) => {
             });
             if (updateEmailTemplate.data.response.responseCode === 200) {
                 dispatch({
-                    type: ManageEmailTemplateMap.ADD_EMAIL_TEMPLATE_DATA_SUCCESS,
+                    type: ManageEmailTemplateMap.EDIT_EMAIL_TEMPLATE_DATA_SUCCESS,
                     payload: updateEmailTemplate.data.response.data,
                 })
             }

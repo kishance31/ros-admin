@@ -8,16 +8,17 @@ import { updateUserProfileAsync } from '../../../../../app/actions/auth.actions'
 
 const UserProfileSchema = () => (
     Yup.object().shape({
-        firstName: Yup.string()
-            .min(3, 'Minimum 3 symbols')
+        firstName: Yup.string().trim()
+            .min(3, 'Please enter valid first name')
             .max(50, 'Maximum 50 symbols')
             .required('Firstname is required'),
-        lastName: Yup.string()
-            .min(3, 'Minimum 3 symbols')
+        lastName: Yup.string().trim()
+            .min(3, 'Please enter valid last name')
             .max(50, 'Maximum 50 symbols')
             .required('Lastname is required'),
-        email: Yup.string()
-            .email('Invalid email')
+        email: Yup.string().trim()
+            .min(7, 'Please enter valid email')
+            .email('Invalid email format')
             .required('Email is required'),
         mobileNo: Yup.number()
             .required('Mobile is required ')

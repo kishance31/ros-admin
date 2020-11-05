@@ -5,8 +5,8 @@ import * as Yup from 'yup';
 import { TextArea } from '../../../../../_metronic/_partials/controls';
 
 const ContactUsReplySchema = Yup.object().shape({
-    repliedMessage: Yup.string()
-        .min(3, "Minimum 3 symbols")
+    repliedMessage: Yup.string().trim()
+        .min(3, "Please enter valid message")
         .max(50, "Maximum 100 symbols")
         .required("Text is required")
 });

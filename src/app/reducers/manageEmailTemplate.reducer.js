@@ -97,7 +97,6 @@ const manageEmailTemplateReducer = (state = initialState, action) => {
         case ManageEmailTemplateMap.ADD_EMAIL_TEMPLATE_DATA_SUCCESS: {
             return {
                 ...state,
-                displaylist: action.payload,
                 emailAddedSuccessfully: true,
                 refreshEmailTemplateData: true,
                 isLoading: false,
@@ -116,11 +115,9 @@ const manageEmailTemplateReducer = (state = initialState, action) => {
         case ManageEmailTemplateMap.EDIT_EMAIL_TEMPLATE_DATA_SUCCESS: {
             return {
                 ...state,
-                displaylist: state.displaylist,
                 emailTemplateUpdated: true,
                 refreshEmailTemplateData: true,
                 isLoading: false,
-
             }
         }
         case ManageEmailTemplateMap.EDIT_EMAIL_TEMPLATE_DATA_ERROR: {

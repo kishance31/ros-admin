@@ -2,22 +2,21 @@ import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
-import { Input, Select, TextArea } from '../../../../_metronic/_partials/controls';
+import { Input, TextArea } from '../../../../_metronic/_partials/controls';
 import { useDispatch } from 'react-redux';
 import { addEmailTemplateAsync, EditEmailTemplateAsync } from '../../../actions/manageEmailTemplate.action';
-import { values } from 'lodash';
 
 const ManageEmailSchema = (user) => (Yup.object().shape({
-	title: Yup.string()
-		.min(3, 'Minimum 3 symbols')
+	title: Yup.string().trim()
+		.min(3, 'Please enter valid title')
 		.max(50, 'Maximum 50 symbols')
 		.required('Title is required'),
-	subject: Yup.string()
-		.min(3, 'Minimum 3 symbols')
+	subject: Yup.string().trim()
+		.min(3, 'Please enter valid subject')
 		.max(50, 'Maximum 50 symbols')
 		.required('Subject is required'),
-	description: Yup.string()
-		.min(3, 'Minimum 3 symbols')
+	description: Yup.string().trim()
+		.min(3, 'Please enter valid description')
 		.max(500, 'Maximum 500 symbols')
 		.required('Description is required'),
 
@@ -77,7 +76,7 @@ const AddEmailForm = ({ actionsLoading, selectedEmail, onCloseModal }) => {
 												component={Input}
 												placeholder="Eg. Templated Name"
 												label="Title"
-												disabled={values.title ? true : false}
+												disabled={selectedEmail && values.title ? true : false}
 											/>
 										</div>
 									</div>
@@ -112,7 +111,7 @@ const AddEmailForm = ({ actionsLoading, selectedEmail, onCloseModal }) => {
 								onClick={onCloseModal}
 							>
 								Cancel
-              </Button>
+              				</Button>
 							<Button
 								type="submit"
 								onClick={() => handleSubmit()}

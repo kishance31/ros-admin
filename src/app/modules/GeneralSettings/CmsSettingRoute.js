@@ -1,6 +1,6 @@
 import React from 'react'
 import { NavLink, Switch } from 'react-router-dom';
-import AboutUs from './CmsSettingContainer/AboutUs';
+//import AboutUs from './CmsSettingContainer/AboutUs';
 import ContactUs from './CmsSettingContainer/ContactUs';
 import { ContentRoute } from '../../../_metronic/layout'
 import { Card } from '../../../_metronic/_partials/controls';
