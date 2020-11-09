@@ -19,7 +19,8 @@ const ManageUserTable = (props) => {
     isLoading,
     totalCount,
     pageNumber,
-    pageSize
+    pageSize,
+    currentRole
   } = props;
 
   const dispatch = useDispatch();
@@ -64,7 +65,8 @@ const ManageUserTable = (props) => {
         setSelectedUser: setSelectedUser,
         onOpenDialog: onOpenDialog,
         onOpenActiveDialog: onOpenActiveDialog,
-        onOpenDeactiveDialog: onOpenDeactiveDialog
+        onOpenDeactiveDialog: onOpenDeactiveDialog,
+        currentRole: currentRole,
       },
     }
   ]

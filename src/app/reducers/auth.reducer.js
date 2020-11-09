@@ -11,6 +11,7 @@ const initialAuthState = {
         isActive: "",
         mobileNo: "",
         fullname: "",
+        roleDetails: [],
     },
     tokens: null,
     isLoading: false,
@@ -74,6 +75,7 @@ const authReducer = (state = initialAuthState, action) => {
             return {
                 ...state,
                 user: {
+                    ...state.user,
                     ...user,
                     fullname: `${user.firstName} ${user.lastName}`
                 },

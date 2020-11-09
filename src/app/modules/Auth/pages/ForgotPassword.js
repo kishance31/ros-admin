@@ -21,9 +21,8 @@ function ForgotPassword(props) {
 
   const ForgotPasswordSchema = Yup.object().shape({
     email: Yup.string()
+      .trim()
       .email("Wrong email format")
-      .min(3, "Minimum 3 symbols")
-      .max(50, "Maximum 50 symbols")
       .required(
         intl.formatMessage({
           id: "AUTH.VALIDATION.REQUIRED_FIELD",
@@ -130,8 +129,8 @@ function ForgotPassword(props) {
             </div>
           </form>
         </div>
-  )
-}
+      )
+      }
     </>
   );
 }

@@ -8,7 +8,7 @@ import {
 } from "../../../../_metronic/_helpers";
 
 
-const ManageLicenseTable = ({openModal, setSelectedLicense, ToggleButton, licenseList}) => {
+const ManageLicenseTable = ({openModal, setSelectedLicense, ToggleButton, licenseList, currentRole}) => {
   
   
   const columns = [
@@ -40,7 +40,8 @@ const ManageLicenseTable = ({openModal, setSelectedLicense, ToggleButton, licens
       formatExtraData: {
         openModal: openModal,
         setSelectedLicense: setSelectedLicense,
-        ToggleButton: ToggleButton
+        ToggleButton: ToggleButton,
+        currentRole: currentRole,
     }},
   ];
 

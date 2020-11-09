@@ -7,24 +7,27 @@ import { useDispatch } from 'react-redux';
 import { addManageUserAsync, editManageUserAsync } from '../../../actions/manageUser.action';
 
 const ManageUserEditSchema = (user) => (Yup.object().shape({
-  firstName: Yup.string()
-    .min(3, 'Minimum 3 symbols')
-    .max(50, 'Maximum 50 symbols')
-    .required('Firstname is required'),
-  lastName: Yup.string()
-    .min(3, 'Minimum 3 symbols')
-    .max(50, 'Maximum 50 symbols')
-    .required('Lastname is required'),
-  email: Yup.string()
+  firstName: Yup.string().trim()
+    .min(4, 'Minimum 4 characters')
+    .max(50, 'Maximum 50 characters')
+    .required('First name is required'),
+  lastName: Yup.string().trim()
+    .min(4, 'Minimum 4 characters')
+    .max(50, 'Maximum 50 characters')
+    .required('Last name is required'),
+  email: Yup.string().trim()
     .email('Invalid email')
     .required('Email is required'),
-  mobileNo: Yup.number()
-    // .min(10, "Mobile Number must be of 10 digits ff")
-    // .max(10, "Mobile Number must be of 10 digits")
+  mobileNo: Yup.number("Enter number only")
+    .positive("Enter number only")
+    .integer("Enter number only")
+    .typeError("Enter Number Only")
     .required('Mobile is required '),
   password: user ?
     Yup.string().optional() :
-    Yup.string().required('Password is required'),
+    Yup.string().trim()
+    .min(6, 'Password should be of atleast 6 letters.')
+    .required('Password is required'),
   // roleName: Yup.string().required('Select a role'),
 }));
 

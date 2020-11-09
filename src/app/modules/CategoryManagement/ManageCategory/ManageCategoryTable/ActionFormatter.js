@@ -7,7 +7,7 @@ const ActionFormatter = (cellContent,
     row,
     rowIndex,
     { OnAddCategory, setSelectedCategory, setSelectedSubCategory,
-        onDisplaySubCategory, EditCategory, categorySelected
+        onDisplaySubCategory, EditCategory, categorySelected, currentRole
     }
 ) => {
 
@@ -46,29 +46,35 @@ const ActionFormatter = (cellContent,
                     </a>
                 ) : null
             }
-
-            <a
-                title="Edit"
-                className="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
-                onClick={() => OnEditButtonClick(row)}
-            >
-                <span className="svg-icon svg-icon-md svg-icon-primary">
-                    <SVG
-                        src={toAbsoluteUrl("/media/svg/icons/Communication/Write.svg")}
+            {
+                currentRole && currentRole.types.indexOf("Edit") !== -1 ? (
+                    <a
+                        title={`Edit ${categorySelected === "category" ? "Category" : "Sub-Category"}`}
+                        className="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+                        onClick={() => OnEditButtonClick(row)}
+                    >
+                        <span className="svg-icon svg-icon-md svg-icon-primary">
+                            <SVG title={`Edit ${categorySelected === "category" ? "Category" : "Sub-Category"}`}
+                                src={toAbsoluteUrl("/media/svg/icons/Communication/Write.svg")}
+                            />
+                        </span>
+                    </a>
+                ) : null
+            }
+            {
+                currentRole && (currentRole.types.indexOf("Active") !== -1 || currentRole.types.indexOf("Deactive") !== -1) ? (
+                    <Switch
+                        checked={row.status}
+                        size="small"
+                        className="mt-1"
+                        onChange={() => ClickDeleteCategoryAsync(row)}
+                        color="secondary"
+                        name="userStatus"
+                        inputProps={{ 'aria-label': 'primary checkbox' }}
+                        title={row.status ? "Activate" : "Deactivate"}
                     />
-                </span>
-            </a>
-
-            <Switch
-                checked={row.status}
-                size="small"
-                className="mt-1"
-                onChange={() => ClickDeleteCategoryAsync(row)}
-                color="secondary"
-                name="userStatus"
-                inputProps={{ 'aria-label': 'primary checkbox' }}
-                title={row.status ? "Deactivate" : "Activate"}
-            />
+                ) : null
+            }
 
             {/* <a
                 className={`btn btn-${row.status ? 'btn btn-icon btn-light btn-sm' : 'btn btn-icon btn-light btn-sm'} `}

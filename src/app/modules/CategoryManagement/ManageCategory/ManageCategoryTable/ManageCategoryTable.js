@@ -7,7 +7,7 @@ import {
   } from "../../../../../_metronic/_helpers";
 
 const ManageCategoryTable = (
-    { OnAddCategory, onDisplaySubCategory, setSelectedCategory, EditCategory, setSelectedSubCategory }) => {
+    { OnAddCategory, onDisplaySubCategory, setSelectedCategory, EditCategory, setSelectedSubCategory, currentRole }) => {
 
     const entities = useSelector(state => state.categoryModal.categoryList);
     const categorySelected = useSelector(state => state.categoryModal.categorySelected);
@@ -51,7 +51,8 @@ const ManageCategoryTable = (
                 onDisplaySubCategory: onDisplaySubCategory,
                 EditCategory: EditCategory,
                 categorySelected: categorySelected,
-                setSelectedSubCategory: setSelectedSubCategory
+                setSelectedSubCategory: setSelectedSubCategory,
+                currentRole: currentRole
             }
         },
     ];

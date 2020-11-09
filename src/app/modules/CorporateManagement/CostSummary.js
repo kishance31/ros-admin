@@ -7,12 +7,30 @@ import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { getCostSummaryAsync, saveCostSummaryAsync } from '../../actions/costSummary.actions';
 
 const CostSummarySchema = () => (Yup.object().shape({
-	firstTimeMonths: Yup.number().trim()
+	firstTimeMonths: Yup.number()
 		.moreThan(0, "Months number must be greater than zero.")
-		.required('First time payment month is required'),
-	recurringMonthsNo: Yup.number().trim()
+		.required('First time payment month is required')
+		.typeError("First time payment must be a integer"),
+	recurringMonthsNo: Yup.number()
 		.moreThan(0, "Months number must be greater than zero.")
-		.required('Recurring months number is required'),
+		.required('Recurring months number is required')
+		.typeError("First time payment must be a integer"),
+	firstYearCharge: Yup.number()
+		.moreThan(0, "Number must be greater than zero.")
+		.required('First year charge is required')
+		.typeError("First year charge must be a integer"),
+	firstYearTerm: Yup.number()
+		.moreThan(0, "Number must be greater than zero.")
+		.required('First year term is required')
+		.typeError("First year term must be a integer"),
+	secondYearCharge: Yup.number()
+		.moreThan(0, "Number must be greater than zero.")
+		.required('Second year charge is required')
+		.typeError("Second year charge must be a integer"),
+	secondYearTerm: Yup.number()
+		.moreThan(0, "Number must be greater than zero.")
+		.required('Second year term is required')
+		.typeError("Second year term must be a integer"),
 }));
 
 const CostSummary = () => {
@@ -127,7 +145,7 @@ const CostSummary = () => {
 							</div>
 
 							<div className="row">
-							<div className="col-lg-4">
+								<div className="col-lg-4">
 									<div className="form-group">
 										<Field
 											name="secondYearCharge"

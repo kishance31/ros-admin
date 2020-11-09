@@ -10,7 +10,7 @@ import { CategoryManagementAction } from '../../../../actions/categoryManagement
 
 const ImportItemFromVendorTable = (props) => {
 
-    const { onClickVendorItemAddButton, setSelectedProduct, deleteData, isLoading, productCount, pageNumber, pageSize } = props;
+    const { onClickVendorItemAddButton, setSelectedProduct, deleteData, isLoading, productCount, pageNumber, pageSize, currentRole } = props;
     const itemListData = useSelector(state => state.categoryModal.vendorItemList);
     const dispatch = useDispatch();
     const coloumn = [
@@ -56,7 +56,8 @@ const ImportItemFromVendorTable = (props) => {
             formatExtraData: {
                 setSelectedProduct: setSelectedProduct,
                 onClickVendorItemAddButton: onClickVendorItemAddButton,
-                deleteData: deleteData
+                deleteData: deleteData,
+                currentRole: currentRole,
             }
         }
     ]
