@@ -13,7 +13,7 @@ const checkBoxFormatter = (cell, row, rowIndex, { updateTableState, type }) => {
 	)
 }
 
-const PermissionTable = ({ names, types, roles, savePermissions }) => {
+const PermissionTable = ({ names, types, roles, savePermissions, roleDetails }) => {
 
 	const [selectedRole, setSelectedRole] = useState(null);
 
@@ -22,6 +22,7 @@ const PermissionTable = ({ names, types, roles, savePermissions }) => {
 		types.forEach(type => typesObj[type] = false);
 
 		const tableData = [];
+		console.log(selectedRole);
 		names.forEach(name => {
 			if (name.subForms.length) {
 				name.subForms.map(subform => {
@@ -29,14 +30,21 @@ const PermissionTable = ({ names, types, roles, savePermissions }) => {
 						formName: subform.name, ...typesObj
 					}
 					if (selectedRole && selectedRole.permissions.length) {
-						let selectedRoleData = roles.find(role => role._id === selectedRole._id);
-						let currentRole = selectedRoleData.permissions.find(role => role.name === subform.name);
+						// let selectedRoleData = roles.find(role => role._id === selectedRole._id);
+						let currentRole = selectedRole.permissions.find(role => role.name === subform.name);
 						currentRole.types.forEach(typ => { obj[typ] = true });
 					}
 					tableData.push(obj);
 				})
 			} else {
-				tableData.push({ formName: name.name, ...typesObj });
+				let obj = {
+					formName: name.name, ...typesObj
+				}
+				if (selectedRole && selectedRole.permissions.length) {
+					let currentRole = selectedRole.permissions.find(role => role.name === name.name);
+					currentRole.types.forEach(typ => { obj[typ] = true });
+				}
+				tableData.push(obj);
 			}
 		})
 		return tableData;
@@ -115,7 +123,10 @@ const PermissionTable = ({ names, types, roles, savePermissions }) => {
 				<Button className="ml-5"
 					variant="primary"
 					onClick={() => savePermissions(tableState, selectedRole)}
-				>Save</Button>
+					disabled={selectedRole && roleDetails[0]._id === selectedRole._id}
+				>
+					Save
+				</Button>
 			</div>
 			<div className="container" style={{ marginTop: 25 }}>
 				<BootstrapTable

@@ -9,7 +9,7 @@ import { ManageEmailTemplateAction } from '../../../actions/manageEmailTemplate.
 
 const ManageEmailTable = (props) => {
 
-  const { onOpenModal, setSelectedUser, onOpenDialog, isLoading, totalCount, pageNumber, pageSize } = props
+  const { onOpenModal, setSelectedUser, onOpenDialog, isLoading, totalCount, pageNumber, pageSize, currentRole } = props
   const { displaylist } = useSelector((state) => state.emailTemplate);
   const dispatch = useDispatch();
 
@@ -35,6 +35,7 @@ const ManageEmailTable = (props) => {
         onOpenModal: onOpenModal,
         setSelectedUser: setSelectedUser,
         onOpenDialog: onOpenDialog,
+        currentRole: currentRole,
       },
     }
   ]

@@ -1,5 +1,6 @@
 import React from 'react'
-import { NavLink, Switch } from 'react-router-dom';
+import { NavLink, Switch, Redirect } from 'react-router-dom';
+import {shallowEqual, useSelector} from 'react-redux';
 //import AboutUs from './CmsSettingContainer/AboutUs';
 import ContactUs from './CmsSettingContainer/ContactUs';
 import { ContentRoute } from '../../../_metronic/layout'
@@ -9,8 +10,11 @@ import FAQ from './CmsSettingContainer/FAQ';
 import NewsLetter from './CmsSettingContainer/NewsLetter';
 
 const CmsSetting = () => {
+    const roleDetails = useSelector(state => state.auth.user.roleDetails, shallowEqual);
     return (
         <>
+            {!roleDetails.length && <Redirect to="/" />}
+            {roleDetails.length && !(roleDetails[0].permissions.find(role => role.name === "CMS Settings" && role.types.length)) && <Redirect to="/" />}
             <div className="row">
                 <div className="col-lg-12">
                     <Card>

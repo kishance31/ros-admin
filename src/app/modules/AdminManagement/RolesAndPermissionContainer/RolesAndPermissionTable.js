@@ -14,7 +14,8 @@ const RolesAndPermissionTable = (props) => {
 	let {
 		roles,
 		isLoading,
-		toggleDeleteModel
+		toggleDeleteModel,
+		currentRole
 	} = props;
 
 	let tableRef;
@@ -44,6 +45,7 @@ const RolesAndPermissionTable = (props) => {
 		{
 			dataField: 'roleName',
 			text: 'Role Name',
+			editable: currentRole ? true : false
 		},
 		{
 			dataField: 'button',
@@ -51,7 +53,8 @@ const RolesAndPermissionTable = (props) => {
 			formatter: RoleAndPermisionFormatter,
 			formatExtraData: {
 				onEditClick: onEditClick,
-				toggleDeleteModel: toggleDeleteModel
+				toggleDeleteModel: toggleDeleteModel,
+				currentRole: currentRole,
 			},
 			editable: false,
 		}

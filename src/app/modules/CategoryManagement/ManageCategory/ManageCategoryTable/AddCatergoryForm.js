@@ -12,8 +12,8 @@ import {
 import { Input } from '../../../../../_metronic/_partials/controls';
 
 const EditCategorySchema = Yup.object().shape({
-    category_name: Yup.string()
-        .min(3, "Minimum 3 symbols")
+    category_name: Yup.string().trim()
+        .min(3, "Minimum 3 symbols.(White space is not allowed at the start and at the end)")
         .max(50, "Maximum 50 symbols")
         .required("Category Name is required")
 });

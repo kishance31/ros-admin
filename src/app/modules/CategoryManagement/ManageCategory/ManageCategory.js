@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Modal } from 'react-bootstrap'
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import { Card, CardBody, CardHeader, CardHeaderToolbar } from '../../../../_metronic/_partials/controls';
 import ManageCategoryTable from './ManageCategoryTable/ManageCategoryTable';
 import AddCatergoryForm from './ManageCategoryTable/AddCatergoryForm';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import {
     CategoryManagementMap,
     CategoryManagementAction,
@@ -13,11 +14,25 @@ import {
 } from '../../../actions/categoryManagementModal.action';
 
 const ManageCategory = ({ history }) => {
-    const dispatch = useDispatch()
+
+    const dispatch = useDispatch();
+
     const categoryModal = useSelector(state => state.categoryModal.categoryManagementModal.categoryModal)
     const ItemUpdateModal = useSelector(state => state.categoryModal.categoryManagementModal.ItemUpdateModal)
     const selectedCategoryitem = useSelector(state => state.categoryModal.categorySelected);
+    const roleDetails = useSelector(state => state.auth.user.roleDetails, shallowEqual);
+
     const { refereshCategoryList, selectedCategory, selectedSubCategory } = useSelector(state => state.categoryModal, shallowEqual);
+
+    const getCurrentRole = (roleDetails) => {
+        if (roleDetails.length) {
+            return roleDetails[0].permissions.find(role => role.name === "Manage Category" && role.types.length);
+        }
+        return null;
+    }
+
+    const currentRole = useMemo(() => getCurrentRole(roleDetails), [roleDetails]);
+
     const OnAddCategory = () => {
         dispatch(CategoryManagementAction.toggleAddCategoryModal(CategoryManagementMap.OPEN_CATEGORY_MODAL))
     }
@@ -63,6 +78,7 @@ const ManageCategory = ({ history }) => {
     }
     return (
         <>
+            {!currentRole && <Redirect to="/" />}
             <Card>
                 <CardHeader title="Category Management">
                     <CardHeaderToolbar>
@@ -74,13 +90,17 @@ const ManageCategory = ({ history }) => {
                                 placeholder="Search . . ."
                             />
                         </div> */}
-                        <button
-                            type="button"
-                            className="btn btn-primary mr-5"
-                            onClick={OnAddCategory}
-                        >
-                            ADD
-                        </button>
+                        {
+                            currentRole && currentRole.types.indexOf("Add") !== -1 ? (
+                                <button
+                                    type="button"
+                                    className="btn btn-primary mr-5"
+                                    onClick={OnAddCategory}
+                                >
+                                    ADD
+                                </button>
+                            ) : null
+                        }
                         {
                             selectedCategoryitem !== "category" ? (
                                 <button
@@ -103,7 +123,11 @@ const ManageCategory = ({ history }) => {
                         <Modal.Header closeButton >
                             <Modal.Title>
                                 <h1 className="float-left">
-                                    {selectedCategoryitem === "category" ? "Add Category" : "Add Sub-Category"}
+                                    {selectedCategoryitem === "category" ?
+                                        selectedCategory._id ? "Edit Category" : "Add Category"
+                                        :
+                                        selectedSubCategory._id ? "Edit Sub-Category" : "Add Sub-Category"
+                                    }
                                 </h1>
                             </Modal.Title>
                         </Modal.Header>
@@ -145,8 +169,8 @@ const ManageCategory = ({ history }) => {
                         onDisplaySubCategory={onDisplaySubCategory}
                         EditCategory={EditCategory}
                         setSelectedSubCategory={setSelectedSubCategory}
+                        currentRole={currentRole}
                     />
-
 
                 </CardBody>
             </Card>

@@ -31,7 +31,7 @@ const ActionButtons = (cell, row, rowIndex, { activeDeactiveAction, handleShow }
           color="secondary"
           name="userStatus"
           inputProps={{ 'aria-label': 'primary checkbox' }}
-          title={row.isActive ? "Deactivate" : "Activate"}
+          title={row.isActive ? "Activate" : "Deactivate"}
         />
 
 

@@ -3,7 +3,7 @@ import { Modal, Button, Form } from 'react-bootstrap';
 // import { Form, Field } from 'formik';
 // import { Input } from '../../../../_metronic/_partials/controls';
 
-const ViewModal = ({ show, handleClose, row, approveRejectAction }) => {
+const ViewModal = ({ show, handleClose, row, approveRejectAction, currentRole }) => {
   const approveAction = () => {
     approveRejectAction(row._id, 'APPROVED');
     handleClose();
@@ -85,7 +85,7 @@ const ViewModal = ({ show, handleClose, row, approveRejectAction }) => {
                       type="text"
                       className='form-control'
                       disabled
-                      defaultValue={row.corporateEmailId}
+                      defaultValue={row.email}
                     />
                   </div>
                   <div className="col-lg-6">
@@ -94,7 +94,7 @@ const ViewModal = ({ show, handleClose, row, approveRejectAction }) => {
                       type="text"
                       className='form-control'
                       disabled
-                      defaultValue={row.email}
+                      defaultValue={row.personalEmailId}
                     />
                   </div>
                 </div>
@@ -164,20 +164,28 @@ const ViewModal = ({ show, handleClose, row, approveRejectAction }) => {
               </Form>
             </Modal.Body>
             <Modal.Footer>
-              <Button
-                className={row.status === 'APPROVED' ? 'd-none' : ''}
-                variant='success'
-                onClick={approveAction}
-              >
-                Approve
-        </Button>
-              <Button
-                className={row.status === 'REJECTED' ? 'd-none' : ''}
-                variant='danger'
-                onClick={rejectAction}
-              >
-                Reject
-        </Button>
+              {
+                currentRole && currentRole.types.indexOf("Approve") !== -1 ? (
+                  <Button
+                    className={row.status === 'APPROVED' ? 'd-none' : ''}
+                    variant='success'
+                    onClick={approveAction}
+                  >
+                    Approve
+                  </Button>
+                ) : null
+              }
+              {
+                currentRole && currentRole.types.indexOf("Reject") !== -1 ? (
+                  <Button
+                    className={row.status === 'REJECTED' ? 'd-none' : ''}
+                    variant='danger'
+                    onClick={rejectAction}
+                  >
+                    Reject
+                  </Button>
+                ) : null
+              }
               <Button variant='primary' onClick={() => handleClose()}>
                 Close
         </Button>

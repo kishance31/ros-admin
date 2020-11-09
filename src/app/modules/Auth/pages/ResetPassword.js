@@ -24,15 +24,15 @@ function ResetPassword(props) {
     const [statusColor, setStatusColor] = useState("danger");
 
     const ResetPasswordSchema = Yup.object().shape({
-        newPassword: Yup.string()
-            .min(3, "Minimum 3 symbols")
+        newPassword: Yup.string().trim()
+            .min(6, "Minimum 6 symbols.")
             .max(50, "Maximum 50 symbols")
             .required(
                 intl.formatMessage({
                     id: "AUTH.VALIDATION.REQUIRED_FIELD",
                 })
             ),
-        confirmPassword: Yup.string()
+        confirmPassword: Yup.string().trim()
             .required(
                 intl.formatMessage({
                     id: "AUTH.VALIDATION.REQUIRED_FIELD",

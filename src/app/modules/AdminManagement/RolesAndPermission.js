@@ -1,15 +1,25 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
+import { Formik, Form, Field } from 'formik';
+import * as Yup from 'yup';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import { Card, CardBody, CardHeader } from '../../../_metronic/_partials/controls';
-import { InputGroup, FormControl, Button } from 'react-bootstrap';
+import { InputGroup, Button } from 'react-bootstrap';
+import { Input } from '../../../_metronic/_partials/controls';
 import RolesAndPermissionTable from './RolesAndPermissionContainer/RolesAndPermissionTable';
 import { getAllRolesAsync, addRoleAsync, deleteRoleAsync } from '../../actions/rolesAndPermission.action';
 import DeleteModalContainer from './RolesAndPermissionContainer/deleteRoleModel';
 
+const roleSchema = (user) => (Yup.object().shape({
+    roleName: Yup.string().trim()
+        .min(4, 'Minimum 4 characters.')
+        .max(50, 'Maximum 50 characters')
+        .required('Role Name is required'),
+}));
+
 const RolesAndPermission = () => {
 
     const dispatch = useDispatch();
-    const addRoleRef = useRef("");
 
     const [showDeleteModel, setShowDeleteModel] = useState(false);
     const [selectRow, setSelecRow] = useState(null);
@@ -19,23 +29,29 @@ const RolesAndPermission = () => {
         isLoading,
         refreshRoles
     } = useSelector(state => state.rolesAndPermission, shallowEqual);
+    const roleDetails = useSelector(state => state.auth.user.roleDetails, shallowEqual);
+
+    const getCurrentRole = (roleDetails) => {
+        if (roleDetails.length) {
+            return roleDetails[0].permissions.find(role => role.name === "Roles & Permissions" && role.types.length);
+        }
+        return null;
+    }
+
+    const currentRole = useMemo(() => getCurrentRole(roleDetails), [roleDetails]);
 
     useEffect(() => {
         if (refreshRoles) {
             dispatch(getAllRolesAsync());
         }
-        // addRoleRef.current.focus();
     }, [refreshRoles]);
 
-    const onAddRole = () => {
-        if (addRoleRef.current.value) {
-            dispatch(addRoleAsync(addRoleRef.current.value));
-            addRoleRef.current.value = "";
-        }
+    const onAddRole = (values) => {
+        dispatch(addRoleAsync(values.roleName));
     }
 
     const toggleDeleteModel = (row) => {
-        if(row) {
+        if (row) {
             setSelecRow(row);
         }
         setShowDeleteModel(!showDeleteModel);
@@ -47,33 +63,69 @@ const RolesAndPermission = () => {
     }
 
     return (
-        <Card>
-            <CardHeader title='Role' style={{ width: '100rem' }}></CardHeader>
-            <CardBody>
-                <div className="d-flex justify-content-between">
-                    <InputGroup className="ml-7" style={{ width: '25rem' }}>
-                        <FormControl ref={addRoleRef} type="text" placeholder="Enter Role" aria-label="Enter Role" />
-                        <Button onClick={onAddRole} className="ml-5 btn_blue" variant="secondary">Add Role</Button>
-                    </InputGroup>
-                    <div className="mr-7 text-center my-auto" style={{ fontSize: "1.2rem" }}>
-                        <strong>
-                            <span>Total Roles: &nbsp;&nbsp;</span>
-                            <span>{roles.length}</span>
-                        </strong>
+        <>
+            {!currentRole && <Redirect to="/" />}
+            <Card>
+                <CardHeader title='Role' style={{ width: '100rem' }}></CardHeader>
+                <CardBody>
+                    <div className="d-flex justify-content-between">
+                        <div>
+                            {
+                                currentRole && currentRole.types.indexOf("Add") !== -1 ? (
+                                    <Formik
+                                        initialValues={{
+                                            roleName: ""
+                                        }}
+                                        validationSchema={roleSchema}
+                                        onSubmit={(values) => {
+                                            onAddRole(values);
+                                        }}
+                                    >
+                                        {({ handleSubmit }) => (
+                                            <Form onSubmit={handleSubmit} className="d-flex">
+                                                <InputGroup className="ml-7" style={{ width: '25rem' }}>
+                                                    <Field
+                                                        name="roleName"
+                                                        component={Input}
+                                                        placeholder="Enter Role"
+                                                    // label="Enter Role"
+                                                    />
+                                                </InputGroup>
+                                                <Button
+                                                    type="submit"
+                                                    className="ml-5 btn_blue"
+                                                    variant="secondary"
+                                                    style={{ height: "fit-content" }}
+                                                >
+                                                    Add Role
+                                                </Button>
+                                            </Form>
+                                        )}
+                                    </Formik>
+                                ) : null
+                            }
+                        </div>
+                        <div className="mr-7 text-right my-auto" style={{ fontSize: "1.2rem" }}>
+                            <strong>
+                                <span>Total Roles: &nbsp;&nbsp;</span>
+                                <span>{roles.length}</span>
+                            </strong>
+                        </div>
                     </div>
-                </div>
-                <RolesAndPermissionTable
-                    roles={roles}
-                    isLoading={isLoading}
-                    toggleDeleteModel={toggleDeleteModel}
-                />
-                <DeleteModalContainer
-                    isOpen={showDeleteModel}
-                    onCloseDialog={toggleDeleteModel}
-                    onDeleteRole={onDeleteRole}
-                />
-            </CardBody>
-        </Card>
+                    <RolesAndPermissionTable
+                        roles={roles}
+                        isLoading={isLoading}
+                        toggleDeleteModel={toggleDeleteModel}
+                        currentRole={currentRole}
+                    />
+                    <DeleteModalContainer
+                        isOpen={showDeleteModel}
+                        onCloseDialog={toggleDeleteModel}
+                        onDeleteRole={onDeleteRole}
+                    />
+                </CardBody>
+            </Card>
+        </>
     )
 }
 

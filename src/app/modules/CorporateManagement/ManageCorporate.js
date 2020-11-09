@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory, { PaginationProvider } from 'react-bootstrap-table2-paginator';
 import { Pagination } from '../../../_metronic/_partials/controls';
@@ -33,6 +33,16 @@ const ManageCorporate = () => {
     pageSize,
     refreshManageCorporateData
   } = useSelector(state => state.manageCorporate, shallowEqual);
+  const roleDetails = useSelector(state => state.auth.user.roleDetails, shallowEqual);
+
+  const getCurrentRole = (roleDetails) => {
+		if (roleDetails.length) {
+			return roleDetails[0].permissions.find(role => role.name === "Corporate Management" && role.types.length);
+		}
+		return null;
+  }
+  
+  const currentRole = useMemo(() => getCurrentRole(roleDetails), [roleDetails]);
 
   useEffect(() => {
     if (refreshManageCorporateData) {
@@ -93,7 +103,7 @@ const ManageCorporate = () => {
       formatExtraData: {
         approveRejectAction: approveRejectAction,
         activeDeactiveAction: activeDeactiveAction,
-        handleShow: handleShow
+        handleShow: handleShow,
       },
     },
   ];
@@ -101,7 +111,7 @@ const ManageCorporate = () => {
 
   const paginationOptions = {
     custom: true,
-    totalSize: 10,
+    totalSize: totalCount,
     sizePerPageList: [
       { text: "3", value: 3 },
       { text: "5", value: 5 },
@@ -163,6 +173,7 @@ const ManageCorporate = () => {
         handleClose={handleClose}
         row={selectedRow}
         approveRejectAction={approveRejectAction}
+        currentRole={currentRole}
       />
     </>
   );

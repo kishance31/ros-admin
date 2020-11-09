@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { Modal, Button } from 'react-bootstrap';
+import { Redirect } from 'react-router-dom';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import ManageUserTable from './ManageUserContainer/ManageUserTable';
 import AddUserEditForm from './ManageUserContainer/AddUserEditForm';
 import { ManageUserAction, displayManageUserDataAsync, deleteManageUserAsync, updateAdminStatusAsync } from '../../actions/manageUser.action';
 import { getAllRolesAsync } from '../../actions/rolesAndPermission.action';
-import {showSuccessSnackbar} from '../../actions/snackbar.action'
 import { Card, CardBody, CardHeader, CardHeaderToolbar } from '../../../_metronic/_partials/controls';
 import DeleteModalContainer from "./ManageUserContainer/DeleteModalContainer";
 import ActiveModalContainer from "./ManageUserContainer/ActiveModalContainer";
@@ -21,12 +21,22 @@ const ManageUsers = () => {
     modalActiveDialog,
     modalDeactiveDialog,
     refreshManageUserData,
-    isLoading,     
+    isLoading,
     totalCount,
     pageNumber,
     pageSize
   } = useSelector(state => state.manageUser, shallowEqual)
   const { roles, refreshRoles } = useSelector(state => state.rolesAndPermission, shallowEqual);
+  const roleDetails = useSelector(state => state.auth.user.roleDetails, shallowEqual);
+
+  const getCurrentRole = (roleDetails) => {
+    if (roleDetails.length) {
+      return roleDetails[0].permissions.find(role => role.name === "Manage User" && role.types.length);
+    }
+    return null;
+  }
+
+  const currentRole = useMemo(() => getCurrentRole(roleDetails), [roleDetails]);
 
   useEffect(() => {
     if (refreshManageUserData) {
@@ -92,13 +102,18 @@ const ManageUsers = () => {
 
   return (
     <>
+      {!currentRole && <Redirect to="/" />}
       <Card>
         <CardHeader title='User Details'>
-          <CardHeaderToolbar>
-            <Button className='btn btn-primary' onClick={onOpenModal}>
-              Add User
-            </Button>
-          </CardHeaderToolbar>
+          {
+            currentRole && currentRole.types.indexOf("Add") !== -1 ? (
+              <CardHeaderToolbar>
+                <Button className='btn btn-primary' onClick={onOpenModal}>
+                  Add User
+                </Button>
+              </CardHeaderToolbar>
+            ) : null
+          }
         </CardHeader>
         <CardBody>
           <Modal size="lg" show={modalState} onHide={onCloseModal}>
@@ -141,6 +156,7 @@ const ManageUsers = () => {
             pageSize={pageSize}
             onOpenDeactiveDialog={onOpenDeactiveDialog}
             onOpenActiveDialog={onOpenActiveDialog}
+            currentRole={currentRole}
           />
         </CardBody>
       </Card>

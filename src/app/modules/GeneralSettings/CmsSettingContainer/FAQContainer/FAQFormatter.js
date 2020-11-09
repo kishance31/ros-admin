@@ -1,4 +1,6 @@
 import React from 'react';
+import SVG from "react-inlinesvg";
+import { toAbsoluteUrl } from "../../../../../_metronic/_helpers";
 
 const FAQFormatter = (cellContent, row, rowIndex,
     { setSelectedFAQ, onOpenFAQModal, onOpenDeleteFAQModal }) => {
@@ -15,18 +17,26 @@ const FAQFormatter = (cellContent, row, rowIndex,
 
     return (
         <>
-            <button
-                className="btn btn-icon btn-sm"
+            <a
+                title="Edit FAQ"
+                className="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
                 onClick={() => onEditFAQ(row)}
             >
-                <i className="fas fa-edit" style={{ color: "#2f72ef" }} title="Edit"></i>
-            </button>
-            <button
-                className="btn btn-icon btn-sm"
+                <span className="svg-icon svg-icon-md svg-icon-primary">
+                    <SVG title="Edit FAQ"
+                        src={toAbsoluteUrl("/media/svg/icons/Communication/Write.svg")}
+                    />
+                </span>
+            </a>
+            <a
+                title="Delete FAQ"
+                className="btn btn-icon btn-light btn-hover-danger btn-sm"
                 onClick={() => onDeleteFAQ()}
             >
-                <i className="fa fa-trash" style={{ color: "#2f72ef" }} title="Delete"></i>
-            </button>
+                <span className="svg-icon svg-icon-md svg-icon-danger">
+                    <SVG title="Delete FAQ" src={toAbsoluteUrl("/media/svg/icons/General/Trash.svg")} />
+                </span>
+            </a>
         </>
     )
 }

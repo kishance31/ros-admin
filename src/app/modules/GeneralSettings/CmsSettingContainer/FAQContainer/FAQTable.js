@@ -1,6 +1,9 @@
 import React from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
 import FAQFormatter from './FAQFormatter';
+import {
+    NoRecordsFoundMessage,
+  } from "../../../../../_metronic/_helpers";
 
 const FAQTable = (props) => {
 
@@ -33,6 +36,12 @@ const FAQTable = (props) => {
         }
     ]
 
+    const noDataIndication = () => {
+        return (
+            <NoRecordsFoundMessage />
+        )
+    }
+
     return (
         <BootstrapTable
             wrapperClasses="table-responsive"
@@ -44,6 +53,7 @@ const FAQTable = (props) => {
             keyField='_id'
             data={FAQList}
             columns={columns}
+            noDataIndication={noDataIndication}
         >
         </BootstrapTable>
     )
