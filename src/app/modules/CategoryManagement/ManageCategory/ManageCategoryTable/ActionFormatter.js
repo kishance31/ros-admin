@@ -42,7 +42,7 @@ const ActionFormatter = (cellContent,
                         className="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
                         onClick={() => onClickSubCategory(row)}
                     >
-                        <i class="fa fa-eye" style={{ color: "#3699FF" }}></i>
+                        <i className="fa fa-eye" style={{ color: "#3699FF" }}></i>
                     </a>
                 ) : null
             }

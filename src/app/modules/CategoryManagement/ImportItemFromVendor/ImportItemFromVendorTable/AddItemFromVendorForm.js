@@ -42,7 +42,7 @@ const AddItemFromVendorForm = (props) => {
     const isLoading = useSelector(state => state.categoryModal.isLoading);
     const LicenseList = useSelector(state => state.licenceManagement.licenseList);
 
-    const [imgSrc, setImgSrc] = useState(selectedVendorItem.product_image ? selectedVendorItem.product_image : "");
+    const [imgSrc, setImgSrc] = useState(selectedVendorItem.product_image ? selectedVendorItem.product_image : []);
     const [producId, setProductId] = useState("");
 
     useEffect(() => {
@@ -59,16 +59,22 @@ const AddItemFromVendorForm = (props) => {
         dispatch(displaySubCategoryList(value))
     }
 
-    const showImageOnFileSelect = (input, setFieldValue) => {
+    const imgToUrl = (img) => new Promise((resolve) => {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            resolve(e.target.result);
+        };
+        reader.readAsDataURL(img);
+    })
+
+    const showImageOnFileSelect = async (input, setFieldValue, images) => {
+        console.log(input.files);
         if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-                setImgSrc(e.target.result);
-                if (typeof setFieldValue === "function") {
-                    setFieldValue('product_image', input.files[0])
-                }
-            };
-            reader.readAsDataURL(input.files[0]);
+            if (typeof setFieldValue === "function") {
+                setFieldValue('product_image', [...images, input.files])
+            }
+            let result = await Promise.all(Object.keys(input.files).map(k => imgToUrl(input.files[k])));
+            setImgSrc([...imgSrc, result]);
         }
     }
 
@@ -107,13 +113,13 @@ const AddItemFromVendorForm = (props) => {
         ros_cost: 0,
         product_description: "",
         product_code: "",
-        product_image: "",
+        product_image: [],
     }
 
     return (
         <Formik
             initialValues={initialValues}
-            validationSchema={ProductFormSchema}
+            // validationSchema={ProductFormSchema}
             onSubmit={(values) => {
                 addVendorData(values)
             }}
@@ -287,22 +293,24 @@ const AddItemFromVendorForm = (props) => {
                                         <span className="upload_file_name">{values.product_image.name}</span> : null
                                 } */}
                                 {
-                                    imgSrc ?
-                                        <img src={imgSrc} height="100px" /> : null
+                                    imgSrc.map((img, idx) =>
+                                        <img src={img} key={idx} height="100px" />
+                                    )
                                 }
                                 <br />
                                 <input type="file"
+                                    multiple
                                     placeholder="Select Image"
                                     onChange={event =>
                                         showImageOnFileSelect(
                                             event.target,
-                                            setFieldValue
+                                            setFieldValue,
+                                            values.product_image
                                         )
                                     }
                                     accept="image/*"
                                 />
                             </div>
-
 
                         </Form>
                     </Modal.Body>
