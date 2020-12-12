@@ -109,7 +109,7 @@ const ManageCategory = ({ history }) => {
                                     onClick={backToCategory}
                                     title="Back"
                                 >
-                                    <i class="fa fa-arrow-left"></i>
+                                    <i className="fa fa-arrow-left"></i>
                                 </button>
                             ) : null
                         }
