@@ -5,7 +5,8 @@ import { Modal } from "react-bootstrap";
 import { Formik, Form, Field } from "formik";
 import {
     Input,
-    Select
+    Select,
+    TextArea
 } from '../../../../../_metronic/_partials/controls';
 import { addVendorItemAsync, displaySubCategoryList, EditProductAsync } from '../../../../actions/categoryManagementModal.action';
 const { customAlphabet } = require('nanoid/async');
@@ -226,12 +227,12 @@ const AddItemFromVendorForm = (props) => {
                             </div>
 
                             <div className="form-group row">
-                                <div className="col-lg-4">
+                                <div className="col-lg-12">
                                     <Field
                                         as="textarea"
                                         name="product_description"
                                         rows={5}
-                                        component={Input}
+                                        component={TextArea}
                                         placeholder="Item Description"
                                         label="Item Description"
                                         value={values.product_description}

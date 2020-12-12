@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState, useRef } from 'react';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
@@ -20,6 +20,7 @@ const roleSchema = (user) => (Yup.object().shape({
 const RolesAndPermission = () => {
 
     const dispatch = useDispatch();
+    let inputRef = useRef();
 
     const [showDeleteModel, setShowDeleteModel] = useState(false);
     const [selectRow, setSelecRow] = useState(null);
@@ -45,6 +46,10 @@ const RolesAndPermission = () => {
             dispatch(getAllRolesAsync());
         }
     }, [refreshRoles]);
+
+    useEffect(() => {
+        console.log(inputRef)
+    }, [inputRef])
 
     const onAddRole = (values) => {
         dispatch(addRoleAsync(values.roleName));
@@ -77,14 +82,16 @@ const RolesAndPermission = () => {
                                             roleName: ""
                                         }}
                                         validationSchema={roleSchema}
-                                        onSubmit={(values) => {
+                                        onSubmit={(values, { resetForm }) => {
                                             onAddRole(values);
+                                            resetForm({});
                                         }}
                                     >
                                         {({ handleSubmit }) => (
                                             <Form onSubmit={handleSubmit} className="d-flex">
                                                 <InputGroup className="ml-7" style={{ width: '25rem' }}>
                                                     <Field
+                                                        ref={inputRef}
                                                         name="roleName"
                                                         component={Input}
                                                         placeholder="Enter Role"
