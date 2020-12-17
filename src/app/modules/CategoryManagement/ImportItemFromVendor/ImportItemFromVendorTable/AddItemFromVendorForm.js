@@ -8,6 +8,8 @@ import {
     Select,
     TextArea
 } from '../../../../../_metronic/_partials/controls';
+import { toAbsoluteUrl } from "../../../../../_metronic/_helpers";
+import SVG from "react-inlinesvg";
 import { addVendorItemAsync, displaySubCategoryList, EditProductAsync } from '../../../../actions/categoryManagementModal.action';
 const { customAlphabet } = require('nanoid/async');
 const numberNanoId = customAlphabet('1234567890-', 9);
@@ -69,22 +71,27 @@ const AddItemFromVendorForm = (props) => {
     })
 
     const showImageOnFileSelect = async (input, setFieldValue, images) => {
-        console.log(input.files);
         if (input.files && input.files[0]) {
             if (typeof setFieldValue === "function") {
-                setFieldValue('product_image', [...images, input.files])
+                setFieldValue('product_image', [...images, ...input.files])
             }
             let result = await Promise.all(Object.keys(input.files).map(k => imgToUrl(input.files[k])));
-            setImgSrc([...imgSrc, result]);
+            setImgSrc([...imgSrc, ...result]);
         }
     }
 
     const addVendorData = (values) => {
-        const data = new FormData()
-        if (typeof values.product_image == "string") {
-            data.set("product_image", values.product_image)
-        } else {
-            data.append('product_image', values.product_image)
+        const data = new FormData();
+        let imgsArr = [];
+        values.product_image.map(img => {
+            if (typeof img == "string") {
+                imgsArr.push(img)
+            } else {
+                data.append('product_images', img)
+            }
+        });
+        if(imgsArr.length) {
+            data.set("product_image", JSON.stringify(imgsArr));
         }
         data.set("category_id", values.category_id)
         if (values.sub_category_id) {
@@ -120,7 +127,7 @@ const AddItemFromVendorForm = (props) => {
     return (
         <Formik
             initialValues={initialValues}
-            // validationSchema={ProductFormSchema}
+            validationSchema={ProductFormSchema}
             onSubmit={(values) => {
                 addVendorData(values)
             }}
@@ -152,8 +159,6 @@ const AddItemFromVendorForm = (props) => {
                                         }
                                     </Select>
                                 </div>
-
-
 
                                 <div className="col-lg-4">
                                     <Select
@@ -295,7 +300,36 @@ const AddItemFromVendorForm = (props) => {
                                 } */}
                                 {
                                     imgSrc.map((img, idx) =>
-                                        <img src={img} key={idx} height="100px" />
+                                        <div key={idx} style={{
+                                            position: "relative",
+                                            display: "inline-block"
+                                        }}>
+                                            <div
+                                                style={{
+                                                    position: "absolute",
+                                                    right: 0,
+                                                }}
+                                                onClick={() => {
+                                                    let newArr = [...imgSrc];
+                                                    newArr.splice(idx, 1);
+                                                    setImgSrc(newArr);
+                                                    values.product_image.splice(idx, 1)
+                                                    setFieldValue('product_image', values.product_image);
+                                                }}
+                                            >
+                                                <a
+                                                    title="Close"
+                                                    className="btn btn-icon btn-light btn-hover-danger btn-sm"
+                                                >
+                                                    <span className="svg-icon svg-icon-md svg-icon-danger">
+                                                        <SVG title="Close"
+                                                            src={toAbsoluteUrl("/media/svg/icons/General/closeicon.svg")}
+                                                        />
+                                                    </span>
+                                                </a>
+                                            </div>
+                                            <img src={img} height="160" width="160" />
+                                        </div>
                                     )
                                 }
                                 <br />

@@ -337,6 +337,7 @@ export const EditProductAsync = (data, _id) => {
                 dispatch({ type: CategoryManagementMap.EDIT_PRODUCT_SUCCESSFULLY })
                 return dispatch(showSuccessSnackbar('success', 'Product updated successfully', 3000))
             }
+            dispatch({ type: CategoryManagementMap.EDIT_PRODUCT_FAIL })
             dispatch(showSuccessSnackbar('error', 'Error updating product.', 3000))
         } catch (error) {
             dispatch({ type: CategoryManagementMap.EDIT_PRODUCT_FAIL })
