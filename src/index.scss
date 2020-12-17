@@ -310,3 +310,7 @@
     transform: translateX(0) !important;
   }
 }
+
+.table-col-text-vertical-center td {
+  vertical-align: inherit !important;
+}

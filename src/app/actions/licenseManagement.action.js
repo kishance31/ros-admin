@@ -70,10 +70,11 @@ export const addLicenseDataAsync = (data) => {
                 dispatch(showSuccessSnackbar('success',"license Added Successfully",3000));
                 dispatch({type: licenseManagementMap.LICENSE_EDIT_SUCCESSFULLY })
             }else{
-                dispatch(showSuccessSnackbar('error',"please try again",3000));
+                dispatch(showSuccessSnackbar('error',"License add error.",3000));
             }
         } catch (error) {
-            dispatch({type: licenseManagementMap.LICENSE_EDIT_FAIL })
+            dispatch({type: licenseManagementMap.LICENSE_EDIT_FAIL });
+            dispatch(showSuccessSnackbar('error',"License add error.",3000));
         }
     }
 }

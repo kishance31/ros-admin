@@ -18,7 +18,7 @@ export const CategoryManagementMap = {
     REFRESH_CATEGORY_LIST: 'REFRESH_CATEGORY_LIST',
     DISPLAY_CATEGORY_DATA: 'DISPLAY_CATEGORY_DATA',
     DELETE_CATEGORY_SUCCESSFULLY: 'DELETE_CATEGORY_SUCCESSFULLY',
-    SELECTED_USER: 'SELECTED_USER',
+    SELECTED_CATEGORY: 'SELECTED_CATEGORY',
     SELECTED_SUB_CATEGORY: "SELECTED_SUB_CATEGORY",
     STORE_SUB_CATEGORY: 'STORE_SUB_CATEGORY',
     STATUS_UPDATED: 'STATUS_UPDATED',
@@ -88,7 +88,7 @@ export const CategoryManagementAction = {
     },
     setSelectedCategory: (category) => {
         return {
-            type: CategoryManagementMap.SELECTED_USER,
+            type: CategoryManagementMap.SELECTED_CATEGORY,
             payload: category
         }
     },
@@ -337,6 +337,7 @@ export const EditProductAsync = (data, _id) => {
                 dispatch({ type: CategoryManagementMap.EDIT_PRODUCT_SUCCESSFULLY })
                 return dispatch(showSuccessSnackbar('success', 'Product updated successfully', 3000))
             }
+            dispatch({ type: CategoryManagementMap.EDIT_PRODUCT_FAIL })
             dispatch(showSuccessSnackbar('error', 'Error updating product.', 3000))
         } catch (error) {
             dispatch({ type: CategoryManagementMap.EDIT_PRODUCT_FAIL })
@@ -350,7 +351,7 @@ export const DisplayVendorItemAsync = (value) => {
         try {
             const { pageNumber, pageSize } = getState().categoryModal
             let options = {
-                url: `${productUrl}/getProductList/${pageNumber - 1}/${pageSize}`,
+                url: `${productUrl}/getAllProductList/${pageNumber - 1}/${pageSize}`,
                 method: 'POST',
                 headers: {
                     'Content-type': 'application/json',

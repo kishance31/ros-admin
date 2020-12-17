@@ -113,12 +113,12 @@ function Login(props) {
         className='form fv-plugins-bootstrap fv-plugins-framework'
       >
         {formik.status && (
-					<div className={`mb-10 alert alert-custom alert-light-${statusColor} alert-dismissible`}>
-						<div className="alert-text font-weight-bold">
-							{formik.status}
-						</div>
-					</div>
-				)}
+          <div className={`mb-10 alert alert-custom alert-light-${statusColor} alert-dismissible`}>
+            <div className="alert-text font-weight-bold">
+              {formik.status}
+            </div>
+          </div>
+        )}
 
         <div className='form-group fv-plugins-icon-container'>
           <input
@@ -153,6 +153,15 @@ function Login(props) {
           ) : null}
         </div>
         <div className='form-group d-flex flex-wrap justify-content-between align-items-center'>
+        <button
+            id="kt_login_signin_submit"
+            type="submit"
+            disabled={authState.isLoading}
+            className={`btn btn-primary font-weight-bold px-9 py-4 my-3`}
+          >
+            <span>Sign In</span>
+            {authState.isLoading && <span className="ml-3 spinner spinner-white"></span>}
+          </button>
           <button
             onClick={onForgotPswdClick}
             className="btn btn-light-secondary text-dark-50 text-hover-primary my-3 mr-2"
@@ -160,15 +169,6 @@ function Login(props) {
           >
             <FormattedMessage id="AUTH.GENERAL.FORGOT_BUTTON" />
           </button>
-          <button
-						id="kt_login_signin_submit"
-						type="submit"
-						disabled={authState.isLoading}
-						className={`btn btn-primary font-weight-bold px-9 py-4 my-3`}
-					>
-						<span>Sign In</span>
-						{authState.isLoading && <span className="ml-3 spinner spinner-white"></span>}
-					</button>
         </div>
       </form>
       {/*end::Form*/}

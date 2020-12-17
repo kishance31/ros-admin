@@ -184,7 +184,7 @@ const categoryModalreducer = (state = initialState, action) => {
             }
         }
 
-        case CategoryManagementMap.SELECTED_USER: {
+        case CategoryManagementMap.SELECTED_CATEGORY: {
             return {
                 ...state,
                 selectedCategory: action.payload

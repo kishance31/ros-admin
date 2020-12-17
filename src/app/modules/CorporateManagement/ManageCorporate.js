@@ -105,6 +105,11 @@ const ManageCorporate = () => {
         activeDeactiveAction: activeDeactiveAction,
         handleShow: handleShow,
       },
+      classes: "text-center pr-0",
+      headerClasses: "text-center pr-3",
+      style: {
+        minWidth: "100px",
+      },
     },
   ];
 
@@ -163,6 +168,8 @@ const ManageCorporate = () => {
                 {...paginationTableProps}
                 onTableChange={onTableChange}
                 noDataIndication={noDataIndication}
+                condensed
+                bodyClasses="table-col-text-vertical-center"
               />
             </Pagination>
           );
