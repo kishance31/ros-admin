@@ -43,7 +43,7 @@ export const getCorporateOrdersAsync = () => async (dispatch, getState) => {
 			orderDetails.forEach(order => {
 				let currOrder = finalData.find(dt => dt.corporateId === order.corporateId);
 				if (currOrder) {
-					if (order.isFirstTimePayment) {
+					if (order.status === "dispatched" || order.status === "delivered") {
 						currOrder.pastOrder = [
 							...currOrder.pastOrder,
 							{ ...order }
@@ -102,13 +102,13 @@ export const updateOrderDispatchDateAsync = (id, orderData) => async (dispatch) 
 	}
 }
 
-export const confirmCorporateOrderAsync = (id) => async (dispatch) => {
+export const confirmCorporateOrderAsync = (id, employeeDetails) => async (dispatch) => {
 	try {
 		dispatch(manageOrderAction.orderDispatchDateStart());
 		const { data } = await axios({
 			url: `${adminsUrl}/updateOrderDispatchDate/${id}`,
 			method: "POST",
-			data: {status: "confirmed"},
+			data: {status: "confirmed", employeeDetails},
 		});
 		if (data.response && data.response.responseCode === 200) {
 			dispatch(showSuccessSnackbar("success", "Order confirmation successfull", 3000));

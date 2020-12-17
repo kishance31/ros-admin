@@ -26,16 +26,17 @@ const ManageOrder = () => {
 	}, [refreshOrderData])
 
 	const confirmNewOrder = (row) => {
-		dispatch(confirmCorporateOrderAsync(row._id));
+		dispatch(confirmCorporateOrderAsync(row._id, row.employeeDetails));
 	};
 
 	const manageOrderDispatchUpdate = (
 		id,
 		deliveryStatus,
 		dispatchDate,
-		deliveryDate
+		deliveryDate,
+		employeeDetails
 	) => {
-		dispatch(updateOrderDispatchDateAsync(id, { deliveryStatus, dispatchDate, deliveryDate }));
+		dispatch(updateOrderDispatchDateAsync(id, { deliveryStatus, dispatchDate, deliveryDate, employeeDetails }));
 	};
 
 	const columns = [

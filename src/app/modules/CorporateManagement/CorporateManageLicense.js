@@ -83,7 +83,7 @@ const CorporateManageLicense = () => {
 		},
 		{
 			dataField: 'orderId',
-			text: 'Order No',
+			text: 'Lic. Order No',
 		},
 		{
 			dataField: 'createdAt',

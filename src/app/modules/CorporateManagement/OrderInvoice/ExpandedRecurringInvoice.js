@@ -13,7 +13,7 @@ const ExpandedRecurringInvoice = ({ invoiceRow, firstRecurringFlag }) => {
       dataField: 'employeeDetails',
       text: 'Employee Name',
       footer: '',
-      formatter: (cell, row, rowIdx) => `${invoiceRow.employeeDetails[rowIdx].firstName} ${invoiceRow.employeeDetails[rowIdx].lastName}`,
+      formatter: (cell, row, rowIdx) => `${invoiceRow.employeeDetails[0].firstName} ${invoiceRow.employeeDetails[0].lastName}`,
     },
     {
       dataField: 'orderId',
