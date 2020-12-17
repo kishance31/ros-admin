@@ -12,6 +12,7 @@ import ActionButtons from './CorporateManageLicense/ActionButtons';
 import {
 	corporateManageLicenseAction,
 	displayCorporateManageLicenseDataAsync,
+	activatePurchaseLicenseAsync
 } from '../../actions/corporateManageLicense.action';
 import {
 	NoRecordsFoundMessage,
@@ -27,10 +28,10 @@ const CorporateManageLicense = () => {
 		pageNumber,
 	} = useSelector((state) => state.corporateManageLicense, shallowEqual);
 
-	const activeDeactiveAction = (orderId, isActive) => {
+	const activeDeactiveAction = (_id, isActive) => {
 		dispatch(
-			corporateManageLicenseAction.updateCorporateManageLicenseIsActive(
-				orderId,
+			activatePurchaseLicenseAsync(
+				_id,
 				isActive
 			)
 		);
