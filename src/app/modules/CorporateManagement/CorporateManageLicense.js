@@ -26,6 +26,7 @@ const CorporateManageLicense = () => {
 		totalCount,
 		pageSize,
 		pageNumber,
+		refreshCorporateManageLicenseData
 	} = useSelector((state) => state.corporateManageLicense, shallowEqual);
 
 	const activeDeactiveAction = (_id, isActive) => {
@@ -38,8 +39,10 @@ const CorporateManageLicense = () => {
 	};
 
 	useEffect(() => {
-		dispatch(displayCorporateManageLicenseDataAsync());
-	}, [dispatch]);
+		if(refreshCorporateManageLicenseData) {
+			dispatch(displayCorporateManageLicenseDataAsync());
+		}
+	}, [refreshCorporateManageLicenseData]);
 
 	const indexingSrNo = (cell, row, rowIndex) => {
 		return rowIndex + 1;

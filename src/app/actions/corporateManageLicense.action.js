@@ -27,9 +27,9 @@ export const displayCorporateManageLicenseDataAsync = (tokens) => {
                 type:
                     corporateManageLicenseMap.DISPLAY_CORPORATE_MANAGE_LICENSE_DATA_START,
             });
-            const { pageNumber, pageSize } = getState().corporateManageLicense
+            const { pageNo, pageSize } = getState().corporateManageLicense
             let corporateManageLicenceListResponse = await axios({
-                url: `${corporateUrl}/purchaseLicense/getAllPurchasedLicense/${pageNumber - 1}/${pageSize}`,
+                url: `${corporateUrl}/purchaseLicense/getAllPurchasedLicense/${pageNo - 1}/${pageSize}`,
                 method: 'POST',
                 headers: { tokens },
             });
