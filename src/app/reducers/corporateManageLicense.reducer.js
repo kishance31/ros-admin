@@ -14,9 +14,10 @@ const corporateManageLicenseReducer = (state = initialState, action) => {
             return {
                 ...state,
                 corporateManageLicenseData: action.payload.corporateManageLicenseData,
-                pageNo: action.payload.pageNo,
-                pageSize: action.payload.pageSize,
+                // pageNo: action.payload.pageNo,
+                // pageSize: action.payload.pageSize,
                 totalCount: action.payload.totalCount,
+                refreshCorporateManageLicenseData: false,
             };
         }
         case corporateManageLicenseMap.UPDATE_CORPORATE_MANAGE_LICENSE_ISACTIVE: {
@@ -36,7 +37,8 @@ const corporateManageLicenseReducer = (state = initialState, action) => {
         }
         case corporateManageLicenseMap.ACTIVE_PURCHASE_LICENSE_SUCCESS: {
             return {
-                ...state
+                ...state,
+                refreshCorporateManageLicenseData: true
             }
         }
         case corporateManageLicenseMap.SET_PAGE: {

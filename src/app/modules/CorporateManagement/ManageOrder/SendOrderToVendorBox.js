@@ -39,7 +39,6 @@ const SendOrderToVendorBox = ({ actionsLoading, show, handleClose, row }) => {
     ]
 
     const sendOrder = async (details) => {
-        console.log(row)
         let { data } = await axios({
             url: `${serverUrls.getCorporateUrl()}/sendOrderToVendor`,
             method: 'POST',
@@ -48,11 +47,10 @@ const SendOrderToVendorBox = ({ actionsLoading, show, handleClose, row }) => {
             },
             data: {
                 ...details,
-                orderDetails: row.productDetails,
+                orderDetails: row,
                 address: row.address,
             }
         });
-        console.log(data)
 
         if (data.response.responseCode === 200) {
             handleClose();
@@ -66,15 +64,15 @@ const SendOrderToVendorBox = ({ actionsLoading, show, handleClose, row }) => {
             <Modal.Header>
                 <Modal.Title>Vendor Details</Modal.Title>
             </Modal.Header>
-            <div className="mx-10 mt-10">
+            {/* <div className="mx-10 mt-10">
                 <BootstrapTable
                     keyField='_id'
-                    data={row.productDetails}
+                    data={row.products}
                     columns={columns}
                     bordered={false}
                     noDataIndication='No records found!'
                 />
-            </div>
+            </div> */}
             <div>
                 <Formik
                     initialValues={{

@@ -88,7 +88,10 @@ export function Demo1Dashboard() {
                                 <TotalItemsAvailable />
                             </div>
                         </div>
-                        <div className="col-xl-6 col-md-6 mb-8">
+
+                    </div>
+                    <div className="row">
+                        <div className="col-xl-4 col-md-6 mb-8">
                             <Card>
                                 <CardHeader title='Sales By Product Category'>
                                     <CardHeaderToolbar>
@@ -110,7 +113,7 @@ export function Demo1Dashboard() {
                                 </CardBody>
                             </Card>
                         </div>
-                        <div className="col-xl-6 col-md-6 mb-8">
+                        <div className="col-xl-4 col-md-6 mb-8">
                             <Card>
                                 <CardHeader title='Top 10 Product By Profit Margin'>
                                     <CardHeaderToolbar>
@@ -127,23 +130,23 @@ export function Demo1Dashboard() {
                                 </CardBody>
                             </Card>
                         </div>
-                    </div>
-                    <div className="col-xl-12 col-md-6 mb-8">
-                        <Card>
-                            <CardHeader title='New Customer SignUps'>
-                                <CardHeaderToolbar>
-                                    {/* <img src={toAbsoluteUrl("/media/svg/icons/General/Settings-2.svg")}
+                        <div className="col-xl-4 col-md-6 mb-8">
+                            <Card>
+                                <CardHeader title='New Customer SignUps'>
+                                    <CardHeaderToolbar>
+                                        {/* <img src={toAbsoluteUrl("/media/svg/icons/General/Settings-2.svg")}
                                         alt="image"
                                         style={{ width: "2.3rem" }}
                                     /> */}
-                                </CardHeaderToolbar>
-                            </CardHeader>
-                            <CardBody>
-                                <NewCustomersSignUp
-                                    getCustomerSignupCount={getCustomerSignupCount}
-                                />
-                            </CardBody>
-                        </Card>
+                                    </CardHeaderToolbar>
+                                </CardHeader>
+                                <CardBody>
+                                    <NewCustomersSignUp
+                                        getCustomerSignupCount={getCustomerSignupCount}
+                                    />
+                                </CardBody>
+                            </Card>
+                        </div>
                     </div>
                     <div className="row">
                         <div className="col-xl-6 col-md-6 mb-8">

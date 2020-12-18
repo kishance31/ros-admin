@@ -20,6 +20,7 @@ const ViewModal = ({
 	const [errorMsg, setErrorMsg] = useState('');
 
 	const saveAction = () => {
+		console.log(row)
 		if (deliveryStatus !== "pending" && !dispatchDate) {
 			setErrorMsg('Select delivery or dispatch date.');
 		} else if(dispatchDate && deliveryStatus === "pending") {
@@ -32,7 +33,8 @@ const ViewModal = ({
 				row._id,
 				deliveryStatus,
 				dispatchDate,
-				deliveryDate
+				deliveryDate,
+				row.employeeDetails
 			);
 			handleClose();
 		}

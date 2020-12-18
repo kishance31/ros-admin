@@ -47,6 +47,11 @@ const RecurringInvoice = ({ recurringInvoiceData, firstRecurringFlag }) => {
 			formatter: (cell, row) => (`$${row.isReccuring ? row.recurringCost.toFixed(2) : row.firstTimeCost.toFixed(2)}`)
 		},
 		{
+			dataField: 'paymentDone',
+			text: 'Payment Status',
+			formatter: (cell, row) => (cell  ? "Done" : "Pending")
+		},
+		{
 			dataField: 'action',
 			text: 'Action',
 			formatter: RecurringInvoiceActionButtons,
