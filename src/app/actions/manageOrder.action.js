@@ -43,7 +43,7 @@ export const getCorporateOrdersAsync = () => async (dispatch, getState) => {
 			orderDetails.forEach(order => {
 				let currOrder = finalData.find(dt => dt.corporateId === order.corporateId);
 				if (currOrder) {
-					if (order.status === "dispatched" || order.status === "delivered") {
+					if (order.deliveryStatus === "dispatched" || order.deliveryStatus === "delivered") {
 						currOrder.pastOrder = [
 							...currOrder.pastOrder,
 							{ ...order }
