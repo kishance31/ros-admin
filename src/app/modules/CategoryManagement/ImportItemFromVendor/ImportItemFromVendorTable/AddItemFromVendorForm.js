@@ -12,7 +12,7 @@ import { toAbsoluteUrl } from "../../../../../_metronic/_helpers";
 import SVG from "react-inlinesvg";
 import { addVendorItemAsync, displaySubCategoryList, EditProductAsync } from '../../../../actions/categoryManagementModal.action';
 const { customAlphabet } = require('nanoid/async');
-const numberNanoId = customAlphabet('1234567890-', 9);
+const numberNanoId = customAlphabet('1234567890', 9);
 
 const ProductFormSchema = Yup.object().shape({
     category_id: Yup.string()

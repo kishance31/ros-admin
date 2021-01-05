@@ -150,6 +150,50 @@ export function AsideMenuList({ layoutProps }) {
 				}
 
 				{
+					roleState["Manage License"] ? (
+						<li
+							className={`menu-item menu-item-submenu ${getMenuItemActive(
+								"/license-management", true
+							)}`}
+							aria-haspopup="true"
+							data-menu-toggle="hover"
+						>
+							<NavLink className="menu-link menu-toggle" to="/license-management">
+								<span className="svg-icon menu-icon">
+									<i className="fa fa-id-card fs_15"></i>
+								</span>
+								<span className="menu-text">License Management</span>
+								<i className="menu-arrow" />
+							</NavLink>
+							<div className="menu-submenu ">
+								<i className="menu-arrow" />
+								<ul className="menu-subnav">
+									<li className="menu-item  menu-item-parent" aria-haspopup="true">
+										<span className="menu-link">
+											<span className="menu-text">License Management</span>
+										</span>
+									</li>
+									<li
+										className={`menu-item menu-item-submenu ${getMenuItemActive(
+											"/license-management/manage-license", false
+										)}`}
+										aria-haspopup="true"
+										data-menu-toggle="hover"
+									>
+										<NavLink className="menu-link" to="/license-management/manage-license">
+											<i className="menu-bullet menu-bullet-dot">
+												<span />
+											</i>
+											<span className="menu-text">Manage License</span>
+										</NavLink>
+									</li>
+								</ul>
+							</div>
+						</li>
+					) : null
+				}
+
+				{
 					roleState["Manage Category"] || roleState["Import Item from Vendor"] ? (
 						<li
 							className={`menu-item menu-item-submenu ${getMenuItemActive(
@@ -209,50 +253,6 @@ export function AsideMenuList({ layoutProps }) {
 											</li>
 										) : null
 									}
-								</ul>
-							</div>
-						</li>
-					) : null
-				}
-
-				{
-					roleState["Manage License"] ? (
-						<li
-							className={`menu-item menu-item-submenu ${getMenuItemActive(
-								"/license-management", true
-							)}`}
-							aria-haspopup="true"
-							data-menu-toggle="hover"
-						>
-							<NavLink className="menu-link menu-toggle" to="/license-management">
-								<span className="svg-icon menu-icon">
-									<i className="fa fa-id-card fs_15"></i>
-								</span>
-								<span className="menu-text">License Management</span>
-								<i className="menu-arrow" />
-							</NavLink>
-							<div className="menu-submenu ">
-								<i className="menu-arrow" />
-								<ul className="menu-subnav">
-									<li className="menu-item  menu-item-parent" aria-haspopup="true">
-										<span className="menu-link">
-											<span className="menu-text">License Management</span>
-										</span>
-									</li>
-									<li
-										className={`menu-item menu-item-submenu ${getMenuItemActive(
-											"/license-management/manage-license", false
-										)}`}
-										aria-haspopup="true"
-										data-menu-toggle="hover"
-									>
-										<NavLink className="menu-link" to="/license-management/manage-license">
-											<i className="menu-bullet menu-bullet-dot">
-												<span />
-											</i>
-											<span className="menu-text">Manage License</span>
-										</NavLink>
-									</li>
 								</ul>
 							</div>
 						</li>
