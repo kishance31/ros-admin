@@ -23,7 +23,7 @@ const TotalRecurringIncome = () => {
                     <div className="col mr-2">
                         <div className="text-xs font-weight-bold text-primary text-uppercase mb-5">Total Recurring Income</div>
                         <div className="row_data">
-                            <div className="h4 mb-0 font-weight-bold text-gray-800">${recurringIncome}</div>
+                            <div className="h4 mb-0 font-weight-bold text-gray-800">${parseFloat(recurringIncome).toFixed(2)}</div>
                             <Form.Control
                                 as="select"
                                 defaultValue={date}
