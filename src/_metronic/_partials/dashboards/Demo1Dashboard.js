@@ -88,10 +88,9 @@ export function Demo1Dashboard() {
                                 <TotalItemsAvailable />
                             </div>
                         </div>
-
                     </div>
                     <div className="row">
-                        <div className="col-xl-4 col-md-6 mb-8">
+                        <div className="col-xl-6 col-md-6 mb-8">
                             <Card>
                                 <CardHeader title='Sales By Product Category'>
                                     <CardHeaderToolbar>
@@ -113,24 +112,7 @@ export function Demo1Dashboard() {
                                 </CardBody>
                             </Card>
                         </div>
-                        <div className="col-xl-4 col-md-6 mb-8">
-                            <Card>
-                                <CardHeader title='Top 10 Product By Profit Margin'>
-                                    <CardHeaderToolbar>
-                                        {/* <img src={toAbsoluteUrl("/media/svg/icons/General/Settings-2.svg")}
-                                            alt="image"
-                                            style={{ width: "2.3rem" }}
-                                        /> */}
-                                    </CardHeaderToolbar>
-                                </CardHeader>
-                                <CardBody>
-                                    <TopProductByProfitMargin
-                                        topProfitMarginProducts={topProfitMarginProducts}
-                                    />
-                                </CardBody>
-                            </Card>
-                        </div>
-                        <div className="col-xl-4 col-md-6 mb-8">
+                        <div className="col-xl-6 col-md-6 mb-8">
                             <Card>
                                 <CardHeader title='New Customer SignUps'>
                                     <CardHeaderToolbar>
@@ -148,6 +130,23 @@ export function Demo1Dashboard() {
                             </Card>
                         </div>
                     </div>
+                    <div  style={{width:"100rem"}} >
+                            <Card>
+                                <CardHeader title='Top 10 Product By Profit Margin'>
+                                    <CardHeaderToolbar>
+                                        {/* <img src={toAbsoluteUrl("/media/svg/icons/General/Settings-2.svg")}
+                                            alt="image"
+                                            style={{ width: "2.3rem" }}
+                                        /> */}
+                                    </CardHeaderToolbar>
+                                </CardHeader>
+                                <CardBody>
+                                    <TopProductByProfitMargin
+                                        topProfitMarginProducts={topProfitMarginProducts}
+                                    />
+                                </CardBody>
+                            </Card>
+                        </div>
                     <div className="row">
                         <div className="col-xl-6 col-md-6 mb-8">
                             <Card>
