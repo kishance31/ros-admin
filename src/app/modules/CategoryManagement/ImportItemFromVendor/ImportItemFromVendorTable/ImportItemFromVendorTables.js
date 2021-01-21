@@ -26,15 +26,15 @@ const ImportItemFromVendorTable = (props) => {
         },
         {
             dataField: 'product_name',
-            text: 'Item Name'
+            text: 'Product Name'
         },
         {
             dataField: 'product_code',
-            text: 'Item Code'
+            text: 'Product Code'
         },
         {
             dataField: 'product_cost',
-            text: 'Item Cost(USD)'
+            text: 'Product Cost(USD)'
         },
         {
             dataField: 'ros_code',

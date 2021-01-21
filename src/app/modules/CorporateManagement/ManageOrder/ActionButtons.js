@@ -44,14 +44,17 @@ const ActionButtons = ({ row, orderId, confirmNewOrder, manageOrderDispatchUpdat
           null
       }
 
-      <Button
-        className={'mx-1'}
-        size='sm'
-        variant='outline-success'
-        onClick={() => handleShow()}
-      >
-        Manage
-      </Button>
+      {
+        row.status !== "pending" ?
+          <Button
+            className={'mx-1'}
+            size='sm'
+            variant='outline-success'
+            onClick={() => handleShow()}
+          >
+            Manage
+      </Button> : null
+      }
       <ViewModal
         show={show}
         handleClose={handleClose}
@@ -60,7 +63,7 @@ const ActionButtons = ({ row, orderId, confirmNewOrder, manageOrderDispatchUpdat
         manageOrderDispatchUpdate={manageOrderDispatchUpdate}
       />
 
-      { row.deliveryStatus === "pending" &&
+      { row.status !== "pending" && row.deliveryStatus === "pending" &&
         <Button
           className='mx-1'
           size='sm'
