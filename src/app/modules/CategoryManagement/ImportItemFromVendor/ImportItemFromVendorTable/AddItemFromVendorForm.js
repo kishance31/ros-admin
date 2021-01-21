@@ -209,8 +209,8 @@ const AddItemFromVendorForm = (props) => {
                                     <Field
                                         name="product_name"
                                         component={Input}
-                                        placeholder="Item Name"
-                                        label="Item Name"
+                                        placeholder="Product Name"
+                                        label="Product Name"
                                         value={values.product_name}
                                     />
                                 </div>
@@ -219,8 +219,8 @@ const AddItemFromVendorForm = (props) => {
                                     <Field
                                         name="product_code"
                                         component={Input}
-                                        placeholder="Item Code"
-                                        label="Item Code"
+                                        placeholder="Product Code"
+                                        label="Product Code"
                                         value={values.product_code}
                                     />
                                 </div>
@@ -230,8 +230,8 @@ const AddItemFromVendorForm = (props) => {
                                         as="number"
                                         name="product_cost"
                                         component={Input}
-                                        placeholder="Item Cost(USD)"
-                                        label="Item Cost (USD)"
+                                        placeholder="Product Cost(USD)"
+                                        label="Product Cost (USD)"
                                         value={values.product_cost}
                                     />
                                 </div>
@@ -244,8 +244,8 @@ const AddItemFromVendorForm = (props) => {
                                         name="product_description"
                                         rows={5}
                                         component={TextArea}
-                                        placeholder="Item Description"
-                                        label="Item Description"
+                                        placeholder="Product Description"
+                                        label="Product Description"
                                         value={values.product_description}
                                     />
                                 </div>

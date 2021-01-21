@@ -16,8 +16,8 @@ const ExpandedRowLevelOne = ({
 					value={newPastFlag}
 					onChange={e => setNewPastFlag(e.target.value)}
 				>
-					<option value="new">New Order</option>
-					<option value="past">Past Order</option>
+					<option value="new">Pending Order</option>
+					<option value="past">Dispatched/Delivered Order</option>
 				</Form.Control>
 			</div>
 			<NewOrder
