@@ -16,6 +16,13 @@ const initialCmsSettings = {
         description: "",
         isLoading: false,
     },
+    socialLinks: {
+        facebook: "",
+        instagram: "",
+        pinterest: "",
+        google: "",
+        twitter: "",
+    },
     aboutUsDetails: {},
     contactQueryList: [],
     contactUsReply: [],
@@ -270,6 +277,31 @@ const cmsSettingsReducer = (state = initialCmsSettings, action) => {
             }
         }
         case cmsSettingsMap.GET_NEWSLETTER_ERROR: {
+            return {
+                ...state,
+                isLoading: false
+            }
+        }
+        case cmsSettingsMap.SAVE_SOCIALMEDIA_LINK_START: {
+            return {
+                ...state,
+                isLoading: true
+            }
+        }
+        case cmsSettingsMap.SAVE_SOCIALMEDIA_LINK_SUCCESS: {
+            return {
+                ...state,
+                isLoading: false,
+                socialLinks: {
+                    facebook: action.payload.facebook,
+                    instagram: action.payload.instagram,
+                    pinterest: action.payload.pinterest,
+                    google: action.payload.google,
+                    twitter: action.payload.twitter,
+                },
+            }
+        }
+        case cmsSettingsMap.SAVE_SOCIALMEDIA_LINK_ERROR: {
             return {
                 ...state,
                 isLoading: false

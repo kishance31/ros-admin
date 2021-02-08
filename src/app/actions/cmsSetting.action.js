@@ -38,6 +38,9 @@ export const cmsSettingsMap = {
     GET_NEWSLETTER_START: 'GET_NEWSLETTER_START',
     GET_NEWSLETTER_SUCCESS: 'GET_NEWSLETTER_SUCCESS',
     GET_NEWSLETTER_ERROR: 'GET_NEWSLETTER_ERROR',
+    SAVE_SOCIALMEDIA_LINK_START: 'SAVE_SOCIALMEDIA_LINK_START',
+    SAVE_SOCIALMEDIA_LINK_SUCCESS: 'SAVE_SOCIALMEDIA_LINK_SUCCESS',
+    SAVE_SOCIALMEDIA_LINK_ERROR: 'SAVE_SOCIALMEDIA_LINK_ERROR',
     SET_SELECTED_FAQ: 'SET_SELECTED_FAQ',
     SET_PAGE: 'SET_PAGE',
     SET_PAGE_SIZE: 'SET_PAGE_SIZE',
@@ -52,6 +55,7 @@ export const cmsSettingsAction = {
     closeFAQDeleteModal: () => { return { type: cmsSettingsMap.CLOSE_FAQ_DELETE_MODAL } },
     addContactUsDetails: (data) => ({ type: cmsSettingsMap.UPDATE_CONTACT_US_SUCCESSFULLY, payload: data }),
     addAboutUsDetails: (data) => ({ type: cmsSettingsMap.SAVE_ABOUT_US_SUCCESSFULLY, payload: data }),
+    saveSocialMediaLinks: (data) => ({ type: cmsSettingsMap.SAVE_SOCIALMEDIA_LINK_SUCCESS, payload: data }),
     setSelectedFAQ: (faq) => { return { type: cmsSettingsMap.SET_SELECTED_FAQ, payload: faq } },
     setPage: (num) => ({ type: cmsSettingsMap.SET_PAGE, payload: num }),
     setPageSize: (num) => ({ type: cmsSettingsMap.SET_PAGE_SIZE, payload: num }),
@@ -59,6 +63,32 @@ export const cmsSettingsAction = {
 
 const { serverUrls } = getServerCore();
 const cmsUrl = serverUrls.getCmsUrl()
+
+export const saveSocialMediaLinksAsync = (values) => {
+    return async (dispatch) => {
+        try {
+            let data = await axios({
+                url: `${cmsUrl}/saveSocialMediaLinks`,
+                method: "PUT",
+                data: values,
+                headers: {
+                    'Content-type': ' multipart/form-data',
+                }
+            });
+            console.log(data);
+            if (data.data.response.responseCode === 200) {
+                dispatch(cmsSettingsAction.saveSocialMediaLinks(data.data.response.data))
+                dispatch(showSuccessSnackbar('success', "Social Media links updated successfully", 3000));
+            } else {
+                dispatch({ type: cmsSettingsMap.SAVE_SOCIALMEDIA_LINK_ERROR })
+                dispatch(showSuccessSnackbar('error', "Error while updating", 3000));
+            }
+        } catch (err) {
+            dispatch({ type: cmsSettingsMap.SAVE_SOCIALMEDIA_LINK_ERROR })
+            dispatch(showSuccessSnackbar('error', "Error while updating", 3000))
+        }
+    }
+}
 
 export const addContactUsAsync = (values) => {
     return async (dispatch) => {
@@ -71,6 +101,7 @@ export const addContactUsAsync = (values) => {
                     'Content-type': ' multipart/form-data',
                 }
             });
+            console.log("contactUsResponse", contactUsResponse);
             if (contactUsResponse.data.response.responseCode === 200) {
                 dispatch(cmsSettingsAction.addContactUsDetails(contactUsResponse.data.response.data))
                 dispatch(showSuccessSnackbar('success', "Contact Us Update Successfully", 3000));

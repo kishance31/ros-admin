@@ -1,13 +1,14 @@
 import React from 'react'
 import { NavLink, Switch, Redirect } from 'react-router-dom';
-import {shallowEqual, useSelector} from 'react-redux';
+import { shallowEqual, useSelector } from 'react-redux';
 //import AboutUs from './CmsSettingContainer/AboutUs';
 import ContactUs from './CmsSettingContainer/ContactUs';
 import { ContentRoute } from '../../../_metronic/layout'
 import { Card } from '../../../_metronic/_partials/controls';
 import ContactUsQueries from './CmsSettingContainer/ContactUsQueries';
 import FAQ from './CmsSettingContainer/FAQ';
-import NewsLetter from './CmsSettingContainer/NewsLetter';
+// import NewsLetter from './CmsSettingContainer/NewsLetter';
+import SocialMedia from './CmsSettingContainer/SocialMedia';
 
 const CmsSetting = () => {
     const roleDetails = useSelector(state => state.auth.user.roleDetails, shallowEqual);
@@ -23,7 +24,6 @@ const CmsSetting = () => {
                                 {/* <NavLink className="nav-link" to='/general-settings/cms-settings/about-us'>
                                     <span>About Us</span>
                                 </NavLink> */}
-
                                 <NavLink className="nav-link" to='/general-settings/cms-settings/get-in-touch'>
                                     <span>Get In Touch</span>
                                 </NavLink>
@@ -36,9 +36,12 @@ const CmsSetting = () => {
                                     <span>FAQ</span>
                                 </NavLink>
 
-                                <NavLink className="nav-link" to='/general-settings/cms-settings/news-letter'>
-                                    <span>News Letter</span>
+                                <NavLink className="nav-link" to='/general-settings/cms-settings/social-media'>
+                                    <span>Social Media</span>
                                 </NavLink>
+                                {/* <NavLink className="nav-link" to='/general-settings/cms-settings/news-letter'>
+                                    <span>News Letter</span>
+                                </NavLink> */}
                             </div>
                         </div>
 
@@ -64,10 +67,15 @@ const CmsSetting = () => {
                                 component={FAQ}
                             />
                             <ContentRoute
+                                path='/general-settings/cms-settings/social-media'
+                                exact
+                                component={SocialMedia}
+                            />
+                            {/* <ContentRoute
                                 path='/general-settings/cms-settings/news-letter'
                                 exact
                                 component={NewsLetter}
-                            />
+                            /> */}
                         </Switch>
                     </Card>
                 </div>
