@@ -27,7 +27,7 @@ const serverUrls = {
 
     getHost: () => host,
     getPort: () => port,
-    getDefaulUrl: () => `${host}:${port}/${defaultRoute}`,
+    getDefaulUrl: () => `${host}/${defaultRoute}`,
 
     getAdminUrl() {
         return `${this.getDefaulUrl()}/${admin}`

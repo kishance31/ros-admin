@@ -5,9 +5,9 @@
     "homepage": "/",
     "scripts": {
         "serve": "cp-cli build _site/ && serve",
-        "start": "REACT_APP_SERVER_URL=http://localhost:4000/api REACT_APP_HOST=http://localhost REACT_APP_PORT=4000 react-scripts start -o",
-        "build": "REACT_APP_SERVER_URL=http://3.18.139.243:4000/api REACT_APP_HOST=http://3.18.139.243 REACT_APP_PORT=4000 react-scripts build",
-        "qa": "REACT_APP_SERVER_URL=http://3.18.139.243:4050/api REACT_APP_HOST=http://3.18.139.243 REACT_APP_PORT=4050 react-scripts build",
+        "start": "REACT_APP_SERVER_URL=https://api.remoteofficessolution.com/api REACT_APP_HOST=https://api.remoteofficessolution.com react-scripts start -o",
+        "build": "REACT_APP_SERVER_URL=https://api.remoteofficessolution.com/api REACT_APP_HOST=https://api.remoteofficessolution.com react-scripts build",
+        "qa": "REACT_APP_SERVER_URL=https://api.remoteofficessolution.com/api REACT_APP_HOST=https://api.remoteofficessolution.com react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject",
         "lint": "eslint src",
